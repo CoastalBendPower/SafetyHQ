@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CBPS Procedures Control Center</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --ink: #172033;
+      --muted: #687386;
+      --blue: #1f5f99;
+      --blue2: #e8f2fb;
+      --green: #1d7a46;
+      --amber: #a96500;
+      --red: #b42318;
+      --line: #d8e0ea;
+      --shadow: 0 10px 28px rgba(20, 42, 70, 0.09);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    header {
+      background: linear-gradient(135deg, #163d66, #1f5f99);
+      color: white;
+      padding: 28px 22px;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 0;
+      color: rgba(255,255,255,.82);
+      font-size: .98rem;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    a.button, button.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 999px;
+      padding: 10px 15px;
+      background: white;
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: .9rem;
+    }
+
+    button.button.secondary, a.button.secondary {
+      background: rgba(255,255,255,.16);
+      color: white;
+      border: 1px solid rgba(255,255,255,.28);
+    }
+
+    main { padding: 22px; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 14px;
+      margin: 0 0 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      min-height: 104px;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #9fc4e5;
+      box-shadow: 0 14px 34px rgba(20, 42, 70, 0.14);
+    }
+
+    .card.active {
+      border-color: var(--blue);
+      outline: 3px solid rgba(31, 95, 153, .14);
+    }
+
+    .card .label {
+      color: var(--muted);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-weight: 700;
+    }
+
+    .card .value {
+      font-size: 2rem;
+      line-height: 1.05;
+      margin-top: 10px;
+      font-weight: 800;
+    }
+
+    .card .note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: .84rem;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.7fr repeat(3, minmax(140px, .7fr));
+      gap: 10px;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      font-size: .93rem;
+      background: white;
+      color: var(--ink);
+    }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 940px;
+    }
+
+    th, td {
+      padding: 7px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+      font-size: .84rem;
+    }
+
+    th {
+      background: #f6f9fd;
+      color: #33415c;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr:hover td { background: #fbfdff; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 7px;
+      font-size: .7rem;
+      font-weight: 800;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+
+    .ok { color: var(--green); background: #e9f8ef; border-color: #bfe9ce; }
+    .due { color: var(--amber); background: #fff3df; border-color: #ffd894; }
+    .bad { color: var(--red); background: #ffeceb; border-color: #ffcbc7; }
+    .neutral { color: #35516d; background: var(--blue2); border-color: #c9dff2; }
+    .muted { color: var(--muted); }
+
+    .status-wrap { position: relative; display: inline-flex; align-items: center; }
+
+    .status-wrap .status-pop {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 125%;
+      z-index: 5;
+      min-width: 210px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--ink);
+      box-shadow: var(--shadow);
+      font-size: .78rem;
+      line-height: 1.35;
+      white-space: normal;
+    }
+
+    .status-wrap:hover .status-pop,
+    .status-wrap:focus-within .status-pop { display: block; }
+
+    .status-trigger { cursor: help; }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .86rem;
+      padding: 13px 14px;
+      background: #fbfdff;
+    }
+
+    @media (max-width: 1000px) {
+      .cards { grid-template-columns: repeat(3, 1fr); }
+      .controls { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      header, main { padding-left: 14px; padding-right: 14px; }
+      .cards { grid-template-columns: 1fr 1fr; }
+      .controls { grid-template-columns: 1fr; }
+      .card { padding: 14px; }
+      .card .value { font-size: 1.65rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <div>
+        <h1>CBPS Procedures Control Center</h1>
+        <p>Standalone procedure audit dashboard · Audit Tracker driven status · Review status, gaps, and upcoming due dates</p>
+      </div>
+      <div class="top-actions">
+        <button class="button" onclick="loadLiveBackend()">Refresh Live Data</button>
+        <button class="button secondary" onclick="resetFilters()">Reset Filters</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="cards" id="cards"></section>
+
+      <section class="panel">
+        <div class="controls">
+          <input id="search" type="search" placeholder="Search procedure, tier, status, or finding..." oninput="render()" />
+          <select id="tier" onchange="render()">
+            <option value="">All Tiers</option>
+            <option>Tier 1</option>
+            <option>Tier 2</option>
+            <option>Tier 3</option>
+          </select>
+          <select id="status" onchange="render()">
+            <option value="">All Statuses</option>
+            <option value="Overdue">Overdue</option>
+            <option value="Due Soon">Due Soon</option>
+            <option value="Current">Current</option>
+            <option value="Missing Fields">Missing Fields</option>
+            <option value="No Drive Link">No Drive Link</option>
+            <option value="Open Findings">Open Findings</option>
+            <option value="Action Required">Action Required</option>
+            <option value="Awaiting Publish">Awaiting Publish</option>
+          </select>
+          <select id="frequency" onchange="render()">
+            <option value="">All Frequencies</option>
+            <option>Annual</option>
+            <option>Biennial</option>
+            <option>Triennial</option>
+          </select>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Procedure</th>
+                <th>Tier</th>
+                <th>Frequency</th>
+                <th>Last Review</th>
+                <th>Next Review</th>
+                <th>Published to Team</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="procedureRows"></tbody>
+          </table>
+        </div>
+        <div class="footer-note" id="footerNote"></div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const CONTROL_CONFIG = {
+      dueSoonDays: 90,
+      lastSynced: '04/24/2026 8:00 PM',
+      dataSource: 'Audit_Tracker.v1 + CBPS Procedures Google Drive folder',
+      refreshMode: 'Manual Live Refresh Ready',
+      backendUrl: 'https://script.google.com/macros/s/AKfycbyt65srgK4pUipO1ZiDhGcMj1wTcqDoq2sox3NxtXaDQ1FVEFttkQLvj6S_eBsIA4Hh1w/exec',
+      autoRefresh: false
+    };
+
+    const TODAY = new Date();
+    const DUE_SOON_DAYS = CONTROL_CONFIG.dueSoonDays;
+
+    let DATA = {
+      auditLog: [],
+      procedures: [
+        { procedure:'Access to Medical Records', owner:'HR', frequency:'Triennial', tier:'Tier 3', lastReview:'2024-01-01', nextReview:'2027-01-01', publishedToTeam:'' },
+        { procedure:'Aerial & Scissor Lift', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'Benzene', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'Bloodborne Pathogens (BBPS)', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'Confined Space (Construction)', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'Disciplinary Action', owner:'HR', frequency:'Triennial', tier:'Tier 3', lastReview:'2024-01-01', nextReview:'2027-01-01', publishedToTeam:'' },
+        { procedure:'Defensive Driving & Motor Vehicle Operation', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Non DOT Drug & Alcohol Policy', owner:'HR', frequency:'Triennial', tier:'Tier 3', lastReview:'2024-01-01', nextReview:'2027-01-01', publishedToTeam:'' },
+        { procedure:'Electrical Safety (Qualified & Non-Qualified)', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'Emergency Action Plan', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'Excavation, Shoring & Trenching', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'Fall Protection & PFAS', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'Fire Protection & Fire Extinguisher', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'First Aid, CPR & AED', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Forklift & Powered Industrial Truck', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2026-04-22', nextReview:'2027-04-22', publishedToTeam:'' },
+        { procedure:'Hand & Power Tools', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Hazard Communication (HAZCOM)', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Heat Illness Prevention', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Hydrogen Sulfide (H2S)', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Incident Reporting & Investigation', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Job Competency', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Jobsite Security', owner:'Ops', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Ladder Safety', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Lead Awareness', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Live Line Tools', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Lockout/Tagout (LOTO)', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'NFPA 70E', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Noise Exposure / Hearing Conservation', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Pandemic Preparedness', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Personal Protective Equipment (PPE)', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Process Safety Management (PSM)', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Respiratory Protection', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Rigging Equipment for Material Handling', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Risk Assessment', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Scaffolds', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Short Service Employee (SSE)', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Silica Exposure Control Plan (SECP)', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' },
+        { procedure:'Stop Work Authority (SWA)', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Waste Management', owner:'Safety', frequency:'Annual', tier:'Tier 1', lastReview:'2025-07-01', nextReview:'2026-07-01', publishedToTeam:'' },
+        { procedure:'Welding, Cutting & Hot Work', owner:'Safety', frequency:'Biennial', tier:'Tier 2', lastReview:'2024-10-01', nextReview:'2026-10-01', publishedToTeam:'' }
+      ],
+      auditFindings: [
+        { procedure:'Access to Medical Records', priority:'High', status:'Open', action:'Create standalone OSHA 1910.1020 Access to Employee Exposure and Medical Records procedure if not currently maintained separately.', location:'Program Structure / Controlled Docs' },
+        { procedure:'Access to Medical Records', priority:'High', status:'Open', action:'Define records covered: exposure monitoring, medical surveillance, SDS identity records, noise/hearing tests, respirator medical evaluations, injury/illness records where applicable.', location:'Scope' },
+        { procedure:'Access to Medical Records', priority:'High', status:'Open', action:'Add employee/rightful representative access request process with response timeline consistent with OSHA requirements (15 working days).', location:'Employee Access Requests' },
+        { procedure:'Access to Medical Records', priority:'High', status:'Open', action:'Define retention schedule for exposure and medical records per OSHA requirements and responsibility owner for secure storage.', location:'Recordkeeping / Retention' },
+        { procedure:'Access to Medical Records', priority:'High', status:'Open', action:'Add confidentiality controls and release authorization process to prevent unauthorized disclosure of private medical information.', location:'Confidentiality / Responsibilities' },
+        { procedure:'Access to Medical Records', priority:'Medium', status:'Open', action:'Add HSI integration language for tracking respirator medical clearance dates, audiograms, surveillance status, and training acknowledgements where applicable.', location:'EHS / LMS Control Opportunity' },
+        { procedure:'Access to Medical Records', priority:'Medium', status:'Open', action:'Add former employee access process and records transfer/destruction process if company ceases business or changes ownership.', location:'Former Employee Requests / Business Continuity' },
+        { procedure:'Access to Medical Records', priority:'Medium', status:'Open', action:'Cross-reference Employee Handbook personnel file section so medical records are segregated from general personnel files.', location:'Interface With Handbook' }
+      ]
+    };
+
+    let procedures = DATA.procedures;
+    let auditFindings = DATA.auditFindings;
+
+    function normalize(value) {
+      return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    }
+
+    function getEl(id) {
+      return document.getElementById(id);
+    }
+
+    function getControlValue(id) {
+      const el = getEl(id);
+      return el ? el.value : '';
+    }
+
+    function setControlValue(id, value) {
+      const el = getEl(id);
+      if (el) el.value = value;
+    }
+
+    function pill(text, cls) {
+      return `<span class="pill ${cls}">${text}</span>`;
+    }
+
+    function parseDateValue(value) {
+      if (!value) return null;
+      const d = new Date(String(value) + 'T12:00:00');
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    function getAuditLogRows(p) {
+      return (DATA.auditLog || []).filter(r => normalize(r.procedure) === normalize(p.procedure));
+    }
+
+    function latestAuditLogStatus(p) {
+      const rows = getAuditLogRows(p);
+      if (!rows.length) return p.auditLogStatus || '';
+      return rows[rows.length - 1].status || '';
+    }
+
+    function hasPendingAuditLog(p) {
+      return getAuditLogRows(p).some(r => normalize(r.status) !== 'complete');
+    }
+
+    function needsPublish(p) {
+      if (p.pendingPublish === true || String(p.pendingPublish).toLowerCase() === 'true') return true;
+      if (hasPendingAuditLog(p)) return true;
+      const draft = parseDateValue(p.draftUpdated || p.draftUpdate || p.draftDate);
+      const published = parseDateValue(p.publishedToTeam || p.hsiPublished || p.published || p.teamPublished);
+      return !!(draft && (!published || draft > published));
+    }
+
+    function daysUntil(dateStr) {
+      if (!dateStr) return null;
+      const target = new Date(dateStr + 'T12:00:00');
+      if (isNaN(target.getTime())) return null;
+      return Math.ceil((target - TODAY) / (1000 * 60 * 60 * 24));
+    }
+
+    function getOpenFindings(p) {
+      return auditFindings.filter(f => normalize(f.procedure) === normalize(p.procedure) && normalize(f.status) === 'open');
+    }
+
+    function getGaps(p) {
+      const gaps = [];
+      if (!p.url && !p.driveUrl) gaps.push('No Drive Link');
+      return gaps;
+    }
+
+    function getStatus(p) {
+      const findings = getOpenFindings(p);
+      const highOpen = findings.filter(f => normalize(f.priority) === 'high').length;
+      const missingFields = !p.procedure || !p.frequency || !p.tier || !p.lastReview || !p.nextReview;
+      if (missingFields) return 'Missing Fields';
+      if (needsPublish(p)) return 'Awaiting Publish';
+      if (highOpen > 0) return 'Action Required';
+      if (findings.length > 0) return 'Open Findings';
+      const d = daysUntil(p.nextReview);
+      if (d === null) return 'Missing Fields';
+      if (d < 0) return 'Overdue';
+      if (d <= DUE_SOON_DAYS) return 'Due Soon';
+      return 'Current';
+    }
+
+    function statusPill(status) {
+      if (status === 'Awaiting Publish') return pill(status, 'due');
+      if (status === 'Action Required') return pill(status, 'bad');
+      if (status === 'Open Findings') return pill(status, 'due');
+      if (status === 'Overdue') return pill(status, 'bad');
+      if (status === 'Due Soon') return pill(status, 'due');
+      if (status === 'Missing Fields') return pill(status, 'bad');
+      return pill(status, 'ok');
+    }
+
+    function formatDate(s) {
+      if (!s) return '<span class="muted">Missing</span>';
+      const parts = String(s).split('-');
+      if (parts.length === 3) return `${parts[1]}/${parts[2]}/${parts[0]}`;
+      return String(s);
+    }
+
+    function formatPublished(p) {
+      const status = latestAuditLogStatus(p);
+      if (status) return normalize(status) === 'complete' ? pill('Complete', 'ok') : pill(status, 'due');
+      const value = p.publishedToTeam || p.hsiPublished || p.published || p.teamPublished || '';
+      return value ? formatDate(value) : '<span class="muted">No log</span>';
+    }
+
+    function getDashboardMetrics() {
+      const total = DATA.procedures.length;
+      const overdue = DATA.procedures.filter(p => getStatus(p) === 'Overdue').length;
+      const dueSoon = DATA.procedures.filter(p => getStatus(p) === 'Due Soon').length;
+      const openFindingRows = DATA.auditFindings.filter(f => normalize(f.status) === 'open');
+      const openFindings = new Set(openFindingRows.map(f => normalize(f.procedure)).filter(Boolean)).size;
+      const highFindings = openFindingRows.filter(f => normalize(f.priority) === 'high').length;
+      const actionRequired = DATA.procedures.filter(p => getStatus(p) === 'Action Required').length;
+      const awaitingPublish = DATA.procedures.filter(p => needsPublish(p)).length;
+      return { total, overdue, dueSoon, openFindings, highFindings, actionRequired, awaitingPublish };
+    }
+
+    function filteredProcedures() {
+      const q = normalize(getControlValue('search'));
+      const tier = getControlValue('tier');
+      const status = getControlValue('status');
+      const frequency = getControlValue('frequency');
+
+      return procedures.filter(p => {
+        const pStatus = getStatus(p);
+        const gaps = getGaps(p);
+        const findings = getOpenFindings(p);
+        const blob = normalize(`${p.procedure} ${p.frequency} ${p.tier} ${pStatus} ${p.publishedToTeam || p.hsiPublished || ''} ${findings.map(f => `${f.priority} ${f.action} ${f.location}`).join(' ')}`);
+        return (!q || blob.includes(q)) &&
+          (!tier || p.tier === tier) &&
+          (!frequency || p.frequency === frequency) &&
+          (!status || pStatus === status || gaps.includes(status) || (status === 'Open Findings' && findings.length > 0) || (status === 'No Drive Link' && gaps.includes('No Drive Link')));
+      });
+    }
+
+    function renderCards() {
+      const cardsEl = getEl('cards');
+      if (!cardsEl) return;
+
+      const metrics = getDashboardMetrics();
+      const activeStatus = getControlValue('status');
+      const hasAnyFilter = getControlValue('search') || getControlValue('tier') || activeStatus || getControlValue('frequency');
+
+      cardsEl.innerHTML = `
+        <div class="card ${!hasAnyFilter ? 'active' : ''}" onclick="setStatusFilter('')"><div class="label">Total Procedures</div><div class="value">${metrics.total}</div><div class="note">Click to show all</div></div>
+        <div class="card ${activeStatus === 'Overdue' ? 'active' : ''}" onclick="setStatusFilter('Overdue')"><div class="label">Overdue</div><div class="value" style="color:var(--red)">${metrics.overdue}</div><div class="note">Click to filter overdue</div></div>
+        <div class="card ${activeStatus === 'Due Soon' ? 'active' : ''}" onclick="setStatusFilter('Due Soon')"><div class="label">Due Soon</div><div class="value" style="color:var(--amber)">${metrics.dueSoon}</div><div class="note">Within ${DUE_SOON_DAYS} days</div></div>
+        <div class="card ${activeStatus === 'Open Findings' || activeStatus === 'Action Required' ? 'active' : ''}" onclick="setStatusFilter('Open Findings')"><div class="label">Open Findings</div><div class="value" style="color:var(--red)">${metrics.openFindings}</div><div class="note">${metrics.highFindings} high priority · ${metrics.actionRequired} action required</div></div>
+        <div class="card ${activeStatus === 'Awaiting Publish' ? 'active' : ''}" onclick="setStatusFilter('Awaiting Publish')"><div class="label">Pending Publish</div><div class="value" style="color:var(--amber)">${metrics.awaitingPublish}</div><div class="note">Audit Log status not Complete</div></div>
+      `;
+    }
+
+    function statusWithPopup(p, status, findings) {
+      const high = findings.filter(f => normalize(f.priority) === 'high').length;
+      const med = findings.filter(f => normalize(f.priority) === 'medium').length;
+      const low = findings.filter(f => normalize(f.priority) === 'low').length;
+      const logRows = getAuditLogRows(p);
+      const latestStatus = latestAuditLogStatus(p) || 'No log';
+      const content = findings.length
+        ? `<strong>Open findings</strong><br>${high} High · ${med} Medium · ${low} Low<br><span class="muted">Audit Log: ${latestStatus}</span>`
+        : needsPublish(p)
+          ? `<strong>Publish status</strong><br>Audit Log Status: ${latestStatus}<br><span class="muted">${logRows.length} log row(s). Column E must be Complete.</span>`
+          : `<strong>Status detail</strong><br>No open findings currently flagged.<br><span class="muted">Audit Log: ${latestStatus}</span>`;
+      return `<span class="status-wrap" tabindex="0"><span class="status-trigger">${statusPill(status)}</span><span class="status-pop">${content}</span></span>`;
+    }
+
+    function render() {
+      const rowsEl = getEl('procedureRows');
+      const footerEl = getEl('footerNote');
+      if (!rowsEl || !footerEl) return;
+
+      renderCards();
+      const shown = filteredProcedures();
+      const rows = shown.map(p => {
+        const status = getStatus(p);
+        const findings = getOpenFindings(p);
+        const days = daysUntil(p.nextReview);
+        const dayText = days === null ? '' : days < 0 ? ` (${Math.abs(days)} days late)` : ` (${days} days)`;
+        return `
+          <tr>
+            <td><strong>${p.procedure}</strong></td>
+            <td>${pill(p.tier || 'Missing', p.tier ? 'neutral' : 'bad')}</td>
+            <td>${p.frequency || '<span class="muted">Missing</span>'}</td>
+            <td>${formatDate(p.lastReview)}</td>
+            <td>${formatDate(p.nextReview)}<br><span class="muted">${dayText}</span></td>
+            <td>${formatPublished(p)}</td>
+            <td>${statusWithPopup(p, status, findings)}</td>
+          </tr>
+        `;
+      }).join('');
+
+      rowsEl.innerHTML = rows || `<tr><td colspan="7" class="muted">No procedures match the current filters.</td></tr>`;
+      footerEl.textContent = `${shown.length} of ${procedures.length} procedures shown. Last synced: ${CONTROL_CONFIG.lastSynced}. Source: ${CONTROL_CONFIG.dataSource}. Mode: ${CONTROL_CONFIG.refreshMode}.`;
+    }
+
+    function setStatusFilter(statusValue) {
+      setControlValue('search', '');
+      setControlValue('tier', '');
+      setControlValue('frequency', '');
+      setControlValue('status', statusValue);
+      render();
+    }
+
+    function resetFilters() {
+      setControlValue('search', '');
+      setControlValue('tier', '');
+      setControlValue('status', '');
+      setControlValue('frequency', '');
+      render();
+    }
+
+    function applyLivePayload(payload) {
+      if (!payload || !Array.isArray(payload.procedures)) return;
+
+      DATA = {
+        procedures: payload.procedures.map(p => ({
+          procedure: p.procedure || '',
+          owner: p.owner || '',
+          frequency: p.frequency || '',
+          tier: p.tier || '',
+          lastReview: p.lastReview || '',
+          nextReview: p.nextReview || '',
+          url: p.driveUrl || p.url || '',
+          auditLogStatus: p.auditLogStatus || '',
+          pendingPublish: p.pendingPublish === true || String(p.pendingPublish).toLowerCase() === 'true',
+          draftUpdated: p.draftUpdated || p.draftUpdate || p.draftDate || '',
+          publishedToTeam: p.publishedToTeam || p.hsiPublished || p.published || p.teamPublished || ''
+        })),
+        auditFindings: Array.isArray(payload.findings) ? payload.findings.map(f => ({
+          procedure: f.procedure || '',
+          owner: f.owner || '',
+          action: f.action || '',
+          location: f.location || '',
+          priority: f.priority || '',
+          status: f.status || ''
+        })) : [],
+        auditLog: Array.isArray(payload.auditLog) ? payload.auditLog.map(r => ({
+          date: r.date || '',
+          procedure: r.procedure || '',
+          rev: r.rev || '',
+          action: r.action || '',
+          status: r.status || '',
+          notes: r.notes || ''
+        })) : []
+      };
+
+      procedures = DATA.procedures;
+      auditFindings = DATA.auditFindings;
+      CONTROL_CONFIG.lastSynced = payload.lastSynced || new Date().toLocaleString();
+      CONTROL_CONFIG.dataSource = payload.source || CONTROL_CONFIG.dataSource;
+      CONTROL_CONFIG.refreshMode = 'Live Backend Phase 2';
+      render();
+    }
+
+    function loadLiveBackend() {
+      CONTROL_CONFIG.refreshMode = 'Refreshing Live Backend...';
+      render();
+
+      const callbackName = 'cbpsProceduresCallback_' + Date.now();
+      const script = document.createElement('script');
+      const timeout = setTimeout(() => {
+        delete window[callbackName];
+        script.remove();
+        CONTROL_CONFIG.refreshMode = 'Fallback Data - Backend Not Loaded';
+        render();
+      }, 8000);
+
+      window[callbackName] = payload => {
+        clearTimeout(timeout);
+        delete window[callbackName];
+        script.remove();
+        applyLivePayload(payload);
+      };
+
+      script.onerror = () => {
+        clearTimeout(timeout);
+        delete window[callbackName];
+        script.remove();
+        CONTROL_CONFIG.refreshMode = 'Fallback Data - Backend Error';
+        render();
+      };
+
+      script.src = CONTROL_CONFIG.backendUrl + '?callback=' + callbackName + '&t=' + Date.now();
+      document.body.appendChild(script);
+    }
+
+    function runSelfTests() {
+      const requiredElements = ['search', 'tier', 'status', 'frequency', 'cards', 'procedureRows', 'footerNote'];
+      const missing = requiredElements.filter(id => !getEl(id));
+      console.assert(missing.length === 0, 'Missing required dashboard elements:', missing);
+      console.assert(Array.isArray(DATA.procedures), 'DATA.procedures should be an array');
+      console.assert(Array.isArray(DATA.auditFindings), 'DATA.auditFindings should be an array');
+      console.assert(Array.isArray(DATA.auditLog), 'DATA.auditLog should be an array');
+      console.assert(typeof renderCards === 'function', 'renderCards should be defined');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      runSelfTests();
+      render();
+      if (CONTROL_CONFIG.autoRefresh) loadLiveBackend();
+    });
+  </script>
+</body>
+</html>
