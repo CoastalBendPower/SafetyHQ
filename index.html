@@ -23,76 +23,112 @@ header{position:relative;overflow:hidden;background:#06264a;box-shadow:0 10px 28
 .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;min-height:105px}.kpi.good{border-top:5px solid var(--ok)}.kpi.warn{border-top:5px solid var(--warn)}.kpi.bad{border-top:5px solid var(--bad)}.kpi.brand{border-top:5px solid var(--brand)}.kpi.neutral{border-top:5px solid #94a3b8}
 .q-label{font-size:13px;font-weight:900;color:#334155}.q-meta{font-size:13px;line-height:1.5;margin-top:8px;color:#475569}.q-meta strong{color:#111827}
 .overdue-grid{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}.count-pill{border-radius:999px;padding:6px 10px;font-size:13px;font-weight:900}.count-pill.bad{background:#fde8e8;color:var(--bad)}.count-pill.warn{background:#fff4df;color:var(--warn)}
-table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:var(--soft)}tbody tr:hover{background:rgba(31,78,121,.05)}tbody tr.aged td{background:#fff5f5}.employee-header td{background:var(--soft);font-weight:900}.emp-count{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:999px;background:#e8eefc;color:var(--brand-dark);font-size:11px;font-weight:900}.days{display:inline-block;border-radius:999px;padding:4px 8px;background:#fde8e8;color:var(--bad);font-weight:900;font-size:12px;white-space:nowrap}.days.severe{background:#7f1d1d;color:#ffffff;border:1px solid #991b1b}.eq{font-weight:900;color:var(--brand-dark)}
-.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.quick-link{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;border-radius:12px;padding:10px 12px;text-decoration:none;background:var(--brand);color:#fff;font-weight:900}.quick-link.light{background:transparent;color:var(--brand-dark);border:none;min-height:auto;padding:0;font-weight:800}.quick-link.light:hover{text-decoration:underline}.utility-row{margin:14px auto 18px;position:relative;z-index:5;padding:14px 18px;display:grid;grid-template-columns:auto auto auto;gap:18px;align-items:center;justify-content:space-between;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:1px solid rgba(203,213,225,.72);box-shadow:0 18px 42px rgba(15,23,42,.14)}.updated-line{text-align:right;color:var(--muted);font-size:12px;font-weight:600;margin:-2px 2px 8px}.hsi-dropdown{border:none;border-radius:0;background:transparent;overflow:visible}.hsi-dropdown summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;gap:0;padding:0;font-weight:900;color:var(--brand-dark)}.hsi-dropdown summary::-webkit-details-marker{display:none}.hsi-title{display:flex;align-items:center;gap:10px}.hsi-title img{height:72px;width:auto;max-width:360px;object-fit:contain;background:transparent;padding:0;border-radius:0;border:none;display:block}.hsi-dropdown summary::after{display:none}.hsi-dropdown[open] summary::after{display:none}.hsi-menu{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:8px;padding:0 12px 12px}.hsi-menu a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#f8fbff);border:1px solid var(--line);text-decoration:none;color:var(--brand-dark);font-size:12px;font-weight:900;text-align:center;padding:8px 10px;box-shadow:0 4px 12px rgba(15,23,42,.06)}
-.hsi-menu a:hover{background:#eef6ff}
-.procedure-link-main{min-height:68px;padding:14px 28px;font-size:18px;white-space:nowrap;background:linear-gradient(135deg,#073b73,#0a2c59);border-radius:16px;color:#fff;text-decoration:none;font-weight:900}
-.sharesync-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:transparent;padding:0;border:none}
-.sharesync-img{height:72px;width:auto;max-width:360px;display:block;object-fit:contain}
+table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:var(--soft)}tbody tr:hover{background:rgba(31,78,121,.05)}.click-row{cursor:pointer}.click-row:hover td{background:#eef6ff!important}tbody tr.aged td{background:#fff5f5}.employee-header td{background:var(--soft);font-weight:900}.emp-count{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:999px;background:#e8eefc;color:var(--brand-dark);font-size:11px;font-weight:900}.days{display:inline-block;border-radius:999px;padding:4px 8px;background:#fde8e8;color:var(--bad);font-weight:900;font-size:12px;white-space:nowrap}.days.severe{background:#7f1d1d;color:#ffffff;border:1px solid #991b1b}.eq{font-weight:900;color:var(--brand-dark)}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.quick-link{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;border-radius:12px;padding:10px 12px;text-decoration:none;background:var(--brand);color:#fff;font-weight:900}.quick-link.light{background:transparent;color:var(--brand-dark);border:none;min-height:auto;padding:0;font-weight:800}.quick-link.light:hover{text-decoration:underline}.utility-row{margin:14px auto 18px;position:relative;z-index:5;padding:14px 18px;display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:center;justify-content:start;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border:1px solid rgba(203,213,225,.72);box-shadow:0 18px 42px rgba(15,23,42,.14)}.updated-line{text-align:right;color:var(--muted);font-size:12px;font-weight:600;margin:-2px 2px 8px}.hsi-dropdown{border:none;border-radius:0;background:transparent;overflow:visible}.hsi-dropdown summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:flex-start;gap:0;padding:0;font-weight:900;color:var(--brand-dark)}.hsi-dropdown summary::-webkit-details-marker{display:none}.hsi-title{display:flex;align-items:center;gap:10px}.hsi-title img{height:72px;width:auto;max-width:360px;object-fit:contain;background:transparent;padding:0;border-radius:0;border:none;display:block}.hsi-dropdown summary::after{display:none}.hsi-dropdown[open] summary::after{display:none}.hsi-menu{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:8px;padding:0 12px 12px}.hsi-menu a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#f8fbff);border:1px solid var(--line);text-decoration:none;color:var(--brand-dark);font-size:12px;font-weight:900;text-align:center;padding:8px 10px;box-shadow:0 4px 12px rgba(15,23,42,.06);transition:all .18s ease}.hsi-menu a:hover{background:#eef6ff;border-color:#bfd3ea;transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,23,42,.10)}.procedure-link-main{min-height:68px;padding:14px 28px;font-size:18px;white-space:nowrap;justify-self:end;background:linear-gradient(135deg,#073b73,#0a2c59);border-radius:16px;box-shadow:0 10px 24px rgba(7,44,89,.28);letter-spacing:.02em}.procedure-link-main::after{content:'›';font-size:34px;margin-left:18px;line-height:1;opacity:.85}.sharesync-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:transparent;padding:0;border:none;min-height:42px}.sharesync-img{height:72px;width:auto;max-width:420px;display:block;object-fit:contain;border-radius:12px}.sharesync-link:hover .sharesync-img{transform:translateY(-1px);filter:brightness(1.03)}
 @media(max-width:980px){.cluster-grid{grid-template-columns:1fr}.kpi-row{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:620px){.header-banner{min-height:150px;object-fit:cover}.wrap{padding:14px}.utility-row{grid-template-columns:1fr}.hsi-title img,.sharesync-img{height:auto;max-width:100%;width:100%}.hsi-menu{grid-template-columns:1fr}.procedure-link-main{width:100%;font-size:14px}.kpi-row,.kpi-row.two{grid-template-columns:1fr}}
+@media(max-width:620px){.header-banner{min-height:150px;object-fit:cover;object-position:center}.wrap{padding:14px}.utility-row{grid-template-columns:1fr;justify-content:stretch;padding:12px}.hsi-title img,.sharesync-img{height:auto;max-width:100%;width:100%}.hsi-menu{grid-template-columns:1fr}.procedure-link-main{width:100%;min-height:52px;font-size:14px}.kpi-row,.kpi-row.two{grid-template-columns:1fr}.value{font-size:28px}.panel{padding:12px}table{font-size:13px}th,td{padding:9px 6px}.section-title{font-size:20px}}
 </style>
 </head>
 <body>
-
 <header>
-<img class="header-banner" src="assets/banner_CBPS Safety HQ.png">
+  <img class="header-banner" src="assets/banner_CBPS Safety HQ.png" alt="Coastal Bend Power Services Safety & Training HQ banner">
 </header>
 
 <main class="wrap">
+  <section class="panel utility-row">
+    <details class="hsi-dropdown">
+      <summary>
+        <span class="hsi-title"><img src="assets/button_HSI Quick Links.png" alt="HSI Logo"></span>
+      </summary>
+      <div class="hsi-menu">
+        <a href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer">Login</a>
+        <a href="https://sys.hsiplatform.com/coastalbendpower/ds/na/sms/module-record/index/43?offset=0&limit=20&column=doc_title&direction=desc&filters%5Bscope%5D=all&filters%5Bcreated_at%5D=all&filters%5Bstate%5D=159" target="_blank" rel="noopener noreferrer">Access Docs</a>
+        <a href="https://hsicorecoremfesaprod.hsiplatform.com/sms-core-mfe-swa/prod/coastalbendpower/ds/na/sms/legacy/module_records/new?module_name_id=10" target="_blank" rel="noopener noreferrer">Create Checklist</a>
+        <a href="https://sys.hsiplatform.com/en/coastalbendpower/sms-legacy-platform/na/sms/legacy/module_records?module_name_id=14" target="_blank" rel="noopener noreferrer">Log GOOD CATCH</a>
+      </div>
+    </details>
+    <a class="sharesync-link" href="https://account.sharesync.serverdata.net/login/v1.2/?client_id=sharesync_web_app_sts&client_type=Sync-WebApp&client_version=3.48.1&application_client_id=5d5c5f78-10b2-0f0b-a925-606d43526abe&error_message=Internal+error&redirect_uri=https%3A%2F%2Fsharesync.serverdata.net%2Fus4%2F&locale=en-us" target="_blank" rel="noopener noreferrer" aria-label="ShareSync Login"><img class="sharesync-img" src="assets/button_ShareSync Login.png" alt="ShareSync Login"></a>
+    <a class="quick-link procedure-link-main" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank" rel="noopener noreferrer">Procedure Audit Center</a>
+  </section>
+  <div class="updated-line">Updated: 04/26/2026 5:42 PM</div>
+  <section class="cluster-grid">
+    <div class="panel">
+      <h2 class="section-title">Quarterly OSHA Snapshot</h2>
+      <p class="section-note">Recordables and man hours by quarter.</p>
+      <div class="kpi-row">
+        <div class="kpi good"><div class="q-label">✅ Q1 Complete</div><div class="q-meta"><strong>Recordables:</strong> 0<br><strong>Man Hours:</strong> 15,878</div></div>
+        <div class="kpi brand"><div class="q-label">🔵 Q2 Active</div><div class="q-meta"><strong>Recordables:</strong> 0<br><strong>Man Hours:</strong> 1,073</div></div>
+        <div class="kpi neutral"><div class="q-label">⏳ Q3 Pending</div><div class="q-meta"><strong>Recordables:</strong> 0<br><strong>Man Hours:</strong> 0</div></div>
+        <div class="kpi neutral"><div class="q-label">⏳ Q4 Pending</div><div class="q-meta"><strong>Recordables:</strong> 0<br><strong>Man Hours:</strong> 0</div></div>
+      </div>
+    </div>
 
-<section class="panel utility-row">
+    <div class="panel">
+      <h2 class="section-title">2026 Totals</h2>
+      <p class="section-note">Company performance snapshot.</p>
+      <div class="kpi-row two">
+        <div class="kpi good"><div class="label">Total Man Hours</div><div class="value">16,951</div></div>
+        <div class="kpi good"><div class="label">EMR</div><div class="value" style="color:var(--ok)">0.79</div></div>
+      </div>
+    </div>
+  </section>
 
-<details class="hsi-dropdown">
-<summary>
-<span class="hsi-title">
-<img src="assets/button_HSI Quick Links.png">
-</span>
-</summary>
-<div class="hsi-menu">
-<a href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank">Login</a>
-<a href="https://sys.hsiplatform.com/coastalbendpower/ds/na/sms/module-record/index/43?offset=0&limit=20&column=doc_title&direction=desc&filters%5Bscope%5D=all&filters%5Bcreated_at%5D=all&filters%5Bstate%5D=159" target="_blank">Access Docs</a>
-<a href="https://hsicorecoremfesaprod.hsiplatform.com/sms-core-mfe-swa/prod/coastalbendpower/ds/na/sms/legacy/module_records/new?module_name_id=10" target="_blank">Create Checklist</a>
-<a href="https://sys.hsiplatform.com/en/coastalbendpower/sms-legacy-platform/na/sms/legacy/module_records?module_name_id=14" target="_blank">Log GOOD CATCH</a>
-</div>
-</details>
+  <section class="section overdue-grid">
+    <!-- Stacked layout: Checklists first, Training second -->
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="section-title">Overdue Checklists</h2>
+          <p class="section-note">Employee, equipment number, due date, and days overdue.</p>
+        </div>
+        <span class="count-pill warn">1 Open</span>
+      </div>
+      <table>
+        <thead><tr><th>Employee</th><th>EQ #</th><th>Due Date</th><th>Days</th></tr></thead>
+        <tbody>
+          <tr class="aged click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td>Hayden Henry</td><td class="eq">V013</td><td>04/11/2026</td><td><span class="days severe">⚠ 13d Overdue</span></td></tr>
+        </tbody>
+      </table>
+    </div>
 
-<a class="sharesync-link" href="https://account.sharesync.serverdata.net/login/v1.2/" target="_blank">
-<img class="sharesync-img" src="assets/button_ShareSync Login.png">
-</a>
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="section-title">Overdue Training</h2>
+          <p class="section-note">Employee, full course title, due date, and days overdue.</p>
+        </div>
+        <span class="count-pill bad">13 Open</span>
+      </div>
+      <table>
+        <thead><tr><th>Employee</th><th>Training</th><th>Due Date</th><th>Days</th></tr></thead>
+        <tbody>
+          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Hayden Henry <span class="emp-count">4 items</span></td></tr>
+          <tr class="aged"><td></td><td>Emergency and Fire Preparedness</td><td>03/18/2026</td><td><span class="days severe">⚠ 37d Overdue</span></td></tr>
+          <tr class="aged"><td></td><td>Bloodborne Pathogens</td><td>03/18/2026</td><td><span class="days severe">⚠ 37d Overdue</span></td></tr>
+          <tr class="aged"><td></td><td>Scaffold Awareness Training</td><td>03/31/2026</td><td><span class="days severe">⚠ 24d Overdue</span></td></tr>
+          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
 
-<a class="quick-link procedure-link-main" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank">
-Procedure Audit Center
-</a>
+          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Weston Haworth <span class="emp-count">3 items</span></td></tr>
+          <tr class="aged"><td></td><td>Scaffold Awareness Training</td><td>03/31/2026</td><td><span class="days severe">⚠ 24d Overdue</span></td></tr>
+          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
+          <tr><td></td><td>Universal Waste Management</td><td>04/23/2026</td><td><span class="days">1d Overdue</span></td></tr>
 
-</section>
+          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Kurt Foerster <span class="emp-count">2 items</span></td></tr>
+          <tr class="aged"><td></td><td>Universal Waste Management</td><td>04/04/2026</td><td><span class="days severe">⚠ 20d Overdue</span></td></tr>
+          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
 
-<div class="updated-line">Updated: 04/26/2026 5:42 PM</div>
+          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Paul Gaida <span class="emp-count">2 items</span></td></tr>
+          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
+          <tr><td></td><td>Universal Waste Management</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
 
-<section class="cluster-grid">
+          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Nathan Motal <span class="emp-count">2 items</span></td></tr>
+          <tr><td></td><td>Fall Protection - Construction</td><td>04/19/2026</td><td><span class="days">5d Overdue</span></td></tr>
+          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-<div class="panel">
-<h2 class="section-title">Quarterly OSHA Snapshot</h2>
-<p class="section-note">Recordables and man hours by quarter.</p>
-<div class="kpi-row">
-<div class="kpi good"><div class="q-label">Q1</div><div class="q-meta">0 Recordables<br>15,878 Hours</div></div>
-<div class="kpi brand"><div class="q-label">Q2</div><div class="q-meta">0 Recordables<br>1,073 Hours</div></div>
-<div class="kpi neutral"><div class="q-label">Q3</div><div class="q-meta">Pending</div></div>
-<div class="kpi neutral"><div class="q-label">Q4</div><div class="q-meta">Pending</div></div>
-</div>
-</div>
-
-<div class="panel">
-<h2 class="section-title">2026 Totals</h2>
-<p class="section-note">Company performance snapshot.</p>
-<div class="kpi-row two">
-<div class="kpi good"><div class="label">Total Man Hours</div><div class="value">16,951</div></div>
-<div class="kpi good"><div class="label">EMR</div><div class="value">0.79</div></div>
-</div>
-</div>
-
-</section>
-
-</main>
+  </main>
 </body>
 </html>
