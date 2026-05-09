@@ -17,6 +17,18 @@
   --bad:#b42318;
   --card:#ffffff;
   --soft:#f8fbff;
+  --green-bg:#dcfce7;
+  --green-line:#86efac;
+  --green-text:#166534;
+  --orange-bg:#ffedd5;
+  --orange-line:#fdba74;
+  --orange-text:#9a3412;
+  --red-bg:#fee2e2;
+  --red-line:#fca5a5;
+  --red-text:#991b1b;
+  --neutral-bg:#f8fafc;
+  --neutral-line:#dbe3ee;
+  --neutral-text:#334155;
 }
 *{box-sizing:border-box}
 body{
@@ -25,6 +37,7 @@ body{
   background:linear-gradient(180deg,#f7fbff 0%,#eef3f8 42%,#e8f0f8 100%);
   color:var(--text);
 }
+a{color:inherit;text-decoration:none}
 header{
   background:#06264a;
   overflow:hidden;
@@ -46,8 +59,10 @@ header{
 }
 .wrap{max-width:1280px;margin:0 auto;padding:20px}
 .section{margin-top:18px}
-.section-title{font-size:22px;font-weight:900;margin:0 0 10px;letter-spacing:-.02em}
-.section-note{color:var(--muted);font-size:13px;margin:-4px 0 12px}
+.section-title{font-size:22px;font-weight:900;margin:0 0 10px;letter-spacing:-.02em;color:var(--brand-dark)}
+.section-note{color:var(--muted);font-size:13px;margin:-4px 0 12px;line-height:1.45}
+.due-highlight{display:inline-flex;align-items:center;border-radius:999px;padding:2px 8px;margin:0 2px;background:#ffedd5;color:#9a3412;border:1px solid #fdba74;font-weight:900;white-space:nowrap}
+.due-highlight.overdue{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
 .panel,.card{
   background:linear-gradient(180deg,#fff,#f9fbfe);
   border:1px solid rgba(203,213,225,.78);
@@ -59,23 +74,23 @@ header{
 
 /* Top utility image buttons */
 .utility-row{
-  min-height:54px;
+  min-height:88px;
   margin:6px auto 8px;
   position:relative;
   z-index:5;
-  padding:1px 8px;
+  padding:4px 12px;
   display:grid;
   grid-template-columns:auto auto 1fr;
   align-items:center;
-  gap:6px;
+  gap:14px;
   background:rgba(255,255,255,.94);
   backdrop-filter:blur(6px);
   border:1px solid rgba(203,213,225,.72);
   box-shadow:0 18px 42px rgba(15,23,42,.14);
 }
 .nav-button{
-  width:235px;
-  height:52px;
+  width:300px;
+  height:80px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -102,15 +117,15 @@ header{
   position:relative;
   border:none;
   background:transparent;
-  width:235px;
-  height:52px;
+  width:300px;
+  height:80px;
   overflow:visible;
 }
 .hsi-dropdown summary{
   list-style:none;
   cursor:pointer;
-  width:235px;
-  height:52px;
+  width:300px;
+  height:80px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -124,10 +139,10 @@ header{
 .hsi-dropdown summary::after{display:none}
 .hsi-menu{
   position:absolute;
-  top:52px;
+  top:84px;
   left:0;
   z-index:50;
-  width:230px;
+  width:310px;
   display:grid;
   grid-template-columns:repeat(2,minmax(130px,1fr));
   gap:8px;
@@ -157,42 +172,88 @@ header{
 .hsi-menu a:hover{background:#eef6ff;border-color:#bfd3ea;transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,23,42,.10)}
 .updated-line{text-align:left;color:var(--muted);font-size:12px;font-weight:600;margin:-2px 2px 8px;padding-left:4px}
 
-/* KPI cards */
-.cluster-grid{display:grid;grid-template-columns:1.35fr .85fr;gap:14px;align-items:stretch}
-.label{font-size:12px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.07em}
-.value{font-size:34px;font-weight:900;margin-top:8px;line-height:1.05}
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.kpi-row.two{grid-template-columns:repeat(2,1fr)}
-.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;min-height:105px}
-.kpi.good{border-top:5px solid var(--ok)}
-.kpi.brand{border-top:5px solid var(--brand)}
-.kpi.neutral{border-top:5px solid #94a3b8}
-.q-label{font-size:13px;font-weight:900;color:#334155}
-.q-meta{font-size:13px;line-height:1.5;margin-top:8px;color:#475569}
-.q-meta strong{color:#111827}
-
-/* Overdue sections */
-.overdue-grid{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
-.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
-.count-pill{border-radius:999px;padding:6px 10px;font-size:13px;font-weight:900}
-.count-pill.bad{background:#fde8e8;color:var(--bad)}
-.count-pill.warn{background:#fff4df;color:var(--warn)}
-table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}
-th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:var(--soft)}
-tbody tr:hover{background:rgba(31,78,121,.05)}
-.click-row{cursor:pointer}
-.click-row:hover td{background:#eef6ff!important}
-tbody tr.aged td{background:#fff5f5}
-.employee-header td{background:var(--soft);font-weight:900}
-.emp-count{display:inline-block;margin-left:8px;padding:2px 7px;border-radius:999px;background:#e8eefc;color:var(--brand-dark);font-size:11px;font-weight:900}
-.days{display:inline-block;border-radius:999px;padding:4px 8px;background:#fde8e8;color:var(--bad);font-weight:900;font-size:12px;white-space:nowrap}
-.days.severe{background:#7f1d1d;color:#fff;border:1px solid #991b1b}
-.eq{font-weight:900;color:var(--brand-dark)}
+/* Data sections */
+.data-grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px}
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 18px}
+.metric-grid.two{grid-template-columns:repeat(2,1fr)}
+.metric{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px;
+  background:#f8fafc;
+  min-height:84px;
+}
+.metric-label{font-size:12px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.metric-value{font-size:32px;font-weight:900;color:var(--brand-dark);line-height:1.05}
+.metric.green{background:var(--green-bg);border-color:var(--green-line)}
+.metric.orange{background:var(--orange-bg);border-color:var(--orange-line)}
+.metric.red{background:var(--red-bg);border-color:var(--red-line)}
+.snapshot-grid{display:grid;grid-template-columns:1.35fr .85fr;gap:14px;align-items:stretch}
+.quarter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.quarter{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;min-height:105px;border-top:5px solid #94a3b8;position:relative;overflow:hidden}
+.quarter::after{content:"";position:absolute;right:-18px;top:-18px;width:58px;height:58px;border-radius:50%;background:rgba(31,78,121,.06)}
+.quarter.complete{background:#f2fbf4;border-top-color:#5fbf72}
+.quarter.active{background:#f2f8ff;border-top-color:#5b9bd5}
+.quarter.upcoming{background:#f7f8fa;border-top-color:#cbd5e1;color:#94a3b8}
+.quarter.upcoming p,.quarter.upcoming .quarter-title{color:#94a3b8}
+.quarter-title{font-size:13px;font-weight:900;margin-bottom:10px;color:var(--brand-dark)}
+.quarter p{font-size:13px;line-height:1.45;margin:5px 0;color:#475569}
+.quarter strong{color:#111827}
+.quarter.upcoming strong{color:#94a3b8}
+.totals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.total-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;min-height:105px;border-top:5px solid var(--ok);position:relative;overflow:hidden}
+.total-card::after{content:"";position:absolute;right:-16px;bottom:-16px;width:56px;height:56px;border-radius:50%;background:rgba(31,122,31,.06)}
+.total-card .metric-label{margin-bottom:8px}
+.total-card .metric-value{font-size:32px}
+.total-card.recordables{border-top-color:#5b9bd5}
+.total-card.recordables::after{background:rgba(31,78,121,.08)}
+.status-layout{display:grid;grid-template-columns:minmax(280px,.82fr) minmax(360px,1.18fr);gap:16px;align-items:start}
+.status-card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+.status-card-header{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 16px;background:#eef4fb;border-bottom:1px solid var(--line)}
+.status-card-header h3{color:var(--brand-dark);font-size:17px;margin:0;font-weight:900}
+.status-count{font-size:13px;color:var(--muted);font-weight:900;white-space:nowrap}
+.table-wrap{overflow-x:auto;background:#fff;border-radius:16px}
+table{width:100%;border-collapse:collapse;min-width:520px;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}
+.status-layout table{min-width:420px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:14px}
+th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:var(--soft);white-space:nowrap}
+th.sortable{cursor:pointer;user-select:none;position:relative;padding-right:22px}
+th.sortable::after{content:"↕";position:absolute;right:8px;color:#94a3b8;font-size:11px}
+th.sortable.sort-asc::after{content:"↑";color:var(--brand-dark)}
+th.sortable.sort-desc::after{content:"↓";color:var(--brand-dark)}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{filter:brightness(.985)}
+.row-red{background:var(--red-bg);color:var(--red-text)}
+.row-orange{background:var(--orange-bg);color:var(--orange-text)}
+.row-green{background:var(--green-bg);color:var(--green-text)}
+.row-neutral{background:var(--neutral-bg);color:var(--neutral-text)}
+.pill{display:inline-flex;align-items:center;justify-content:center;padding:5px 10px;border-radius:999px;font-weight:900;font-size:12px;white-space:nowrap;margin-right:4px}
+.pill-red{background:#fecaca;color:#7f1d1d;border:1px solid #f87171}
+.pill-orange{background:#fed7aa;color:#7c2d12;border:1px solid #fb923c}
+.pill-green{background:#bbf7d0;color:#14532d;border:1px solid #4ade80}
+.pill-neutral{background:#e2e8f0;color:#334155;border:1px solid #cbd5e1}
+.info-note{margin-top:12px;padding:12px 14px;border-radius:12px;background:#f8fafc;border:1px solid var(--line);color:var(--muted);line-height:1.45;font-size:13px}
+.collapse-panel{padding:0;overflow:hidden}
+.collapse-panel summary{list-style:none;cursor:pointer;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.collapse-panel summary::-webkit-details-marker{display:none}
+.collapse-title-wrap{display:flex;flex-direction:column;gap:4px}
+.collapse-title-wrap .section-title{margin:0}
+.collapse-title-wrap .section-note{margin:0}
+.collapse-badges{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.summary-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900;white-space:nowrap;border:1px solid var(--line)}
+.summary-pill.red{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.summary-pill.orange{background:#ffedd5;color:#9a3412;border-color:#fdba74}
+.summary-pill.green{background:#dcfce7;color:#166534;border-color:#86efac}
+.summary-pill.neutral{background:#e2e8f0;color:#334155;border-color:#cbd5e1}
+.collapse-toggle{font-size:12px;font-weight:900;color:var(--brand-dark);background:#eef4fb;border:1px solid var(--line);border-radius:999px;padding:7px 10px;white-space:nowrap}
+details[open] .collapse-toggle::after{content:"Hide"}
+details:not([open]) .collapse-toggle::after{content:"Show"}
+.collapse-body{padding:0 16px 16px}
+.footer{margin-top:20px;color:var(--muted);text-align:center;font-size:13px}
 
 @media(max-width:980px){
-  .cluster-grid{grid-template-columns:1fr}
-  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .metric-grid,.quarter-grid{grid-template-columns:repeat(2,1fr)}
+  .status-layout,.osha-layout{grid-template-columns:1fr}
 }
 @media(max-width:620px){
   .header-banner{height:auto;min-height:0;object-fit:contain}
@@ -200,11 +261,11 @@ tbody tr.aged td{background:#fff5f5}
   .utility-row{display:flex;flex-direction:column;align-items:center;padding:12px}
   .nav-button,.hsi-dropdown,.hsi-dropdown summary,.procedure-link-main{width:100%;max-width:320px;height:89px}
   .hsi-menu{position:static;width:100%;grid-template-columns:1fr;margin-top:10px}
-  .kpi-row,.kpi-row.two{grid-template-columns:1fr}
-  .value{font-size:28px}
+  .metric-grid,.metric-grid.two,.quarter-grid{grid-template-columns:1fr}
+  .metric-value{font-size:28px}
   .panel{padding:12px}
   table{font-size:13px}
-  th,td{padding:9px 6px}
+  th,td{padding:10px;font-size:13px}
   .section-title{font-size:20px}
 }
 </style>
@@ -237,84 +298,223 @@ tbody tr.aged td{background:#fff5f5}
     </a>
   </section>
 
-  <div class="updated-line">Updated: 04/26/2026 5:42 PM</div>
+  <div class="updated-line">Updated: 05/09/2026 12:00 PM</div>
 
-  <section class="cluster-grid">
+  <section class="data-grid">
+    <section class="snapshot-grid">
     <div class="panel">
-      <h2 class="section-title">Quarterly OSHA Snapshot</h2>
+      <h2 class="section-title">📊 Quarterly OSHA Snapshot</h2>
       <p class="section-note">Recordables and man hours by quarter.</p>
-      <div class="kpi-row">
-        <div class="kpi good"><div class="q-label">✅ Q1 Complete</div><div class="q-meta"><strong>Recordables:</strong> 0<br><strong>Man Hours:</strong> 15,878</div></div>
-        <div class="kpi brand"><div class="q-label">🔵 Q2 Active</div><div class="q-meta"><strong>Recordables:</strong> 0<br><strong>Man Hours:</strong> 1,073</div></div>
-        <div class="kpi neutral"><div class="q-label">⏳ Q3 Pending</div><div class="q-meta"><strong>Recordables:</strong> 0<br><strong>Man Hours:</strong> 0</div></div>
-        <div class="kpi neutral"><div class="q-label">⏳ Q4 Pending</div><div class="q-meta"><strong>Recordables:</strong> 0<br><strong>Man Hours:</strong> 0</div></div>
+      <div class="quarter-grid">
+        <div class="quarter complete">
+          <div class="quarter-title">✅ Q1 Complete</div>
+          <p><strong>Recordables:</strong> 0</p>
+          <p><strong>Man Hours:</strong> 15,878</p>
+        </div>
+        <div class="quarter active">
+          <div class="quarter-title">🔵 Q2 Active</div>
+          <p><strong>Recordables:</strong> 0</p>
+          <p><strong>Man Hours:</strong> 1,073</p>
+        </div>
+        <div class="quarter upcoming">
+          <div class="quarter-title">⏳ Q3 Upcoming</div>
+          <p><strong>Recordables:</strong> 0</p>
+          <p><strong>Man Hours:</strong> 0</p>
+        </div>
+        <div class="quarter upcoming">
+          <div class="quarter-title">⏳ Q4 Upcoming</div>
+          <p><strong>Recordables:</strong> 0</p>
+          <p><strong>Man Hours:</strong> 0</p>
+        </div>
       </div>
     </div>
 
     <div class="panel">
-      <h2 class="section-title">2026 Totals</h2>
+      <h2 class="section-title">🛡️ 2026 Totals</h2>
       <p class="section-note">Company performance snapshot.</p>
-      <div class="kpi-row two">
-        <div class="kpi good"><div class="label">Total Man Hours</div><div class="value">16,951</div></div>
-        <div class="kpi good"><div class="label">EMR</div><div class="value" style="color:var(--ok)">0.79</div></div>
+      <div class="totals-grid">
+        <div class="total-card">
+          <div class="metric-label">Total Man Hours</div>
+          <div class="metric-value">16,951</div>
+        </div>
+        <div class="total-card">
+          <div class="metric-label">EMR</div>
+          <div class="metric-value" style="color:var(--ok)">0.79</div>
+        </div>
+        <div class="total-card recordables">
+          <div class="metric-label">YTD Recordables</div>
+          <div class="metric-value">0</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section overdue-grid">
-    <div class="panel">
-      <div class="panel-head">
-        <div>
-          <h2 class="section-title">Overdue Checklists</h2>
-          <p class="section-note">Employee, equipment number, due date, and days overdue.</p>
+    <details class="panel collapse-panel" open>
+      <summary>
+        <div class="collapse-title-wrap">
+          <h2 class="section-title">Monthly Status</h2>
+          <p class="section-note">May Monthlys are due by <span class="due-highlight overdue">05/08/2026</span>. Required for all employees assigned a company vehicle.</p>
         </div>
-        <span class="count-pill warn">1 Open</span>
-      </div>
-      <table>
-        <thead><tr><th>Employee</th><th>EQ #</th><th>Due Date</th><th>Days</th></tr></thead>
-        <tbody>
-          <tr class="aged click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td>Hayden Henry</td><td class="eq">V013</td><td>04/11/2026</td><td><span class="days severe">⚠ 13d Overdue</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="panel">
-      <div class="panel-head">
-        <div>
-          <h2 class="section-title">Overdue Training</h2>
-          <p class="section-note">Employee, full course title, due date, and days overdue.</p>
+        <div class="collapse-badges">
+          <span class="summary-pill red">5 Overdue / Missing</span>
+          <span class="summary-pill green">15 Completed</span>
+          <span class="collapse-toggle"></span>
         </div>
-        <span class="count-pill bad">13 Open</span>
+      </summary>
+      <div class="collapse-body">
+<div class="status-layout">
+        <section class="status-card">
+          <div class="status-card-header">
+            <h3>Overdue / Missing</h3>
+            <span class="status-count">5 items</span>
+          </div>
+          <div class="table-wrap">
+            <table class="sortable-table">
+              <thead><tr><th>Employee</th><th>EQ #</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr class="row-red"><td>Dalan Willberg</td><td>V005</td><td><span class="pill pill-red">1d Overdue</span></td></tr>
+                <tr class="row-red"><td>Cody Geffert</td><td>V006</td><td><span class="pill pill-red">1d Overdue</span></td></tr>
+                <tr class="row-red"><td>Hayden Henry</td><td>V013</td><td><span class="pill pill-red">1d Overdue</span> Missed April 2026</td></tr>
+                <tr class="row-red"><td>Reece Kollaja</td><td>V019</td><td><span class="pill pill-red">1d Overdue</span></td></tr>
+                <tr class="row-red"><td>Kurt Foerster</td><td>V027</td><td><span class="pill pill-red">1d Overdue</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="status-card">
+          <div class="status-card-header">
+            <h3>Completed</h3>
+            <span class="status-count">15 items</span>
+          </div>
+          <div class="table-wrap">
+            <table class="sortable-table">
+              <thead><tr><th>Employee</th><th>EQ #</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr class="row-green"><td>Lee Hasdorff</td><td>V026</td><td><span class="pill pill-green">05/01/2026</span></td></tr>
+                <tr class="row-green"><td>Ricky Hilbrich</td><td>V016</td><td><span class="pill pill-green">05/01/2026</span></td></tr>
+                <tr class="row-green"><td>Jeff Barrera</td><td>V017</td><td><span class="pill pill-green">05/01/2026</span></td></tr>
+                <tr class="row-green"><td>Greg Woodring</td><td>V010</td><td><span class="pill pill-green">05/01/2026</span></td></tr>
+                <tr class="row-green"><td>Weston Haworth</td><td>V021</td><td><span class="pill pill-green">05/02/2026</span></td></tr>
+                <tr class="row-green"><td>Nathan Motal</td><td>V020</td><td><span class="pill pill-green">05/02/2026</span></td></tr>
+                <tr class="row-green"><td>Nate Evans</td><td>V022</td><td><span class="pill pill-green">05/02/2026</span></td></tr>
+                <tr class="row-green"><td>Jonathon Mokwa</td><td>V018</td><td><span class="pill pill-green">05/03/2026</span></td></tr>
+                <tr class="row-green"><td>Paul Gaida</td><td>V014</td><td><span class="pill pill-green">05/03/2026</span></td></tr>
+                <tr class="row-green"><td>Blake Woodring</td><td>V024</td><td><span class="pill pill-green">05/03/2026</span></td></tr>
+                <tr class="row-green"><td>Philip Kollaja</td><td>V028</td><td><span class="pill pill-green">05/03/2026</span></td></tr>
+                <tr class="row-green"><td>Lane Fikes</td><td>V008</td><td><span class="pill pill-green">05/04/2026</span></td></tr>
+                <tr class="row-green"><td>Marshall Mach</td><td>V025</td><td><span class="pill pill-green">05/04/2026</span></td></tr>
+                <tr class="row-green"><td>Zach Young</td><td>V023</td><td><span class="pill pill-green">05/05/2026</span></td></tr>
+                <tr class="row-green"><td>Mark Fehner</td><td>V009</td><td><span class="pill pill-green">05/06/2026</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
-      <table>
-        <thead><tr><th>Employee</th><th>Training</th><th>Due Date</th><th>Days</th></tr></thead>
-        <tbody>
-          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Hayden Henry <span class="emp-count">4 items</span></td></tr>
-          <tr class="aged"><td></td><td>Emergency and Fire Preparedness</td><td>03/18/2026</td><td><span class="days severe">⚠ 37d Overdue</span></td></tr>
-          <tr class="aged"><td></td><td>Bloodborne Pathogens</td><td>03/18/2026</td><td><span class="days severe">⚠ 37d Overdue</span></td></tr>
-          <tr class="aged"><td></td><td>Scaffold Awareness Training</td><td>03/31/2026</td><td><span class="days severe">⚠ 24d Overdue</span></td></tr>
-          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
+      </div>
+    </details>
 
-          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Weston Haworth <span class="emp-count">3 items</span></td></tr>
-          <tr class="aged"><td></td><td>Scaffold Awareness Training</td><td>03/31/2026</td><td><span class="days severe">⚠ 24d Overdue</span></td></tr>
-          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
-          <tr><td></td><td>Universal Waste Management</td><td>04/23/2026</td><td><span class="days">1d Overdue</span></td></tr>
-
-          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Kurt Foerster <span class="emp-count">2 items</span></td></tr>
-          <tr class="aged"><td></td><td>Universal Waste Management</td><td>04/04/2026</td><td><span class="days severe">⚠ 20d Overdue</span></td></tr>
-          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
-
-          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Paul Gaida <span class="emp-count">2 items</span></td></tr>
-          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
-          <tr><td></td><td>Universal Waste Management</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
-
-          <tr class="employee-header click-row" onclick="window.open('https://coastalbendpower.na.hsiplatform.com/users/sign_in','_blank')"><td colspan="4">Nathan Motal <span class="emp-count">2 items</span></td></tr>
-          <tr><td></td><td>Fall Protection - Construction</td><td>04/19/2026</td><td><span class="days">5d Overdue</span></td></tr>
-          <tr><td></td><td>Mobile Elevating Work Platforms: Aerial and Scissor Lift Safety</td><td>04/21/2026</td><td><span class="days">3d Overdue</span></td></tr>
-        </tbody>
-      </table>
-    </div>
+    <details class="panel collapse-panel" open>
+      <summary>
+        <div class="collapse-title-wrap">
+          <h2 class="section-title">Training Status</h2>
+          <p class="section-note">Review upcoming requirements with your crews to keep training current before due dates become overdue.</p>
+        </div>
+        <div class="collapse-badges">
+          <span class="summary-pill neutral">0 Overdue</span>
+          <span class="summary-pill orange">5 Due Within 7 Days</span>
+          <span class="collapse-toggle"></span>
+        </div>
+      </summary>
+      <div class="collapse-body">
+<div class="table-wrap status-card">
+        <table class="sortable-table">
+          <thead><tr><th>Employee</th><th>Training</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="row-orange"><td>Weston Haworth</td><td>Confined Space Entry - Permit Required</td><td><span class="pill pill-orange">Due 05/09/2026</span></td></tr>
+            <tr class="row-orange"><td>Cody Geffert</td><td>Confined Space Entry - Permit Required</td><td><span class="pill pill-orange">Due 05/14/2026</span></td></tr>
+            <tr class="row-orange"><td>Philip Kollaja</td><td>Confined Space Entry - Permit Required</td><td><span class="pill pill-orange">Due 05/14/2026</span></td></tr>
+            <tr class="row-orange"><td>Lee Hasdorff</td><td>Confined Space Entry - Permit Required</td><td><span class="pill pill-orange">Due 05/16/2026</span></td></tr>
+            <tr class="row-orange"><td>Paul Gaida</td><td>Confined Space Entry - Permit Required</td><td><span class="pill pill-orange">Due 05/17/2026</span></td></tr>
+            <tr class="row-neutral"><td>Lee Hasdorff</td><td>Forklift and Powered Industrial Trucks</td><td><span class="pill pill-neutral">Due 05/23/2026</span></td></tr>
+            <tr class="row-neutral"><td>Philip Kollaja</td><td>Forklift and Powered Industrial Trucks</td><td><span class="pill pill-neutral">Due 05/26/2026</span></td></tr>
+            <tr class="row-neutral"><td>Weston Haworth</td><td>Personal Protective Equipment for General Industry</td><td><span class="pill pill-neutral">Due 05/28/2026</span></td></tr>
+            <tr class="row-neutral"><td>Weston Haworth</td><td>Electrical Safety: General Awareness</td><td><span class="pill pill-neutral">Due 05/28/2026</span></td></tr>
+            <tr class="row-neutral"><td>Cody Geffert</td><td>Benzene in the Workplace</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Cody Geffert</td><td>Lead Awareness</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Philip Kollaja</td><td>Benzene in the Workplace</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Philip Kollaja</td><td>Lead Awareness</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Lee Hasdorff</td><td>Benzene in the Workplace</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Lee Hasdorff</td><td>Lead Awareness</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Zach Young</td><td>Benzene in the Workplace</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Zach Young</td><td>Lead Awareness</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Weston Haworth</td><td>Benzene in the Workplace</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Weston Haworth</td><td>Lead Awareness</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Marshall Mach</td><td>Benzene in the Workplace</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Marshall Mach</td><td>Lead Awareness</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Zach Hasdorff</td><td>Benzene in the Workplace</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+            <tr class="row-neutral"><td>Zach Hasdorff</td><td>Lead Awareness</td><td><span class="pill pill-neutral">Due 05/31/2026</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+    </details>
   </section>
+
+  <div class="footer">Coastal Bend Power Services • SafetyHQ</div>
 </main>
+<script>
+(function(){
+  function cleanText(value){
+    return String(value || '').replace(/\s+/g, ' ').trim();
+  }
+  function onlyNumbers(value){
+    var output = '';
+    for(var i = 0; i < value.length; i++){
+      var ch = value.charAt(i);
+      if('0123456789.-'.indexOf(ch) !== -1){ output += ch; }
+    }
+    return output;
+  }
+  function parseValue(text){
+    var value = cleanText(text);
+    var dateMatch = value.match(new RegExp('([0-9]{2})/([0-9]{2})/([0-9]{4})'));
+    if(dateMatch){
+      return new Date(Number(dateMatch[3]), Number(dateMatch[1]) - 1, Number(dateMatch[2])).getTime();
+    }
+    var overdueMatch = value.match(new RegExp('([0-9]+)d Overdue','i'));
+    if(overdueMatch){ return Number(overdueMatch[1]); }
+    var vehicleMatch = value.match(new RegExp('^V([0-9]+)$','i'));
+    if(vehicleMatch){ return Number(vehicleMatch[1]); }
+    var numText = onlyNumbers(value);
+    if(numText && value.toLowerCase() === numText.toLowerCase()){
+      return Number(numText);
+    }
+    return value.toLowerCase();
+  }
+  document.querySelectorAll('table.sortable-table').forEach(function(table){
+    var headers = table.querySelectorAll('thead th');
+    headers.forEach(function(th, index){
+      th.classList.add('sortable');
+      th.addEventListener('click', function(){
+        var tbody = table.querySelector('tbody');
+        var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+        var ascending = !th.classList.contains('sort-asc');
+        headers.forEach(function(header){ header.classList.remove('sort-asc','sort-desc'); });
+        th.classList.add(ascending ? 'sort-asc' : 'sort-desc');
+        rows.sort(function(a,b){
+          var aValue = parseValue(a.children[index] ? a.children[index].innerText : '');
+          var bValue = parseValue(b.children[index] ? b.children[index].innerText : '');
+          if(typeof aValue === 'number' && typeof bValue === 'number'){
+            return ascending ? aValue - bValue : bValue - aValue;
+          }
+          return ascending ? String(aValue).localeCompare(String(bValue)) : String(bValue).localeCompare(String(aValue));
+        });
+        rows.forEach(function(row){ tbody.appendChild(row); });
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
