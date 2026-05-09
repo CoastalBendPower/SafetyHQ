@@ -260,7 +260,11 @@ tbody tr:hover{filter:brightness(.985)}
   .hsi-menu{position:static;width:100%;grid-template-columns:1fr;margin-top:8px}
   .snapshot-grid{grid-template-columns:1fr;gap:10px}
   .quarter-grid{grid-template-columns:1fr}
-  .quarter:not(.active){display:none}
+  .quarter.upcoming{display:none}
+  .quarterly-collapse{padding:0}
+  .quarterly-collapse summary{display:block;padding:12px}
+  .quarterly-collapse .quarter-grid{grid-template-columns:1fr}
+  .quarterly-badges{justify-content:flex-start;margin-top:8px}
   .totals-grid{grid-template-columns:repeat(3,1fr);gap:7px}
   .total-card{min-height:86px;padding:10px}
   .total-card .metric-label{font-size:9px;letter-spacing:.04em}
@@ -276,7 +280,8 @@ tbody tr:hover{filter:brightness(.985)}
   .status-layout{grid-template-columns:1fr;gap:10px}
   .mobile-secondary-section{display:none}
   .mobile-secondary-row{display:none}
-  .table-wrap{overflow-x:visible}
+  .table-wrap{overflow-x:visible;width:100%;max-width:100%}
+  .status-layout table{min-width:0!important;width:100%;max-width:100%}
   table,thead,tbody,tr,td{display:block;width:100%;min-width:0}
   table{min-width:0;background:transparent}
   thead{display:none}
@@ -335,9 +340,18 @@ tbody tr:hover{filter:brightness(.985)}
 
   <section class="data-grid">
     <section class="snapshot-grid">
-    <div class="panel">
-      <h2 class="section-title">📊 Quarterly OSHA Snapshot</h2>
-      <p class="section-note">Recordables and man hours by quarter.</p>
+    <details class="panel collapse-panel quarterly-collapse" open>
+      <summary>
+        <div class="collapse-title-wrap">
+          <h2 class="section-title">📊 Quarterly OSHA Snapshot</h2>
+          <p class="section-note">Recordables and man hours by quarter.</p>
+        </div>
+        <div class="collapse-badges quarterly-badges">
+          <span class="summary-pill green">Q1 Complete</span>
+          <span class="summary-pill neutral">Q2 Active</span>
+        </div>
+      </summary>
+      <div class="collapse-body">
       <div class="quarter-grid">
         <div class="quarter complete">
           <div class="quarter-title">✅ Q1 Complete</div>
@@ -360,7 +374,8 @@ tbody tr:hover{filter:brightness(.985)}
           <p><strong>Man Hours:</strong> 0</p>
         </div>
       </div>
-    </div>
+      </div>
+    </details>
 
     <div class="panel">
       <h2 class="section-title">🛡️ 2026 Totals</h2>
