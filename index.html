@@ -684,6 +684,21 @@ function cleanDate(value){
   return String(value || "").replace(/-/g,"/");
 }
 
+function getOverdueText(row){
+  const directDays = Number(row.daysOverdue);
+  const untilDays = Number(row.daysUntilDue);
+
+  if(Number.isFinite(directDays) && directDays > 0){
+    return `${directDays}d Overdue`;
+  }
+
+  if(Number.isFinite(untilDays) && untilDays < 0){
+    return `${Math.abs(untilDays)}d Overdue`;
+  }
+
+  return "Overdue";
+}
+
 function findSectionByTitle(text){
   const headings = Array.from(document.querySelectorAll("h2, h3, .section-title"));
   const heading = headings.find(el => (el.textContent || "").trim().toLowerCase() === text.toLowerCase());
@@ -721,7 +736,7 @@ function renderMonthlyItems(items){
         <tr class="row-red">
           <td>${escapeHTML(row.employee)}</td>
           <td>${escapeHTML(row.eq)}</td>
-          <td><span class="pill pill-red">${escapeHTML(row.daysOverdue || (Number(row.daysUntilDue) < 0 ? Math.abs(Number(row.daysUntilDue)) : ""))}d Overdue</span></td>
+          <td><span class="pill pill-red">${getOverdueText(row)}</span></td>
           <td>${escapeHTML(row.notes || "")}</td>
         </tr>`).join("")}
       ${completed.map(row => `
@@ -755,19 +770,19 @@ function renderTrainingItems(items){
       ${overdue.map(row => `
         <tr class="row-red">
           <td>${escapeHTML(row.employee)}</td>
-          <td>${escapeHTML(row.training)}</td>
-          <td><span class="pill pill-red">${escapeHTML(row.daysOverdue || "")}d Overdue</span></td>
+          <td>${escapeHTML(row.training || "Training title missing")}</td>
+          <td><span class="pill pill-red">${getOverdueText(row)}</span></td>
         </tr>`).join("")}
       ${dueSoon.map(row => `
         <tr class="row-orange">
           <td>${escapeHTML(row.employee)}</td>
-          <td>${escapeHTML(row.training)}</td>
+          <td>${escapeHTML(row.training || "Training title missing")}</td>
           <td><span class="pill pill-orange">Due ${escapeHTML(cleanDate(row.dueDate))}</span></td>
         </tr>`).join("")}
       ${neutral.map(row => `
         <tr class="row-neutral mobile-secondary-row">
           <td>${escapeHTML(row.employee)}</td>
-          <td>${escapeHTML(row.training)}</td>
+          <td>${escapeHTML(row.training || "Training title missing")}</td>
           <td><span class="pill pill-neutral">Due ${escapeHTML(cleanDate(row.dueDate))}</span></td>
         </tr>`).join("")}
     </tbody>`;
