@@ -4,6 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>CBPS Safety Dashboard</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#06264a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SafetyHQ">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
 <style>
 :root{
   --bg:#eef3f8;
@@ -830,6 +836,16 @@ function loadSafetyHQLiveData(){
 
 loadSafetyHQLiveData();
 setInterval(loadSafetyHQLiveData, 5 * 60 * 1000);
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch(err => {
+      console.warn("SafetyHQ service worker registration failed:", err);
+    });
+  });
+}
 </script>
 </body>
 </html>
