@@ -659,5 +659,156 @@ tbody tr:hover{filter:brightness(.985)}
   });
 })();
 </script>
+<script>
+/* SafetyHQ Phase 2 live feed
+   Source: SafetyHQ_LIVE Google Sheet via Apps Script JSONP
+*/
+const SAFETYHQ_LIVE_URL = "https://script.google.com/macros/s/AKfycbyuz_gyOtJFDThQguUgC1nIRzyPYRRf50bWRXDf6UD33fytBwG_KbEDLcaLxaKiSrkFiQ/exec";
+
+function formatNumber(value){
+  if(value === undefined || value === null || value === "") return "0";
+  const num = Number(String(value).replace(/,/g,""));
+  return Number.isFinite(num) ? num.toLocaleString() : value;
+}
+
+function escapeHTML(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function cleanDate(value){
+  return String(value || "").replace(/-/g,"/");
+}
+
+function findSectionByTitle(text){
+  return Array.from(document.querySelectorAll("section, details, .panel, .card"))
+    .find(el => (el.innerText || "").toLowerCase().includes(text.toLowerCase()));
+}
+
+function setTextByLabel(labelText, newValue){
+  const labels = Array.from(document.querySelectorAll(".metric-label, .label, .section-title, .q-label"));
+  const label = labels.find(el => (el.textContent || "").trim().toLowerCase() === labelText.toLowerCase());
+  if(!label) return;
+  const parent = label.parentElement;
+  const valueEl = parent && parent.querySelector(".metric-value, .value");
+  if(valueEl) valueEl.textContent = newValue;
+}
+
+function renderMonthlyItems(items){
+  const monthlySection = findSectionByTitle("Monthly Safety Equipment Checklist Status");
+  if(!monthlySection) return;
+
+  const overdue = items.filter(x => x.status === "Overdue / Missing");
+  const completed = items.filter(x => x.status === "Complete");
+
+  const pills = monthlySection.querySelectorAll(".summary-pill, .count-pill");
+  if(pills[0]) pills[0].textContent = `${overdue.length} Overdue/Missing`;
+  if(pills[1]) pills[1].textContent = `${completed.length} Completed`;
+
+  const table = monthlySection.querySelector("table");
+  if(!table) return;
+
+  table.innerHTML = `
+    <thead><tr><th>Employee</th><th>EQ #</th><th>Status</th><th>Completed / Notes</th></tr></thead>
+    <tbody>
+      ${overdue.map(row => `
+        <tr class="row-red">
+          <td>${escapeHTML(row.employee)}</td>
+          <td>${escapeHTML(row.eq)}</td>
+          <td><span class="pill pill-red">${escapeHTML(row.daysOverdue || "")}d Overdue</span></td>
+          <td>${escapeHTML(row.notes || "")}</td>
+        </tr>`).join("")}
+      ${completed.map(row => `
+        <tr class="row-green mobile-secondary-row">
+          <td>${escapeHTML(row.employee)}</td>
+          <td>${escapeHTML(row.eq)}</td>
+          <td><span class="pill pill-green">Complete</span></td>
+          <td>${escapeHTML(cleanDate(row.completionDate))}</td>
+        </tr>`).join("")}
+    </tbody>`;
+}
+
+function renderTrainingItems(items){
+  const trainingSection = findSectionByTitle("Training Status");
+  if(!trainingSection) return;
+
+  const overdue = items.filter(x => x.status === "Overdue");
+  const dueSoon = items.filter(x => x.status === "Due Within 7 Days");
+  const neutral = items.filter(x => x.status !== "Overdue" && x.status !== "Due Within 7 Days");
+
+  const pills = trainingSection.querySelectorAll(".summary-pill, .count-pill");
+  if(pills[0]) pills[0].textContent = `${overdue.length} Overdue`;
+  if(pills[1]) pills[1].textContent = `${dueSoon.length} Due Within 7 Days`;
+
+  const table = trainingSection.querySelector("table");
+  if(!table) return;
+
+  table.innerHTML = `
+    <thead><tr><th>Employee</th><th>Training</th><th>Status</th></tr></thead>
+    <tbody>
+      ${overdue.map(row => `
+        <tr class="row-red">
+          <td>${escapeHTML(row.employee)}</td>
+          <td>${escapeHTML(row.training)}</td>
+          <td><span class="pill pill-red">${escapeHTML(row.daysOverdue || "")}d Overdue</span></td>
+        </tr>`).join("")}
+      ${dueSoon.map(row => `
+        <tr class="row-orange">
+          <td>${escapeHTML(row.employee)}</td>
+          <td>${escapeHTML(row.training)}</td>
+          <td><span class="pill pill-orange">Due ${escapeHTML(cleanDate(row.dueDate))}</span></td>
+        </tr>`).join("")}
+      ${neutral.map(row => `
+        <tr class="row-neutral mobile-secondary-row">
+          <td>${escapeHTML(row.employee)}</td>
+          <td>${escapeHTML(row.training)}</td>
+          <td><span class="pill pill-neutral">Due ${escapeHTML(cleanDate(row.dueDate))}</span></td>
+        </tr>`).join("")}
+    </tbody>`;
+}
+
+function updateSafetyHQDashboard(data){
+  const summary = data.summary || {};
+
+  const updatedLine = document.querySelector(".updated-line");
+  if(updatedLine && summary.lastUpdate){
+    updatedLine.textContent = `Updated: ${summary.lastUpdate}`;
+  }
+
+  setTextByLabel("Total Man Hours", formatNumber(summary.manHours));
+  setTextByLabel("EMR", summary.emr || "");
+  setTextByLabel("YTD Recordables", formatNumber(summary.ytdRecordables));
+
+  document.querySelectorAll(".q-meta").forEach(meta => {
+    const cardText = meta.closest(".kpi")?.innerText || "";
+    if(cardText.includes("Q1")) meta.innerHTML = `<strong>Recordables:</strong> ${formatNumber(summary.q1Recordables)}<br><strong>Man Hours:</strong> ${formatNumber(summary.q1ManHours)}`;
+    if(cardText.includes("Q2")) meta.innerHTML = `<strong>Recordables:</strong> ${formatNumber(summary.q2Recordables)}<br><strong>Man Hours:</strong> ${formatNumber(summary.q2ManHours)}`;
+    if(cardText.includes("Q3")) meta.innerHTML = `<strong>Recordables:</strong> ${formatNumber(summary.q3Recordables)}<br><strong>Man Hours:</strong> ${formatNumber(summary.q3ManHours)}`;
+    if(cardText.includes("Q4")) meta.innerHTML = `<strong>Recordables:</strong> ${formatNumber(summary.q4Recordables)}<br><strong>Man Hours:</strong> ${formatNumber(summary.q4ManHours)}`;
+  });
+
+  renderMonthlyItems(data.monthlyItems || []);
+  renderTrainingItems(data.trainingItems || []);
+}
+
+(function loadSafetyHQLiveData(){
+  const callbackName = "safetyHQLiveCallback_" + Date.now();
+  window[callbackName] = function(data){
+    updateSafetyHQDashboard(data);
+    delete window[callbackName];
+  };
+
+  const script = document.createElement("script");
+  script.src = SAFETYHQ_LIVE_URL + "?callback=" + callbackName + "&v=" + Date.now();
+  script.onerror = function(){
+    console.warn("SafetyHQ live feed could not be loaded. Static dashboard values remain visible.");
+  };
+  document.body.appendChild(script);
+})();
+</script>
 </body>
 </html>
