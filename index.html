@@ -719,7 +719,7 @@ function renderMonthlyItems(items){
         <tr class="row-red">
           <td>${escapeHTML(row.employee)}</td>
           <td>${escapeHTML(row.eq)}</td>
-          <td><span class="pill pill-red">${escapeHTML(row.daysOverdue || "")}d Overdue</span></td>
+          <td><span class="pill pill-red">${escapeHTML(row.daysOverdue || (Number(row.daysUntilDue) < 0 ? Math.abs(Number(row.daysUntilDue)) : ""))}d Overdue</span></td>
           <td>${escapeHTML(row.notes || "")}</td>
         </tr>`).join("")}
       ${completed.map(row => `
@@ -736,13 +736,13 @@ function renderTrainingItems(items){
   const trainingSection = findSectionByTitle("Training Status");
   if(!trainingSection) return;
 
-  const overdue = items.filter(x => x.status === "Overdue");
-  const dueSoon = items.filter(x => x.status === "Due Within 7 Days");
-  const neutral = items.filter(x => x.status !== "Overdue" && x.status !== "Due Within 7 Days");
+  const overdue = items.filter(x => String(x.status || "").trim() === "Overdue");
+  const dueSoon = items.filter(x => String(x.status || "").trim() === "Due Within 7 Days");
+  const neutral = items.filter(x => !["Overdue", "Due Within 7 Days"].includes(String(x.status || "").trim()));
 
   const pills = trainingSection.querySelectorAll(".summary-pill, .count-pill");
-  if(pills[0]) pills[0].textContent = `${overdue.length} Overdue`;
-  if(pills[1]) pills[1].textContent = `${dueSoon.length} Due Within 7 Days`;
+  if(pills[0]) pills[0].textContent = `${Number(window.safetyHQSummary?.trainingOverdue ?? overdue.length)} Overdue`;
+  if(pills[1]) pills[1].textContent = `${Number(window.safetyHQSummary?.trainingDueSoon ?? dueSoon.length)} Due Within 7 Days`;
 
   const table = trainingSection.querySelector("table");
   if(!table) return;
@@ -773,6 +773,7 @@ function renderTrainingItems(items){
 
 function updateSafetyHQDashboard(data){
   const summary = data.summary || {};
+  window.safetyHQSummary = summary;
 
   const updatedLine = document.querySelector(".updated-line");
   if(updatedLine && summary.lastUpdate){
