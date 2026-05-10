@@ -685,8 +685,10 @@ function cleanDate(value){
 }
 
 function findSectionByTitle(text){
-  return Array.from(document.querySelectorAll("section, details, .panel, .card"))
-    .find(el => (el.innerText || "").toLowerCase().includes(text.toLowerCase()));
+  const headings = Array.from(document.querySelectorAll("h2, h3, .section-title"));
+  const heading = headings.find(el => (el.textContent || "").trim().toLowerCase() === text.toLowerCase());
+  if(!heading) return null;
+  return heading.closest(".panel, details, section, .card") || heading.parentElement;
 }
 
 function setTextByLabel(labelText, newValue){
@@ -796,7 +798,7 @@ function updateSafetyHQDashboard(data){
   renderTrainingItems(data.trainingItems || []);
 }
 
-(function loadSafetyHQLiveData(){
+function loadSafetyHQLiveData(){
   const callbackName = "safetyHQLiveCallback_" + Date.now();
   window[callbackName] = function(data){
     updateSafetyHQDashboard(data);
@@ -809,7 +811,10 @@ function updateSafetyHQDashboard(data){
     console.warn("SafetyHQ live feed could not be loaded. Static dashboard values remain visible.");
   };
   document.body.appendChild(script);
-})();
+}
+
+loadSafetyHQLiveData();
+setInterval(loadSafetyHQLiveData, 5 * 60 * 1000);
 </script>
 </body>
 </html>
