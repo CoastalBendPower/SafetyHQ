@@ -693,15 +693,8 @@ function cleanDate(value){
 function getOverdueText(row){
   const directDays = Number(row.daysOverdue);
   const untilDays = Number(row.daysUntilDue);
-
-  if(Number.isFinite(directDays) && directDays > 0){
-    return `${directDays}d Overdue`;
-  }
-
-  if(Number.isFinite(untilDays) && untilDays < 0){
-    return `${Math.abs(untilDays)}d Overdue`;
-  }
-
+  if(Number.isFinite(directDays) && directDays > 0) return `${directDays}d Overdue`;
+  if(Number.isFinite(untilDays) && untilDays < 0) return `${Math.abs(untilDays)}d Overdue`;
   return "Overdue";
 }
 
@@ -725,34 +718,56 @@ function renderMonthlyItems(items){
   const monthlySection = findSectionByTitle("Monthly Safety Equipment Checklist Status");
   if(!monthlySection) return;
 
-  const overdue = items.filter(x => x.status === "Overdue / Missing");
-  const completed = items.filter(x => x.status === "Complete");
+  const overdue = items.filter(x => String(x.status || "").trim() === "Overdue / Missing");
+  const completed = items.filter(x => String(x.status || "").trim() === "Complete");
 
   const pills = monthlySection.querySelectorAll(".summary-pill, .count-pill");
-  if(pills[0]) pills[0].textContent = `${overdue.length} Overdue/Missing`;
+  if(pills[0]) pills[0].textContent = `${overdue.length} Overdue / Missing`;
   if(pills[1]) pills[1].textContent = `${completed.length} Completed`;
 
-  const table = monthlySection.querySelector("table");
-  if(!table) return;
+  const layout = monthlySection.querySelector(".status-layout");
+  if(!layout) return;
 
-  table.innerHTML = `
-    <thead><tr><th>Employee</th><th>EQ #</th><th>Status</th><th>Completed / Notes</th></tr></thead>
-    <tbody>
-      ${overdue.map(row => `
-        <tr class="row-red">
-          <td>${escapeHTML(row.employee)}</td>
-          <td>${escapeHTML(row.eq)}</td>
-          <td><span class="pill pill-red">${getOverdueText(row)}</span></td>
-          <td>${escapeHTML(row.notes || "")}</td>
-        </tr>`).join("")}
-      ${completed.map(row => `
-        <tr class="row-green mobile-secondary-row">
-          <td>${escapeHTML(row.employee)}</td>
-          <td>${escapeHTML(row.eq)}</td>
-          <td><span class="pill pill-green">Complete</span></td>
-          <td>${escapeHTML(cleanDate(row.completionDate))}</td>
-        </tr>`).join("")}
-    </tbody>`;
+  const overdueRows = overdue.map(row => `
+    <tr class="row-red">
+      <td>${escapeHTML(row.employee)}</td>
+      <td>${escapeHTML(row.eq)}</td>
+      <td><span class="pill pill-red">${getOverdueText(row)}</span></td>
+      <td>${escapeHTML(row.notes || "")}</td>
+    </tr>`).join("") || `<tr><td colspan="4">No overdue or missing checklist items.</td></tr>`;
+
+  const completedRows = completed.map(row => `
+    <tr class="row-green">
+      <td>${escapeHTML(row.employee)}</td>
+      <td>${escapeHTML(row.eq)}</td>
+      <td><span class="pill pill-green">${escapeHTML(cleanDate(row.completionDate))}</span></td>
+    </tr>`).join("") || `<tr><td colspan="3">No completed checklist items.</td></tr>`;
+
+  layout.innerHTML = `
+    <section class="status-card">
+      <div class="status-card-header">
+        <h3>Overdue / Missing</h3>
+        <span class="status-count">${overdue.length} items</span>
+      </div>
+      <div class="table-wrap">
+        <table class="sortable-table monthly-table">
+          <thead><tr><th>Employee</th><th>EQ #</th><th>Status</th><th>Notes</th></tr></thead>
+          <tbody>${overdueRows}</tbody>
+        </table>
+      </div>
+    </section>
+    <section class="status-card mobile-secondary-section">
+      <div class="status-card-header">
+        <h3>Completed</h3>
+        <span class="status-count">${completed.length} items</span>
+      </div>
+      <div class="table-wrap">
+        <table class="sortable-table monthly-table">
+          <thead><tr><th>Employee</th><th>EQ #</th><th>Completed</th></tr></thead>
+          <tbody>${completedRows}</tbody>
+        </table>
+      </div>
+    </section>`;
 }
 
 function renderTrainingItems(items){
@@ -803,17 +818,10 @@ function updateSafetyHQDashboard(data){
     updatedLine.textContent = `Updated: ${summary.lastUpdate}`;
   }
 
+  setTextByLabel("Man Hours", formatNumber(summary.manHours));
   setTextByLabel("Total Man Hours", formatNumber(summary.manHours));
   setTextByLabel("EMR", summary.emr || "");
   setTextByLabel("YTD Recordables", formatNumber(summary.ytdRecordables));
-
-  document.querySelectorAll(".q-meta").forEach(meta => {
-    const cardText = meta.closest(".kpi")?.innerText || "";
-    if(cardText.includes("Q1")) meta.innerHTML = `<strong>Recordables:</strong> ${formatNumber(summary.q1Recordables)}<br><strong>Man Hours:</strong> ${formatNumber(summary.q1ManHours)}`;
-    if(cardText.includes("Q2")) meta.innerHTML = `<strong>Recordables:</strong> ${formatNumber(summary.q2Recordables)}<br><strong>Man Hours:</strong> ${formatNumber(summary.q2ManHours)}`;
-    if(cardText.includes("Q3")) meta.innerHTML = `<strong>Recordables:</strong> ${formatNumber(summary.q3Recordables)}<br><strong>Man Hours:</strong> ${formatNumber(summary.q3ManHours)}`;
-    if(cardText.includes("Q4")) meta.innerHTML = `<strong>Recordables:</strong> ${formatNumber(summary.q4Recordables)}<br><strong>Man Hours:</strong> ${formatNumber(summary.q4ManHours)}`;
-  });
 
   renderMonthlyItems(data.monthlyItems || []);
   renderTrainingItems(data.trainingItems || []);
@@ -837,7 +845,6 @@ function loadSafetyHQLiveData(){
 loadSafetyHQLiveData();
 setInterval(loadSafetyHQLiveData, 5 * 60 * 1000);
 </script>
-
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
