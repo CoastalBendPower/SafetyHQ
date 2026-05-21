@@ -61,7 +61,6 @@ header{
 }
 .panel{padding:16px}
 .card{padding:16px}
-
 /* Top utility image buttons */
 .utility-row{
   min-height:54px;
@@ -110,8 +109,9 @@ header{
 .hsi-menu{position:absolute;top:52px;left:0;z-index:50;width:230px;display:grid;grid-template-columns:repeat(2,minmax(130px,1fr));gap:8px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 42px rgba(15,23,42,.20)}
 .hsi-menu a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#f8fbff);border:1px solid var(--line);text-decoration:none;color:var(--brand-dark);font-size:12px;font-weight:900;text-align:center;padding:8px 10px;box-shadow:0 4px 12px rgba(15,23,42,.06);transition:all .18s ease}
 .hsi-menu a:hover{background:#eef6ff;border-color:#bfd3ea;transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,23,42,.10)}
-.updated-line{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;color:var(--brand-dark);background:linear-gradient(180deg,#f8fbff,#eef6ff);border-left:5px solid var(--brand);border-radius:10px;font-size:16px;font-weight:900;margin:8px 0 16px;padding:11px 14px;box-shadow:0 8px 20px rgba(15,23,42,.08)}
-.return-hub-link{margin-left:auto;color:var(--brand-dark);font-size:14px;font-weight:900;text-decoration:none;border:1px solid rgba(31,78,121,.25);background:#fff;border-radius:999px;padding:6px 10px;white-space:nowrap}
+.updated-line{display:flex;align-items:center;justify-content:flex-start;gap:12px;width:100%;color:var(--brand-dark);background:linear-gradient(180deg,#f8fbff,#eef6ff);border-left:5px solid var(--brand);border-radius:10px;font-size:16px;font-weight:900;margin:8px 0 16px;padding:11px 14px;box-shadow:0 8px 20px rgba(15,23,42,.08);text-align:left}
+.last-update-text{display:inline-block;text-align:left}
+.return-hub-link{margin-left:auto;color:var(--brand-dark);font-size:14px;font-weight:900;text-decoration:none;border:1px solid rgba(31,78,121,.25);background:#fff;border-radius:999px;padding:6px 10px;white-space:nowrap;text-align:center}
 .return-hub-link:hover{background:#eef6ff;border-color:#bfd3ea}
 /* KPI cards */
 .label{font-size:12px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.07em}
@@ -127,7 +127,6 @@ header{
 .q-label{font-size:13px;font-weight:900;color:#334155}
 .q-meta{font-size:13px;line-height:1.5;margin-top:8px;color:#475569}
 .q-meta strong{color:#111827}
-
 /* Collapsible OSHA Snapshot */
 .osha-panel{padding:0;overflow:hidden}
 .osha-summary{list-style:none;cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:16px;border-bottom:1px solid rgba(219,227,239,.65)}
@@ -137,14 +136,12 @@ header{
 .osha-totals-side,.osha-quarterlies-side{min-width:0}
 .subsection-title{font-size:16px;font-weight:900;margin:0 0 10px;color:#334155}
 .osha-quarter-row{grid-template-columns:repeat(4,minmax(120px,1fr))}
-
 /* Collapsible Monthly / Training panels */
 .status-collapse{padding:0;overflow:hidden}
 .status-summary{list-style:none;cursor:pointer;margin-bottom:0;padding:16px;border-bottom:1px solid rgba(219,227,239,.65)}
 .status-summary::-webkit-details-marker{display:none}
 .status-collapse > .status-layout{padding:16px}
 .status-collapse > .table-wrap.status-card{margin:16px}
-
 /* Status tables */
 .overdue-grid{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
 .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
@@ -180,7 +177,6 @@ tr.row-neutral td{background:#fff}
 .procedure-bottom-button{width:260px;max-width:100%;height:70px;display:flex;align-items:center;justify-content:center;text-decoration:none}
 .procedure-bottom-button img{width:100%;height:100%;object-fit:contain;display:block}
 .footer{text-align:center;color:var(--muted);font-size:12px;font-weight:700;margin:20px 0 8px}
-
 @media(max-width:980px){
   .osha-split{grid-template-columns:1fr;gap:12px}
   .osha-divider{width:100%;height:1px;min-height:1px;background:linear-gradient(90deg,transparent,#cbd5e1 18%,#cbd5e1 82%,transparent)}
@@ -197,7 +193,9 @@ tr.row-neutral td{background:#fff}
   .utility-row{display:grid;grid-template-columns:1fr 1fr;align-items:center;justify-content:center;padding:8px;gap:8px;min-height:0}
   .nav-button,.hsi-dropdown,.hsi-dropdown summary{width:100%;max-width:100%;height:58px}
   .hsi-menu{position:absolute;top:62px;left:0;width:220px;grid-template-columns:1fr;margin-top:0}
-  .updated-line{display:flex;width:100%;justify-content:center;font-size:14px;margin:4px 0 12px;padding:10px 12px;text-align:center}
+  .updated-line{display:flex;width:100%;align-items:center;justify-content:flex-start;gap:8px;font-size:13px;margin:4px 0 12px;padding:10px 12px;text-align:left}
+  .last-update-text{flex:1;text-align:left;line-height:1.25}
+  .return-hub-link{margin-left:auto;font-size:12px;padding:5px 8px;flex:0 0 auto;text-align:center}
   .osha-summary{align-items:center;padding:14px}
   .osha-split{grid-template-columns:1fr;gap:12px;padding:0 12px 12px}
   .osha-quarter-row,.kpi-row,.kpi-row.two{grid-template-columns:1fr}
@@ -216,7 +214,6 @@ tr.row-neutral td{background:#fff}
 <header>
   <img class="header-banner" src="assets/banner_CBPS Safety HQ.png?v=final" alt="Coastal Bend Power Services Safety HQ banner">
 </header>
-
 <main class="wrap">
   <section class="panel utility-row">
     <details class="hsi-dropdown nav-button">
@@ -230,21 +227,17 @@ tr.row-neutral td{background:#fff}
         <a href="https://sys.hsiplatform.com/en/coastalbendpower/sms-legacy-platform/na/sms/legacy/module_records?module_name_id=14" target="_blank" rel="noopener noreferrer">Log GOOD CATCH</a>
       </div>
     </details>
-
     <a class="nav-button sharesync-link" href="https://account.sharesync.serverdata.net/login/v1.2/?client_id=sharesync_web_app_sts&client_type=Sync-WebApp&client_version=3.48.1&application_client_id=5d5c5f78-10b2-0f0b-a925-606d43526abe&redirect_uri=https%3A%2F%2Fsharesync.serverdata.net%2Fus4%2F&locale=en-us" target="_blank" rel="noopener noreferrer" aria-label="ShareSync Login">
       <img src="assets/button_ShareSync Login.png" alt="ShareSync Login">
     </a>
-
     <a class="nav-button procedure-link-main" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank" rel="noopener noreferrer" aria-label="Procedure Center">
       <img src="assets/button_ProceduresDashboard.png" alt="Procedure Center">
     </a>
   </section>
-
-  <di<div class="updated-line">
-  <span id="last-update">Last Update: 05/14/2026 5:02 PM</span>
-  <a class="return-hub-link" href="https://coastalbendpower.github.io/Hub/">Return to PowerHub</a>
-</div>
-
+  <div class="updated-line">
+    <span id="last-update" class="last-update-text">Last Update: 05/14/2026 5:02 PM</span>
+    <a class="return-hub-link" href="https://coastalbendpower.github.io/Hub/">Return to PowerHub</a>
+  </div>
   <section class="section">
     <details class="panel quarterly-collapse osha-panel" open>
       <summary class="osha-summary">
@@ -253,14 +246,13 @@ tr.row-neutral td{background:#fff}
           <p class="section-note">Company OSHA statistics, totals, and quarterly activity.</p>
         </div>
       </summary>
-
       <div class="osha-split">
         <div class="osha-totals-side">
           <h3 class="subsection-title">2026 Totals</h3>
           <div class="kpi-row two">
             <div class="kpi good">
               <div class="label">Total Man Hours</div>
-              <div class="value" id="ytd-man-hours">15,878</div>
+              <div class="value" id="ytd-man-hours">22,343</div>
             </div>
             <div class="kpi good">
               <div class="label">EMR</div>
@@ -268,9 +260,7 @@ tr.row-neutral td{background:#fff}
             </div>
           </div>
         </div>
-
         <div class="osha-divider" aria-hidden="true"></div>
-
         <div class="osha-quarterlies-side">
           <div class="kpi-row osha-quarter-row" id="quarterly-cards">
             <div class="kpi good">
@@ -294,7 +284,6 @@ tr.row-neutral td{background:#fff}
       </div>
     </details>
   </section>
-
   <section class="section overdue-grid">
     <details class="panel status-collapse" open>
       <summary class="panel-head status-summary">
@@ -307,7 +296,6 @@ tr.row-neutral td{background:#fff}
           <span class="count-pill good" id="monthly-complete-count">16 Completed</span>
         </div>
       </summary>
-
       <div class="status-layout">
         <section class="status-card">
           <div class="status-card-header">
@@ -326,7 +314,6 @@ tr.row-neutral td{background:#fff}
             </table>
           </div>
         </section>
-
         <section class="status-card">
           <div class="status-card-header">
             <h3>Completed</h3>
@@ -358,7 +345,6 @@ tr.row-neutral td{background:#fff}
         </section>
       </div>
     </details>
-
     <details class="panel status-collapse" open>
       <summary class="panel-head status-summary">
         <div>
@@ -397,17 +383,14 @@ tr.row-neutral td{background:#fff}
         </table>
       </div>
     </details>
-
     <section class="procedure-mobile-panel">
       <a class="procedure-bottom-button" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank" rel="noopener noreferrer" aria-label="Procedure Center">
         <img src="assets/button_ProceduresDashboard.png" alt="Procedure Center">
       </a>
     </section>
   </section>
-
   <div class="footer">Coastal Bend Power Services • SafetyHQ</div>
 </main>
-
 <script>
 (function(){
   const quarterly = document.querySelector(".quarterly-collapse");
@@ -419,10 +402,8 @@ tr.row-neutral td{background:#fff}
   }
 })();
 </script>
-
 <script>
 const SAFETYHQ_LIVE_URL = "https://script.google.com/macros/s/AKfycbyuz_gyOtJFDThQguUgC1nIRzyPYRRf50bWRXDf6UD33fytBwG_KbEDLcaLxaKiSrkFiQ/exec";
-
 function text(id, value){
   const el = document.getElementById(id);
   if(el && value !== undefined && value !== null && value !== "") el.textContent = value;
@@ -464,7 +445,6 @@ function renderMonthly(rows){
   const tbodyOpen = document.getElementById("monthly-open-body");
   const tbodyComplete = document.getElementById("monthly-complete-body");
   if(!tbodyOpen || !tbodyComplete || !rows.length) return;
-
   const filtered = rows.filter(r => {
     const emp = cell(r,["employee","Employee"],0);
     return emp && emp !== "Employee";
@@ -482,10 +462,8 @@ function renderMonthly(rows){
     const item = {employee,eq,completeDate,status,days,notes};
     if(isComplete) complete.push(item); else open.push(item);
   });
-
   tbodyOpen.innerHTML = open.length ? open.map(r => `<tr class="row-red"><td>${esc(r.employee)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-red${Number(r.days)>10?' severe':''}">${esc(r.days || '')}${r.days ? 'd Overdue' : esc(r.status || 'Overdue / Missing')}</span>${r.notes ? ' ' + esc(r.notes) : ''}</td></tr>`).join("") : `<tr><td colspan="3"><div class="empty-state">No overdue or missing monthly checklists.</div></td></tr>`;
   tbodyComplete.innerHTML = complete.length ? complete.map(r => `<tr class="row-green"><td>${esc(r.employee)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-green">${esc(fmtDate(r.completeDate))}</span></td></tr>`).join("") : `<tr><td colspan="3"><div class="empty-state">No completed checklists listed.</div></td></tr>`;
-
   text("monthly-open-count", `${open.length} Overdue / Missing`);
   text("monthly-complete-count", `${complete.length} Completed`);
   text("monthly-open-small", `${open.length} item${open.length===1?'':'s'}`);
@@ -528,43 +506,38 @@ function updateSafetyHQDashboard(data){
   if(lastUpdate) text("last-update", `Last Update: ${lastUpdate}`);
   text("emr", getMetric(data,["emr","EMR"]));
   text("ytd-man-hours", getMetric(data,["ytdManHours","totalManHours","YTD Man Hours","Total Man Hours","manHours"]));
-
   const month = getMetric(data,["currentMonth","Current Month"]);
   const due = getMetric(data,["monthlyDueDate","Monthly Due Date"]);
   if(month || due) text("monthly-note", `${month || 'Monthly'} checklists due ${fmtDate(due)}. Required for all employees assigned a company vehicle.`);
-
- const quarters = data.quarters || data.quarterly || data.oshaQuarters || data.oshaSnapshot;
-
-if(Array.isArray(quarters)){
-  quarters.forEach(q => {
-    updateQuarter(
-      q.quarter || q.Quarter,
-      q.recordables ?? q.Recordables,
-      q.manHours ?? q["Man Hours"] ?? q.man_hours ?? q.hours
-    );
-  });
-} else if(quarters && typeof quarters === "object"){
-  ["Q1","Q2","Q3","Q4"].forEach(q => {
-    const item = quarters[q] || quarters[q.toLowerCase()];
-    if(item){
+  const quarters = data.quarters || data.quarterly || data.oshaQuarters || data.oshaSnapshot;
+  if(Array.isArray(quarters)){
+    quarters.forEach(q => {
       updateQuarter(
-        q,
-        item.recordables ?? item.Recordables,
-        item.manHours ?? item["Man Hours"] ?? item.man_hours ?? item.hours
+        q.quarter || q.Quarter,
+        q.recordables ?? q.Recordables,
+        q.manHours ?? q["Man Hours"] ?? q.man_hours ?? q.hours
       );
-    }
-  });
-}
-
-/* Backup display values if Apps Script does not send quarterly data */
-const q2Hours = document.querySelector('[data-quarter="Q2"][data-field="manHours"]');
-if(q2Hours && q2Hours.textContent === "0"){
-  updateQuarter("Q1", "0", "15,878");
-  updateQuarter("Q2", "0", "6,465");
-  updateQuarter("Q3", "0", "0");
-  updateQuarter("Q4", "0", "0");
-}
-
+    });
+  } else if(quarters && typeof quarters === "object"){
+    ["Q1","Q2","Q3","Q4"].forEach(q => {
+      const item = quarters[q] || quarters[q.toLowerCase()];
+      if(item){
+        updateQuarter(
+          q,
+          item.recordables ?? item.Recordables,
+          item.manHours ?? item["Man Hours"] ?? item.man_hours ?? item.hours
+        );
+      }
+    });
+  }
+  /* Backup display values if Apps Script does not send quarterly data */
+  const q2Hours = document.querySelector('[data-quarter="Q2"][data-field="manHours"]');
+  if(q2Hours && q2Hours.textContent === "0"){
+    updateQuarter("Q1", "0", "15,878");
+    updateQuarter("Q2", "0", "6,465");
+    updateQuarter("Q3", "0", "0");
+    updateQuarter("Q4", "0", "0");
+  }
   const monthlyRows = normalizeRows(data.monthlyStatus || data.monthly || data.checklistStatus || data.checklists || data["Monthly Status"]);
   renderMonthly(monthlyRows);
   const trainingRows = normalizeRows(data.trainingStatus || data.training || data.trainingItems || data.inTrainingWindowItems || data["Training Status"]);
@@ -582,7 +555,6 @@ function loadSafetyHQLive(){
 loadSafetyHQLive();
 setInterval(loadSafetyHQLive, 5 * 60 * 1000);
 </script>
-
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
