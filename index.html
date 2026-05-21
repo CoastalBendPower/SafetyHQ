@@ -134,6 +134,7 @@ header{
 .osha-split{display:grid;grid-template-columns:minmax(260px,.72fr) 1px minmax(560px,1.55fr);gap:18px;align-items:stretch;padding:16px}
 .osha-divider{width:1px;min-height:100%;background:linear-gradient(180deg,transparent,#cbd5e1 18%,#cbd5e1 82%,transparent)}
 .osha-totals-side,.osha-quarterlies-side{min-width:0}
+.osha-quarterlies-side{padding-top:26px}
 .subsection-title{font-size:16px;font-weight:900;margin:0 0 10px;color:#334155}
 .osha-quarter-row{grid-template-columns:repeat(4,minmax(120px,1fr))}
 /* Collapsible Monthly / Training panels */
@@ -153,9 +154,15 @@ header{
 .count-pill.neutral{background:#eef6ff;color:var(--brand-dark)}
 .status-layout{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(360px,1.1fr);gap:14px;align-items:start}
 .status-card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.completed-collapse{padding:0}
+.completed-collapse summary{list-style:none;cursor:pointer}
+.completed-collapse summary::-webkit-details-marker{display:none}
+.completed-collapse:not([open]) .status-card-header{background:linear-gradient(180deg,#f3fbf3,#e8f7e8);border-bottom:none}
+.completed-collapse:not([open]){border-color:rgba(31,122,31,.35);box-shadow:0 10px 28px rgba(31,122,31,.10)}
 .status-card-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--soft);border-bottom:1px solid var(--line)}
 .status-card-header h3{margin:0;font-size:16px;font-weight:900;color:#334155}
 .status-count{border-radius:999px;background:#e8eefc;color:var(--brand-dark);font-size:12px;font-weight:900;padding:4px 8px;white-space:nowrap}
+.status-count.bad{background:#fde8e8;color:var(--bad);border:1px solid rgba(180,35,24,.22)}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}
 th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -179,6 +186,7 @@ tr.row-neutral td{background:#fff}
 .footer{text-align:center;color:var(--muted);font-size:12px;font-weight:700;margin:20px 0 8px}
 @media(max-width:980px){
   .osha-split{grid-template-columns:1fr;gap:12px}
+  .osha-quarterlies-side{padding-top:0}
   .osha-divider{width:100%;height:1px;min-height:1px;background:linear-gradient(90deg,transparent,#cbd5e1 18%,#cbd5e1 82%,transparent)}
   .osha-quarter-row{grid-template-columns:repeat(2,1fr)}
   .status-layout{grid-template-columns:1fr}
@@ -291,16 +299,13 @@ tr.row-neutral td{background:#fff}
           <h2 class="section-title">Monthly Safety Equipment Checklist Status</h2>
           <p class="section-note" id="monthly-note">May 2026 checklists due 05/08/2026. Required for all employees assigned a company vehicle.</p>
         </div>
-        <div class="count-wrap">
-          <span class="count-pill warn" id="monthly-open-count">4 Overdue / Missing</span>
-          <span class="count-pill good" id="monthly-complete-count">16 Completed</span>
-        </div>
+        
       </summary>
       <div class="status-layout">
         <section class="status-card">
           <div class="status-card-header">
             <h3>Overdue / Missing</h3>
-            <span class="status-count" id="monthly-open-small">4 items</span>
+            <span class="status-count bad" id="monthly-open-small">4 items</span>
           </div>
           <div class="table-wrap">
             <table>
@@ -314,11 +319,11 @@ tr.row-neutral td{background:#fff}
             </table>
           </div>
         </section>
-        <section class="status-card">
-          <div class="status-card-header">
+        <details class="status-card completed-collapse">
+          <summary class="status-card-header">
             <h3>Completed</h3>
             <span class="status-count" id="monthly-complete-small">16 items</span>
-          </div>
+          </summary>
           <div class="table-wrap">
             <table>
               <thead><tr><th>Employee</th><th>EQ #</th><th>Completed</th></tr></thead>
@@ -342,7 +347,7 @@ tr.row-neutral td{background:#fff}
               </tbody>
             </table>
           </div>
-        </section>
+        </details>
       </div>
     </details>
     <details class="panel status-collapse" open>
