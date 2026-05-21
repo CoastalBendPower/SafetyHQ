@@ -275,7 +275,7 @@ tr.row-neutral td{background:#fff}
             </div>
             <div class="kpi brand">
               <div class="q-label">🔵 Q2 Active</div>
-              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q2" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q2" data-field="manHours">0</span></div>
+              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q2" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q2" data-field="manHours">6,465</span></div>
             </div>
             <div class="kpi neutral">
               <div class="q-label">⏳ Q3 Pending</div>
@@ -529,15 +529,37 @@ function updateSafetyHQDashboard(data){
   const due = getMetric(data,["monthlyDueDate","Monthly Due Date"]);
   if(month || due) text("monthly-note", `${month || 'Monthly'} checklists due ${fmtDate(due)}. Required for all employees assigned a company vehicle.`);
 
-  const quarters = data.quarters || data.quarterly || data.oshaQuarters || data.oshaSnapshot;
-  if(Array.isArray(quarters)){
-    quarters.forEach(q => updateQuarter(q.quarter || q.Quarter, q.recordables || q.Recordables, q.manHours || q["Man Hours"]));
-  } else if(quarters && typeof quarters === "object"){
-    ["Q1","Q2","Q3","Q4"].forEach(q => {
-      const item = quarters[q] || quarters[q.toLowerCase()];
-      if(item) updateQuarter(q, item.recordables || item.Recordables, item.manHours || item["Man Hours"]);
-    });
-  }
+ const quarters = data.quarters || data.quarterly || data.oshaQuarters || data.oshaSnapshot;
+
+if(Array.isArray(quarters)){
+  quarters.forEach(q => {
+    updateQuarter(
+      q.quarter || q.Quarter,
+      q.recordables ?? q.Recordables,
+      q.manHours ?? q["Man Hours"] ?? q.man_hours ?? q.hours
+    );
+  });
+} else if(quarters && typeof quarters === "object"){
+  ["Q1","Q2","Q3","Q4"].forEach(q => {
+    const item = quarters[q] || quarters[q.toLowerCase()];
+    if(item){
+      updateQuarter(
+        q,
+        item.recordables ?? item.Recordables,
+        item.manHours ?? item["Man Hours"] ?? item.man_hours ?? item.hours
+      );
+    }
+  });
+}
+
+/* Backup display values if Apps Script does not send quarterly data */
+const q2Hours = document.querySelector('[data-quarter="Q2"][data-field="manHours"]');
+if(q2Hours && q2Hours.textContent === "0"){
+  updateQuarter("Q1", "0", "15,878");
+  updateQuarter("Q2", "0", "6,465");
+  updateQuarter("Q3", "0", "0");
+  updateQuarter("Q4", "0", "0");
+}
 
   const monthlyRows = normalizeRows(data.monthlyStatus || data.monthly || data.checklistStatus || data.checklists || data["Monthly Status"]);
   renderMonthly(monthlyRows);
