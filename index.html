@@ -52,9 +52,9 @@ body{
     linear-gradient(180deg,#f3f6fa 0%,#eef2f6 45%,#f7f9fb 100%);
   color:var(--text);
 }
-header{
+header,.hero{
   position:relative;
-  overflow:hidden;
+  overflow:visible;
   background:transparent;
   color:#fff;
   border-radius:0 0 34px 34px;
@@ -69,7 +69,7 @@ header{
   border:1px solid rgba(0,157,255,.12);
   border-top:0;
 }
-header::before{
+header::before,.hero::before{
   content:"";
   position:absolute;
   inset:0;
@@ -80,7 +80,32 @@ header::before{
     radial-gradient(circle at 20% 48%,rgba(0,157,255,.18),transparent 34%);
   pointer-events:none;
 }
-.header-banner{
+.hero-media{
+  position:absolute;
+  inset:0;
+  border-radius:0 0 34px 34px;
+  z-index:0;
+  overflow:hidden;
+}
+.hero-inner{
+  position:relative;
+  z-index:20;
+  padding:32px 18px 32px clamp(185px,20vw,343px);
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  align-items:center;
+  gap:22px;
+  line-height:1.1;
+}
+.hero-copy{max-width:760px;text-shadow:0 2px 12px rgba(0,0,0,.55)}
+.eyebrow{margin:0 0 10px;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;font-weight:850;opacity:.9;color:rgba(255,255,255,.9)}
+.site-title{margin:0;font-size:clamp(2.65rem,5.35vw,5.05rem);line-height:.95;font-weight:950;letter-spacing:-.055em;color:#fff}
+.title-safety{color:#fff}
+.title-hq{color:#009dff;text-shadow:0 0 14px rgba(0,157,255,.48)}
+.site-title::after{content:"";display:block;width:170px;height:3px;margin-top:.45rem;border-radius:999px;background:linear-gradient(90deg,transparent,#009dff,transparent)}
+.site-subtitle{margin:.7rem 0 0;font-size:clamp(.86rem,1.14vw,1.05rem);font-weight:750;letter-spacing:.08em;color:rgba(255,255,255,.88)}
+.header-banner,.hero-bg{
   display:block;
   width:100%;
   height:100%;
@@ -240,9 +265,16 @@ tr.row-neutral td{background:#fff}
   .kpi-row{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:620px){
-  header{width:min(100%,calc(100% - 24px));min-height:0;aspect-ratio:16/6.3;margin:0 auto 18px;border-radius:0 0 28px 28px;overflow:hidden}
-  header::before{border-radius:0 0 28px 28px;background:linear-gradient(90deg,rgba(2,10,24,.10),rgba(2,10,24,.30) 46%,rgba(2,10,24,.12)),radial-gradient(circle at 20% 48%,rgba(0,157,255,.22),transparent 34%)}
-  .header-banner{height:100%;min-height:0;object-fit:cover;border-radius:0 0 28px 28px}
+  header,.hero{width:min(100%,calc(100% - 24px));min-height:0;aspect-ratio:16/6.3;margin:0 auto 18px;border-radius:0 0 28px 28px;overflow:hidden}
+  header::before,.hero::before{border-radius:0 0 28px 28px;background:linear-gradient(90deg,rgba(2,10,24,.10),rgba(2,10,24,.30) 46%,rgba(2,10,24,.12)),radial-gradient(circle at 20% 48%,rgba(0,157,255,.22),transparent 34%)}
+  .hero-media{border-radius:0 0 28px 28px}
+  .header-banner,.hero-bg{height:100%;min-height:0;object-fit:cover;border-radius:0 0 28px 28px}
+  .hero-inner{min-height:0;height:100%;padding:14px 26px 14px 33%;grid-template-columns:minmax(0,1fr);align-items:center;justify-items:center;text-align:left;gap:10px}
+  .hero-copy{width:min(100%,305px);max-width:305px;margin:0;padding:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;text-shadow:0 2px 12px rgba(0,0,0,.60)}
+  .site-title{font-size:clamp(1.54rem,7.85vw,1.96rem)}
+  .site-title::after{width:96px;margin:.24rem 0 0}
+  .eyebrow{font-size:.43rem;letter-spacing:.085em;margin-bottom:5px;white-space:nowrap}
+  .site-subtitle{font-size:.54rem;letter-spacing:.045em;margin-top:.38rem;white-space:nowrap}
   .wrap{width:min(100%,calc(100% - 24px));padding:12px}
   .utility-row{display:grid;grid-template-columns:1fr 1fr;align-items:center;justify-content:center;padding:8px;gap:8px;min-height:0}
   .nav-button,.hsi-dropdown,.hsi-dropdown summary{width:100%;max-width:100%;height:58px}
@@ -267,8 +299,18 @@ tr.row-neutral td{background:#fff}
 </style>
 </head>
 <body>
-<header>
-  <img class="header-banner" src="assets/banner_CBPS Safety HQ.png?v=final" alt="Coastal Bend Power Services Safety HQ banner">
+<header class="hero">
+  <picture class="hero-media" aria-hidden="true">
+    <source media="(max-width: 700px)" srcset="assets/banner_the_hub_mobile_v1.png">
+    <img class="hero-bg header-banner" src="assets/banner_CBPS Safety HQ.png?v=final" alt="">
+  </picture>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">Coastal Bend Power Services, LLC</p>
+      <h1 class="site-title"><span class="title-safety">Safety</span><span class="title-hq">HQ</span></h1>
+      <p class="site-subtitle">Safety. Training. Procedures. Resources.</p>
+    </div>
+  </div>
 </header>
 <main class="wrap">
   <section class="panel utility-row">
@@ -291,7 +333,7 @@ tr.row-neutral td{background:#fff}
     </a>
   </section>
   <div class="updated-line">
-    <span id="last-update" class="last-update-text">Last Update: 05/14/2026 5:02 PM</span>
+    <span id="last-update" class="last-update-text">Last Update: Loading Latest Update</span>
     <a class="return-hub-link" href="https://coastalbendpower.github.io/Hub/">Return to PowerHub</a>
   </div>
   <section class="section">
@@ -615,75 +657,4 @@ function applyTrainingEmployeeFilter(){
   text("training-soon-count", `${soon} Due Within 7 Days`);
 }
 function updateQuarter(q, recordables, manHours){
-  const rec = document.querySelector(`[data-quarter="${q}"][data-field="recordables"]`);
-  const hrs = document.querySelector(`[data-quarter="${q}"][data-field="manHours"]`);
-  if(rec && recordables !== undefined && recordables !== "") rec.textContent = recordables;
-  if(hrs && manHours !== undefined && manHours !== "") hrs.textContent = manHours;
-}
-function updateSafetyHQDashboard(data){
-  if(!data || typeof data !== "object") return;
-  const lastUpdate = getMetric(data,["lastUpdate","Last Update","updated","timestamp"]);
-  if(lastUpdate) text("last-update", `Last Update: ${lastUpdate}`);
-  text("emr", getMetric(data,["emr","EMR"]));
-  text("ytd-man-hours", getMetric(data,["ytdManHours","totalManHours","YTD Man Hours","Total Man Hours","manHours"]));
-  const month = getMetric(data,["currentMonth","Current Month"]);
-  const due = getMetric(data,["monthlyDueDate","Monthly Due Date"]);
-  if(month || due) text("monthly-note", `${month || 'Monthly'} checklists due ${fmtDate(due)}. Required for all employees assigned a company vehicle.`);
-  const quarters = data.quarters || data.quarterly || data.oshaQuarters || data.oshaSnapshot;
-  if(Array.isArray(quarters)){
-    quarters.forEach(q => {
-      updateQuarter(
-        q.quarter || q.Quarter,
-        q.recordables ?? q.Recordables,
-        q.manHours ?? q["Man Hours"] ?? q.man_hours ?? q.hours
-      );
-    });
-  } else if(quarters && typeof quarters === "object"){
-    ["Q1","Q2","Q3","Q4"].forEach(q => {
-      const item = quarters[q] || quarters[q.toLowerCase()];
-      if(item){
-        updateQuarter(
-          q,
-          item.recordables ?? item.Recordables,
-          item.manHours ?? item["Man Hours"] ?? item.man_hours ?? item.hours
-        );
-      }
-    });
-  }
-  /* Backup display values if Apps Script does not send quarterly data */
-  const q2Hours = document.querySelector('[data-quarter="Q2"][data-field="manHours"]');
-  if(q2Hours && q2Hours.textContent === "0"){
-    updateQuarter("Q1", "0", "15,878");
-    updateQuarter("Q2", "0", "6,465");
-    updateQuarter("Q3", "0", "0");
-    updateQuarter("Q4", "0", "0");
-  }
-  const monthlyRows = normalizeRows(data.monthlyStatus || data.monthly || data.checklistStatus || data.checklists || data["Monthly Status"]);
-  renderMonthly(monthlyRows);
-  const trainingRows = normalizeRows(data.trainingStatus || data.training || data.trainingItems || data.inTrainingWindowItems || data["Training Status"]);
-  renderTraining(trainingRows);
-}
-window.safetyHQLiveCallback = updateSafetyHQDashboard;
-function loadSafetyHQLive(){
-  const s = document.createElement("script");
-  s.src = SAFETYHQ_LIVE_URL + "?callback=safetyHQLiveCallback&v=" + Date.now();
-  s.async = true;
-  s.onerror = () => console.warn("SafetyHQ live data failed to load; using page fallback data.");
-  document.body.appendChild(s);
-  setTimeout(() => { try { s.remove(); } catch(e){} }, 30000);
-}
-initTrainingEmployeeFilterFromExistingRows();
-loadSafetyHQLive();
-setInterval(loadSafetyHQLive, 5 * 60 * 1000);
-</script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js").catch(err => {
-      console.warn("SafetyHQ service worker registration failed:", err);
-    });
-  });
-}
-</script>
-</body>
-</html>
+  const rec = document.querySelector(`[data-quarter="${q}"
