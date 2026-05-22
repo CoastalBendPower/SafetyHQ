@@ -163,6 +163,8 @@ header{
 .status-card-header h3{margin:0;font-size:16px;font-weight:900;color:#334155}
 .status-count{border-radius:999px;background:#e8eefc;color:var(--brand-dark);font-size:12px;font-weight:900;padding:4px 8px;white-space:nowrap}
 .status-count.bad{background:#fde8e8;color:var(--bad);border:1px solid rgba(180,35,24,.22)}
+.training-employee-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.training-employee-filter{min-width:145px;max-width:210px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--brand-dark);font-size:11px;font-weight:900;padding:5px 24px 5px 9px;text-transform:none;letter-spacing:0;outline:none}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}
 th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -211,6 +213,8 @@ tr.row-neutral td{background:#fff}
   .panel{padding:12px}
   .osha-panel{padding:0}
   table{font-size:13px}
+  .training-employee-head{display:grid;gap:5px}
+  .training-employee-filter{width:100%;min-width:118px;max-width:150px;font-size:10px;padding:5px 18px 5px 7px}
   th,td{padding:9px 6px}
   .section-title{font-size:20px}
   .procedure-mobile-panel{margin-top:12px;padding:12px}
@@ -363,7 +367,7 @@ tr.row-neutral td{background:#fff}
       </summary>
       <div class="table-wrap status-card">
         <table>
-          <thead><tr><th>Employee</th><th>Training</th><th>Status</th></tr></thead>
+          <thead><tr><th><span class="training-employee-head"><span>Employee</span><select id="training-employee-filter" class="training-employee-filter" aria-label="Filter Training Status by employee"><option value="">All</option></select></span></th><th>Training</th><th>Status</th></tr></thead>
           <tbody id="training-body">
             <tr class="row-orange"><td>Cody Geffert</td><td>Confined Space Entry - Permit Required</td><td><span class="pill pill-orange">Due 05/14/2026</span></td></tr>
             <tr class="row-orange"><td>Lee Hasdorff</td><td>Confined Space Entry - Permit Required</td><td><span class="pill pill-orange">Due 05/16/2026</span></td></tr>
@@ -394,7 +398,7 @@ tr.row-neutral td{background:#fff}
       </a>
     </section>
   </section>
-  <div class="footer">Coastal Bend Power Services • SafetyHQ</div>
+  <div class="footer">Coastal Bend Power Services • SafetyHQ v3.0.1</div>
 </main>
 <script>
 (function(){
@@ -474,16 +478,29 @@ function renderMonthly(rows){
   text("monthly-open-small", `${open.length} item${open.length===1?'':'s'}`);
   text("monthly-complete-small", `${complete.length} item${complete.length===1?'':'s'}`);
 }
+let trainingEmployeeFilterValue = "";
 function renderTraining(rows){
   const tbody = document.getElementById("training-body");
   if(!tbody || !rows.length) return;
   const filtered = rows.filter(r => {
     const emp = cell(r,["employee","Employee"],0);
     const req = cell(r,["requirementName","requirement","training","Requirement"],1);
-    return emp && req && emp !== "Employee";
+    const due = cell(r,["dueDate","Due Date"],3);
+    return emp && req && due && emp !== "Employee";
   });
-  let overdue = 0;
-  let soon = 0;
+  const employeeSelect = document.getElementById("training-employee-filter");
+  const employees = [...new Set(filtered.map(r => cell(r,["employee","Employee"],0)).filter(Boolean))].sort((a,b) => a.localeCompare(b));
+  if(employeeSelect){
+    const current = employeeSelect.value || trainingEmployeeFilterValue;
+    employeeSelect.innerHTML = `<option value="">All</option>` + employees.map(emp => `<option value="${esc(emp)}">${esc(emp)}</option>`).join("");
+    if(current && employees.includes(current)) employeeSelect.value = current;
+    else employeeSelect.value = "";
+    trainingEmployeeFilterValue = employeeSelect.value;
+    employeeSelect.onchange = () => {
+      trainingEmployeeFilterValue = employeeSelect.value;
+      applyTrainingEmployeeFilter();
+    };
+  }
   tbody.innerHTML = filtered.map(r => {
     const employee = cell(r,["employee","Employee"],0);
     const req = cell(r,["requirementName","requirement","training","Requirement"],1);
@@ -492,10 +509,64 @@ function renderTraining(rows){
     const statusLower = String(dashboardStatus).toLowerCase();
     const rowClass = statusLower.includes("overdue") ? "row-red" : statusLower.includes("within 7") ? "row-orange" : "row-neutral";
     const pillClass = statusLower.includes("overdue") ? "pill-red" : statusLower.includes("within 7") ? "pill-orange" : "pill-neutral";
-    if(statusLower.includes("overdue")) overdue++;
-    if(statusLower.includes("within 7")) soon++;
-    return `<tr class="${rowClass}"><td>${esc(employee)}</td><td>${esc(req)}</td><td><span class="pill ${pillClass}">Due ${esc(fmtDate(due))}</span></td></tr>`;
+    return `<tr class="${rowClass}" data-employee="${esc(employee)}" data-training-status="${esc(statusLower)}"><td>${esc(employee)}</td><td>${esc(req)}</td><td><span class="pill ${pillClass}">Due ${esc(fmtDate(due))}</span></td></tr>`;
   }).join("") || `<tr><td colspan="3"><div class="empty-state">No training items listed.</div></td></tr>`;
+  applyTrainingEmployeeFilter();
+}
+function initTrainingEmployeeFilterFromExistingRows(){
+  const tbody = document.getElementById("training-body");
+  const employeeSelect = document.getElementById("training-employee-filter");
+  if(!tbody || !employeeSelect) return;
+  const rows = Array.from(tbody.querySelectorAll("tr")).filter(row => row.cells && row.cells.length >= 3);
+  const employees = [];
+  rows.forEach(row => {
+    const employee = row.cells[0]?.textContent?.trim() || "";
+    if(!employee || employee === "Employee") return;
+    row.dataset.employee = employee;
+    const rowClass = row.className || "";
+    row.dataset.trainingStatus = rowClass.includes("row-red") ? "overdue" : rowClass.includes("row-orange") ? "within 7" : "in training window";
+    employees.push(employee);
+  });
+  const uniqueEmployees = [...new Set(employees)].sort((a,b) => a.localeCompare(b));
+  const current = employeeSelect.value || trainingEmployeeFilterValue;
+  employeeSelect.innerHTML = `<option value="">All</option>` + uniqueEmployees.map(emp => `<option value="${esc(emp)}">${esc(emp)}</option>`).join("");
+  if(current && uniqueEmployees.includes(current)) employeeSelect.value = current;
+  else employeeSelect.value = "";
+  trainingEmployeeFilterValue = employeeSelect.value;
+  employeeSelect.onchange = () => {
+    trainingEmployeeFilterValue = employeeSelect.value;
+    applyTrainingEmployeeFilter();
+  };
+  applyTrainingEmployeeFilter();
+}
+function applyTrainingEmployeeFilter(){
+  const tbody = document.getElementById("training-body");
+  const selected = document.getElementById("training-employee-filter")?.value || "";
+  if(!tbody) return;
+  let overdue = 0;
+  let soon = 0;
+  let visible = 0;
+  Array.from(tbody.querySelectorAll("tr[data-employee]")).forEach(row => {
+    const show = !selected || row.dataset.employee === selected;
+    row.style.display = show ? "" : "none";
+    if(show){
+      visible++;
+      const status = row.dataset.trainingStatus || "";
+      if(status.includes("overdue")) overdue++;
+      if(status.includes("within 7")) soon++;
+    }
+  });
+  let empty = tbody.querySelector("tr.training-filter-empty");
+  if(!visible && selected){
+    if(!empty){
+      empty = document.createElement("tr");
+      empty.className = "training-filter-empty";
+      empty.innerHTML = `<td colspan="3"><div class="empty-state">No training items listed for ${esc(selected)}.</div></td>`;
+      tbody.appendChild(empty);
+    }
+  } else if(empty){
+    empty.remove();
+  }
   text("training-overdue-count", `${overdue} Overdue`);
   text("training-soon-count", `${soon} Due Within 7 Days`);
 }
@@ -557,6 +628,7 @@ function loadSafetyHQLive(){
   document.body.appendChild(s);
   setTimeout(() => { try { s.remove(); } catch(e){} }, 30000);
 }
+initTrainingEmployeeFilterFromExistingRows();
 loadSafetyHQLive();
 setInterval(loadSafetyHQLive, 5 * 60 * 1000);
 </script>
