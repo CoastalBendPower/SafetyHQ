@@ -484,7 +484,10 @@ tr.row-neutral td{background:#fff}
       </a>
     </section>
   </section>
-  <div class="footer">Coastal Bend Power Services, LLC — SafetyHQ<br><span class="site-version">Version: SafetyHQ v3.0.3</span></div>
+  <div class="footer">
+    <div>Coastal Bend Power Services, LLC</div>
+    <div>SafetyHQ v3.0.4</div>
+  </div>
 </main>
 <script>
 (function(){
@@ -713,131 +716,4 @@ function initTrainingEmployeeFilterFromExistingRows(){
 
 function applyTrainingEmployeeFilter(){
   const tbody = document.getElementById("training-body");
-  const selected = document.getElementById("training-employee-filter")?.value || "";
-  if(!tbody) return;
-
-  let overdue = 0;
-  let soon = 0;
-  let visible = 0;
-
-  Array.from(tbody.querySelectorAll("tr[data-employee]")).forEach(row => {
-    const show = !selected || row.dataset.employee === selected;
-    row.style.display = show ? "" : "none";
-    if(show){
-      visible++;
-      const status = row.dataset.trainingStatus || "";
-      if(status.includes("overdue")) overdue++;
-      if(status.includes("within 7")) soon++;
-    }
-  });
-
-  let empty = tbody.querySelector("tr.training-filter-empty");
-  if(!visible && selected){
-    if(!empty){
-      empty = document.createElement("tr");
-      empty.className = "training-filter-empty";
-      empty.innerHTML = `<td colspan="3"><div class="empty-state">No training items listed for ${esc(selected)}.</div></td>`;
-      tbody.appendChild(empty);
-    }
-  } else if(empty){
-    empty.remove();
-  }
-
-  text("training-overdue-count", `${overdue} Overdue`);
-  text("training-soon-count", `${soon} Due Within 7 Days`);
-}
-
-function updateQuarter(q, recordables, manHours){
-  const rec = document.querySelector(`[data-quarter="${q}"][data-field="recordables"]`);
-  const hrs = document.querySelector(`[data-quarter="${q}"][data-field="manHours"]`);
-  if(rec && recordables !== undefined && recordables !== "") rec.textContent = recordables;
-  if(hrs && manHours !== undefined && manHours !== "") hrs.textContent = manHours;
-}
-
-function updateSafetyHQDashboard(data){
-  window.__safetyHQPendingRequest = "";
-
-  if(!data || typeof data !== "object"){
-    text("last-update", "Last Update: Live feed returned no data");
-    return;
-  }
-
-  const lastUpdate = getMetric(data,["lastUpdate","Last Update","lastUpdated","Last Updated","updated","Updated","updatedAt","Updated At","timestamp","Timestamp","Dashboard Last Update","Last Upload","Latest Upload","exportedAt","reviewedAt"]) || findTimestamp(data);
-
-  if(lastUpdate) text("last-update", `Last Update: ${lastUpdate}`);
-  else text("last-update", "Last Update: Latest upload loaded - timestamp not found");
-
-  text("emr", getMetric(data,["emr","EMR"]));
-  text("ytd-man-hours", getMetric(data,["ytdManHours","totalManHours","YTD Man Hours","Total Man Hours","manHours"]));
-
-  const month = getMetric(data,["currentMonth","Current Month"]);
-  const due = getMetric(data,["monthlyDueDate","Monthly Due Date"]);
-  if(month || due) text("monthly-note", `${month || 'Monthly'} checklists due ${fmtDate(due)}. Required for all employees assigned a company vehicle.`);
-
-  const quarters = data.quarters || data.quarterly || data.oshaQuarters || data.oshaSnapshot;
-  if(Array.isArray(quarters)){
-    quarters.forEach(q => {
-      updateQuarter(q.quarter || q.Quarter, q.recordables ?? q.Recordables, q.manHours ?? q["Man Hours"] ?? q.man_hours ?? q.hours);
-    });
-  } else if(quarters && typeof quarters === "object"){
-    ["Q1","Q2","Q3","Q4"].forEach(q => {
-      const item = quarters[q] || quarters[q.toLowerCase()];
-      if(item) updateQuarter(q, item.recordables ?? item.Recordables, item.manHours ?? item["Man Hours"] ?? item.man_hours ?? item.hours);
-    });
-  }
-
-  const q2Hours = document.querySelector('[data-quarter="Q2"][data-field="manHours"]');
-  if(q2Hours && q2Hours.textContent === "0"){
-    updateQuarter("Q1", "0", "15,878");
-    updateQuarter("Q2", "0", "6,465");
-    updateQuarter("Q3", "0", "0");
-    updateQuarter("Q4", "0", "0");
-  }
-
-  renderMonthly(normalizeRows(data.monthlyStatus || data.monthly || data.checklistStatus || data.checklists || data["Monthly Status"]));
-  renderTraining(normalizeRows(data.trainingStatus || data.training || data.trainingItems || data.inTrainingWindowItems || data["Training Status"]));
-}
-
-window.safetyHQLiveCallback = updateSafetyHQDashboard;
-
-function loadSafetyHQLive(){
-  const requestId = String(Date.now());
-  window.__safetyHQPendingRequest = requestId;
-
-  const s = document.createElement("script");
-  s.src = SAFETYHQ_LIVE_URL + "?callback=safetyHQLiveCallback&v=" + Date.now();
-  s.async = true;
-  s.onerror = () => {
-    if(window.__safetyHQPendingRequest === requestId){
-      text("last-update", "Last Update: Live feed did not respond");
-      window.__safetyHQPendingRequest = "";
-    }
-    console.warn("SafetyHQ live data failed to load; using page fallback data.");
-  };
-
-  document.body.appendChild(s);
-
-  setTimeout(() => {
-    if(window.__safetyHQPendingRequest === requestId){
-      text("last-update", "Last Update: Live feed timeout");
-      window.__safetyHQPendingRequest = "";
-    }
-    try { s.remove(); } catch(e){}
-  }, 15000);
-}
-
-initTrainingEmployeeFilterFromExistingRows();
-loadSafetyHQLive();
-setInterval(loadSafetyHQLive, 5 * 60 * 1000);
-</script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js").catch(err => {
-      console.warn("SafetyHQ service worker registration failed:", err);
-    });
-  });
-}
-</script>
-</body>
-</html>
+  const selected = document.getElementById("training-employee-fi
