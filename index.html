@@ -75,9 +75,7 @@ header::before,.hero::before{
   inset:0;
   z-index:1;
   border-radius:0 0 34px 34px;
-  background:
-    linear-gradient(90deg,rgba(2,10,24,.10),rgba(2,10,24,.22) 48%,rgba(2,10,24,.08)),
-    radial-gradient(circle at 20% 48%,rgba(0,157,255,.18),transparent 34%);
+  background:transparent;
   pointer-events:none;
 }
 .hero-media{
@@ -113,7 +111,6 @@ header::before,.hero::before{
   object-fit:cover;
   object-position:center center;
   border-radius:0 0 34px 34px;
-  filter:saturate(1.04) contrast(1.03) brightness(1.02);
 }
 .wrap{width:min(1180px,calc(100% - 96px));max-width:none;margin:0 auto;padding:16px;background:transparent;box-shadow:none}
 .section{margin-top:18px}
@@ -269,7 +266,7 @@ tr.row-neutral td{background:#fff}
 }
 @media(max-width:620px){
   header,.hero{width:min(100%,calc(100% - 24px));min-height:0;aspect-ratio:16/6.3;margin:0 auto 18px;border-radius:0 0 28px 28px;overflow:hidden}
-  header::before,.hero::before{border-radius:0 0 28px 28px;background:linear-gradient(90deg,rgba(2,10,24,.10),rgba(2,10,24,.30) 46%,rgba(2,10,24,.12)),radial-gradient(circle at 20% 48%,rgba(0,157,255,.22),transparent 34%)}
+  header::before,.hero::before{border-radius:0 0 28px 28px;background:transparent}
   .hero-media{border-radius:0 0 28px 28px}
   .header-banner,.hero-bg{height:100%;min-height:0;object-fit:cover;border-radius:0 0 28px 28px}
   .hero-inner{min-height:0;height:100%;padding:14px 26px 14px 33%;grid-template-columns:minmax(0,1fr);align-items:center;justify-items:center;text-align:left;gap:10px}
