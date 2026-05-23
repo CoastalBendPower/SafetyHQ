@@ -180,8 +180,9 @@ header::before,.hero::before{
 .hsi-menu a:hover{background:#eef6ff;border-color:#bfd3ea;transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,23,42,.10)}
 .updated-line{display:flex;align-items:center;justify-content:flex-start;gap:12px;width:100%;color:var(--blue-dark);background:transparent;border:0;border-radius:0;font-size:.92rem;font-weight:800;margin:4px 0 18px;padding:4px 0 8px;box-shadow:none;text-align:left;backdrop-filter:none}
 .last-update-text{display:inline-block;text-align:left}
-.return-hub-link{justify-self:end;margin-left:auto;color:var(--brand-dark);font-size:14px;font-weight:900;text-decoration:none;border:1px solid rgba(31,78,121,.25);background:rgba(255,255,255,.86);border-radius:999px;padding:7px 12px;white-space:nowrap;text-align:center;box-shadow:0 4px 12px rgba(15,23,42,.06)}
-.return-hub-link:hover{background:#eef6ff;border-color:#bfd3ea}
+.return-hub-link{justify-self:end;margin-left:auto;width:96px;height:96px;border:0;background:transparent;border-radius:50%;padding:0;box-shadow:none}
+.return-hub-link img{width:100%;height:100%;object-fit:contain;display:block;border-radius:50%}
+.return-hub-link:hover{background:transparent;border:0;filter:brightness(1.05)}
 /* KPI cards */
 .label{font-size:12px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.07em}
 .value{font-size:34px;font-weight:900;margin-top:8px;line-height:1.05;color:#111827}
@@ -278,8 +279,8 @@ tr.row-neutral td{background:#fff}
   .eyebrow{font-size:.43rem;letter-spacing:.085em;margin-bottom:5px;white-space:nowrap}
   .site-subtitle{font-size:.54rem;letter-spacing:.045em;margin-top:.38rem;white-space:nowrap}
   .wrap{width:min(100%,calc(100% - 24px));padding:12px}
-  .utility-row{display:grid;grid-template-columns:1fr;align-items:center;justify-content:center;padding:8px;gap:8px;min-height:0}
-  .utility-row .return-hub-link{grid-column:1 / -1;justify-self:end;margin-left:0}
+  .utility-row{display:grid;grid-template-columns:1fr 1fr;align-items:center;justify-content:center;padding:8px;gap:8px;min-height:0}
+  .utility-row .return-hub-link{grid-column:auto;justify-self:end;margin-left:0;width:88px;max-width:88px;height:88px}
   .nav-button,.hsi-dropdown,.hsi-dropdown summary{width:100%;max-width:100%;height:58px}
   .hsi-login-link{width:72px;max-width:72px;height:72px;justify-self:start}
   .hsi-menu{position:absolute;top:62px;left:0;width:220px;grid-template-columns:1fr;margin-top:0}
@@ -323,7 +324,8 @@ tr.row-neutral td{background:#fff}
     <a class="nav-button procedure-link-main" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank" rel="noopener noreferrer" aria-label="Procedure Center">
       <img src="assets/button_ProceduresDashboard.png" alt="Procedure Center">
     </a>
-    <a class="return-hub-link" href="https://coastalbendpower.github.io/Hub/">Return to PowerHub</a>
+    <a class="nav-button return-hub-link" href="https://coastalbendpower.github.io/Hub/" aria-label="Return to PowerHub">      
+      <img src="assets/button_Return_to_PowerHub_round.png" alt="Return to PowerHub">     </a>
   </section>
   <div class="updated-line">
     <span id="last-update" class="last-update-text">Last Update: Loading Latest Update</span>
@@ -478,7 +480,7 @@ tr.row-neutral td{background:#fff}
     
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.7</div>
+  <div>SafetyHQ v3.0.8</div>
 </div>
 </main>
 <script>
