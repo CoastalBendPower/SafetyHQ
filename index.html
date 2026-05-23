@@ -168,6 +168,8 @@ header::before,.hero::before{
 }
 .procedure-link-main{display:none}
 .sharesync-link{justify-self:start}
+.hsi-login-link{justify-self:start;width:72px;height:72px}
+.hsi-login-link img{border-radius:50%;object-fit:contain}
 .hsi-dropdown{justify-self:start;position:relative;border:none;background:transparent;width:235px;height:52px;overflow:visible}
 .hsi-dropdown summary{list-style:none;cursor:pointer;width:235px;height:52px;display:flex;align-items:center;justify-content:center;padding:0;overflow:visible;border-radius:14px}
 .hsi-dropdown summary::-webkit-details-marker{display:none}
@@ -279,6 +281,7 @@ tr.row-neutral td{background:#fff}
   .utility-row{display:grid;grid-template-columns:1fr;align-items:center;justify-content:center;padding:8px;gap:8px;min-height:0}
   .utility-row .return-hub-link{grid-column:1 / -1;justify-self:end;margin-left:0}
   .nav-button,.hsi-dropdown,.hsi-dropdown summary{width:100%;max-width:100%;height:58px}
+  .hsi-login-link{width:72px;max-width:72px;height:72px;justify-self:start}
   .hsi-menu{position:absolute;top:62px;left:0;width:220px;grid-template-columns:1fr;margin-top:0}
   .updated-line{display:flex;width:100%;align-items:center;justify-content:flex-start;gap:8px;font-size:13px;margin:2px 0 12px;padding:4px 0;text-align:left}
   .last-update-text{flex:1;text-align:left;line-height:1.25}
@@ -314,15 +317,9 @@ tr.row-neutral td{background:#fff}
 </header>
 <main class="wrap">
   <section class="panel utility-row">
-    <details class="hsi-dropdown nav-button">
-      <summary>
-        <span class="hsi-title"><img src="assets/button_HSI Quick Links.png" alt="HSI Quick Links"></span>
-      </summary>
-   <div class="hsi-menu">
-        <a href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer">HSI Login</a>
-        <a href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer">HSI Training</a>
-      </div>
-    </details>
+        <a class="nav-button hsi-login-link" href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer" aria-label="HSI Login">
+      <img src="assets/button_HSI_Login_round.png" alt="HSI Login">
+    </a>
     <a class="nav-button procedure-link-main" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank" rel="noopener noreferrer" aria-label="Procedure Center">
       <img src="assets/button_ProceduresDashboard.png" alt="Procedure Center">
     </a>
