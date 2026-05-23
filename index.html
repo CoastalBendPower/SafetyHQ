@@ -98,7 +98,7 @@ header::before,.hero::before{
   gap:22px;
   line-height:1.1;
 }
-.hero-copy{max-width:760px;text-shadow:0 2px 12px rgba(0,0,0,.55)}
+.hero-copy{max-width:760px;text-shadow:0 2px 12px rgba(0,0,0,.55);transform:translateX(10%)}
 .eyebrow{margin:0 0 10px;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;font-weight:850;opacity:.9;color:rgba(255,255,255,.9)}
 .site-title{margin:0;font-size:clamp(2.65rem,5.35vw,5.05rem);line-height:.95;font-weight:950;letter-spacing:-.055em;color:#fff}
 .title-safety{color:#fff}
@@ -136,7 +136,7 @@ header::before,.hero::before{
   z-index:5;
   padding:1px 8px;
   display:grid;
-  grid-template-columns:auto auto 1fr auto;
+  grid-template-columns:auto 1fr auto;
   align-items:center;
   gap:6px;
   background:rgba(255,255,255,.78);
@@ -173,7 +173,7 @@ header::before,.hero::before{
 .hsi-dropdown summary::-webkit-details-marker{display:none}
 .hsi-title{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .hsi-title img{width:100%;height:100%;object-fit:contain;display:block;border-radius:12px}
-.hsi-menu{position:absolute;top:52px;left:0;z-index:50;width:230px;display:grid;grid-template-columns:repeat(2,minmax(130px,1fr));gap:8px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 42px rgba(15,23,42,.20)}
+.hsi-menu{position:absolute;top:52px;left:0;z-index:50;width:235px;display:grid;grid-template-columns:1fr;gap:8px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 42px rgba(15,23,42,.20)}
 .hsi-menu a{display:flex;align-items:center;justify-content:center;min-height:40px;border-radius:12px;background:linear-gradient(180deg,#ffffff,#f8fbff);border:1px solid var(--line);text-decoration:none;color:var(--brand-dark);font-size:12px;font-weight:900;text-align:center;padding:8px 10px;box-shadow:0 4px 12px rgba(15,23,42,.06);transition:all .18s ease}
 .hsi-menu a:hover{background:#eef6ff;border-color:#bfd3ea;transform:translateY(-1px);box-shadow:0 8px 18px rgba(15,23,42,.10)}
 .updated-line{display:flex;align-items:center;justify-content:flex-start;gap:12px;width:100%;color:var(--blue-dark);background:transparent;border:0;border-radius:0;font-size:.92rem;font-weight:800;margin:4px 0 18px;padding:4px 0 8px;box-shadow:none;text-align:left;backdrop-filter:none}
@@ -276,7 +276,7 @@ tr.row-neutral td{background:#fff}
   .eyebrow{font-size:.43rem;letter-spacing:.085em;margin-bottom:5px;white-space:nowrap}
   .site-subtitle{font-size:.54rem;letter-spacing:.045em;margin-top:.38rem;white-space:nowrap}
   .wrap{width:min(100%,calc(100% - 24px));padding:12px}
-  .utility-row{display:grid;grid-template-columns:1fr 1fr;align-items:center;justify-content:center;padding:8px;gap:8px;min-height:0}
+  .utility-row{display:grid;grid-template-columns:1fr;align-items:center;justify-content:center;padding:8px;gap:8px;min-height:0}
   .utility-row .return-hub-link{grid-column:1 / -1;justify-self:end;margin-left:0}
   .nav-button,.hsi-dropdown,.hsi-dropdown summary{width:100%;max-width:100%;height:58px}
   .hsi-menu{position:absolute;top:62px;left:0;width:220px;grid-template-columns:1fr;margin-top:0}
@@ -318,16 +318,11 @@ tr.row-neutral td{background:#fff}
       <summary>
         <span class="hsi-title"><img src="assets/button_HSI Quick Links.png" alt="HSI Quick Links"></span>
       </summary>
-      <div class="hsi-menu">
-        <a href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer">Login</a>
-        <a href="https://sys.hsiplatform.com/coastalbendpower/ds/na/sms/module-record/index/43?offset=0&limit=20&column=doc_title&direction=desc&filters%5Bscope%5D=all&filters%5Bcreated_at%5D=all&filters%5Bstate%5D=159" target="_blank" rel="noopener noreferrer">Access Docs</a>
-        <a href="https://hsicorecoremfesaprod.hsiplatform.com/sms-core-mfe-swa/prod/coastalbendpower/ds/na/sms/legacy/module_records/new?module_name_id=10" target="_blank" rel="noopener noreferrer">Create Checklist</a>
-        <a href="https://sys.hsiplatform.com/en/coastalbendpower/sms-legacy-platform/na/sms/legacy/module_records?module_name_id=14" target="_blank" rel="noopener noreferrer">Log GOOD CATCH</a>
+   <div class="hsi-menu">
+        <a href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer">HSI Login</a>
+        <a href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer">HSI Training</a>
       </div>
     </details>
-    <a class="nav-button sharesync-link" href="https://account.sharesync.serverdata.net/login/v1.2/?client_id=sharesync_web_app_sts&client_type=Sync-WebApp&client_version=3.48.1&application_client_id=5d5c5f78-10b2-0f0b-a925-606d43526abe&redirect_uri=https%3A%2F%2Fsharesync.serverdata.net%2Fus4%2F&locale=en-us" target="_blank" rel="noopener noreferrer" aria-label="ShareSync Login">
-      <img src="assets/button_ShareSync Login.png" alt="ShareSync Login">
-    </a>
     <a class="nav-button procedure-link-main" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank" rel="noopener noreferrer" aria-label="Procedure Center">
       <img src="assets/button_ProceduresDashboard.png" alt="Procedure Center">
     </a>
@@ -486,7 +481,7 @@ tr.row-neutral td{background:#fff}
     
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.5</div>
+  <div>SafetyHQ v3.0.7</div>
 </div>
 </main>
 <script>
