@@ -133,9 +133,9 @@ header::before,.hero::before{
   z-index:5;
   padding:0 8px;
   display:grid;
-  grid-template-columns:auto 1fr auto;
+  grid-template-columns:auto auto 1fr auto;
   align-items:center;
-  gap:6px;
+  gap:8px;
   background:transparent;
   backdrop-filter:none;
   border:0;
@@ -163,7 +163,17 @@ header::before,.hero::before{
   display:block;
   border-radius:12px;
 }
-.procedure-link-main{display:none}
+.p.procedure-link-main{
+  justify-self:start;
+  width:72px;
+  height:72px;
+}
+.procedure-link-main img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
 .hsi-login-link{justify-self:start;width:72px;height:72px}
 .hsi-login-link img{width:100%;height:100%;border-radius:50%;object-fit:contain;display:block}
 .updated-line{display:flex;align-items:center;justify-content:flex-start;gap:12px;width:100%;color:var(--blue-dark);background:transparent;border:0;border-radius:0;font-size:.92rem;font-weight:800;margin:4px 0 18px;padding:4px 0 8px;box-shadow:none;text-align:left;backdrop-filter:none}
@@ -240,9 +250,6 @@ tr.row-neutral td{background:#fff}
 .pill-neutral{background:#eef2f7;color:#475569}
 .eq{font-weight:900;color:var(--brand-dark)}
 .empty-state{padding:14px;color:var(--muted);font-weight:800;background:#fff}
-.procedure-mobile-panel{display:flex;justify-content:flex-start;align-items:center;padding:0;margin:12px 0 0}
-.procedure-bottom-button{width:260px;max-width:100%;height:70px;display:flex;align-items:center;justify-content:center;text-decoration:none}
-.procedure-bottom-button img{width:100%;height:100%;object-fit:contain;display:block}
 .footer{margin:30px 0 8px;padding:18px 4px 20px;color:var(--muted);font-size:.82rem;text-align:center;border-top:1px solid rgba(216,224,234,.9);font-weight:700}
 @media(max-width:980px){
   .osha-split{grid-template-columns:1fr;gap:12px}
@@ -267,10 +274,11 @@ tr.row-neutral td{background:#fff}
   .eyebrow{font-size:.43rem;letter-spacing:.085em;margin-bottom:5px;white-space:nowrap}
   .site-subtitle{font-size:.54rem;letter-spacing:.045em;margin-top:.38rem;white-space:nowrap}
   .wrap{width:min(100%,calc(100% - 24px));padding:12px}
-  .utility-row{display:grid;grid-template-columns:1fr 1fr;align-items:center;justify-content:center;padding:0 8px;gap:8px;min-height:0;margin:0 auto 4px;background:transparent;border:0;box-shadow:none;backdrop-filter:none}
+  .utility-row{display:grid;grid-template-columns:72px 72px 1fr;align-items:center;justify-content:start;padding:0 8px;gap:8px;min-height:0;margin:0 auto 4px;background:transparent;border:0;box-shadow:none;backdrop-filter:none}
   .utility-row .return-hub-link{grid-column:auto;justify-self:end;margin-left:0;width:72px;max-width:72px;height:72px}
   .nav-button,.hsi-dropdown,.hsi-dropdown summary{width:100%;max-width:100%;height:58px}
   .hsi-login-link{width:72px;max-width:72px;height:72px;justify-self:start}
+  .utility-row .procedure-link-main{width:72px;max-width:72px;height:72px;justify-self:start}
   .hsi-menu{position:absolute;top:62px;left:0;width:220px;grid-template-columns:1fr;margin-top:0}
   .updated-line{display:flex;width:100%;align-items:center;justify-content:flex-start;gap:8px;font-size:13px;margin:2px 0 12px;padding:4px 0;text-align:left}
   .last-update-text{flex:1;text-align:left;line-height:1.25}
@@ -285,8 +293,6 @@ tr.row-neutral td{background:#fff}
   .training-employee-filter{width:100%;min-width:118px;max-width:150px;font-size:10px;padding:5px 18px 5px 7px}
   th,td{padding:9px 6px}
   .section-title{font-size:20px}
-  .procedure-mobile-panel{margin-top:12px;padding:12px}
-  .procedure-bottom-button{width:100%;max-width:240px;height:64px}
 }
 </style>
 </head>
@@ -310,7 +316,7 @@ tr.row-neutral td{background:#fff}
       <img src="assets/button_HSI_Login_round_300.png" alt="HSI Login">
     </a>
     <a class="nav-button procedure-link-main" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank" rel="noopener noreferrer" aria-label="Procedure Center">
-      <img src="assets/button_ProceduresDashboard.png" alt="Procedure Center">
+      <img src="<img src="assets/button_Procedure_Center_round_300.png" alt="Procedure Center">
     </a>
     <a class="nav-button return-hub-link" href="https://coastalbendpower.github.io/Hub/" aria-label="Return to PowerHub">      
       <img src="assets/button_Return_to_PowerHub_round_300.png" alt="Return to PowerHub">     </a>
@@ -460,15 +466,10 @@ tr.row-neutral td{background:#fff}
         </table>
       </div>
     </details>
-    <section class="procedure-mobile-panel">
-      <a class="procedure-bottom-button" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank" rel="noopener noreferrer" aria-label="Procedure Center">
-        <img src="assets/button_ProceduresDashboard.png" alt="Procedure Center">
-      </a>
-    </section>
-    
+        
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.8</div>
+  <div>SafetyHQ v3.0.9</div>
 </div>
 </main>
 <script>
