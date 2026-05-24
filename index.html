@@ -383,16 +383,13 @@ tr.row-neutral td{background:#fff}
         <section class="status-card">
           <div class="status-card-header">
             <h3>Overdue / Missing</h3>
-            <span class="status-count bad" id="monthly-open-small">4 items</span>
+            <span class="status-count bad" id="monthly-open-small">Loading</span>
           </div>
           <div class="table-wrap">
             <table>
               <thead><tr><th>Employee</th><th>EQ #</th><th>Status</th></tr></thead>
               <tbody id="monthly-open-body">
-                <tr class="row-red"><td>Johnathon Torres</td><td class="eq">V008</td><td><span class="pill pill-red">6d Overdue</span></td></tr>
-                <tr class="row-red"><td>Hayden Henry</td><td class="eq">V013</td><td><span class="pill pill-red">6d Overdue</span> Missed April 2026</td></tr>
-                <tr class="row-red"><td>Kurt Foerster</td><td class="eq">V027</td><td><span class="pill pill-red">6d Overdue</span></td></tr>
-                <tr class="row-red"><td>Zach Hasdorff</td><td class="eq">V029</td><td><span class="pill pill-red">6d Overdue</span></td></tr>
+                <tr><td colspan="3"><div class="empty-state">Loading latest Monthly Status...</div></td></tr>
               </tbody>
             </table>
           </div>
@@ -400,28 +397,13 @@ tr.row-neutral td{background:#fff}
         <details class="status-card completed-collapse">
           <summary class="status-card-header">
             <h3>Completed</h3>
-            <span class="status-count" id="monthly-complete-small">16 items</span>
+            <span class="status-count" id="monthly-complete-small">Loading</span>
           </summary>
           <div class="table-wrap">
             <table>
               <thead><tr><th>Employee</th><th>EQ #</th><th>Completed</th></tr></thead>
               <tbody id="monthly-complete-body">
-                <tr class="row-green"><td>Greg Woodring</td><td class="eq">V010</td><td><span class="pill pill-green">05/01/2026</span></td></tr>
-                <tr class="row-green"><td>Ricky Hilbrich</td><td class="eq">V016</td><td><span class="pill pill-green">05/01/2026</span></td></tr>
-                <tr class="row-green"><td>Jeff Barrera</td><td class="eq">V017</td><td><span class="pill pill-green">05/01/2026</span></td></tr>
-                <tr class="row-green"><td>Lee Hasdorff</td><td class="eq">V026</td><td><span class="pill pill-green">05/01/2026</span></td></tr>
-                <tr class="row-green"><td>Nathan Motal</td><td class="eq">V020</td><td><span class="pill pill-green">05/02/2026</span></td></tr>
-                <tr class="row-green"><td>Weston Haworth</td><td class="eq">V021</td><td><span class="pill pill-green">05/02/2026</span></td></tr>
-                <tr class="row-green"><td>Nate Evans</td><td class="eq">V022</td><td><span class="pill pill-green">05/02/2026</span></td></tr>
-                <tr class="row-green"><td>Paul Gaida</td><td class="eq">V014</td><td><span class="pill pill-green">05/03/2026</span></td></tr>
-                <tr class="row-green"><td>Jonathon Mokwa</td><td class="eq">V018</td><td><span class="pill pill-green">05/03/2026</span></td></tr>
-                <tr class="row-green"><td>Blake Woodring</td><td class="eq">V024</td><td><span class="pill pill-green">05/03/2026</span></td></tr>
-                <tr class="row-green"><td>Philip Kollaja</td><td class="eq">V028</td><td><span class="pill pill-green">05/03/2026</span></td></tr>
-                <tr class="row-green"><td>Lane Fikes</td><td class="eq">V019</td><td><span class="pill pill-green">05/04/2026</span></td></tr>
-                <tr class="row-green"><td>Marshall Mach</td><td class="eq">V025</td><td><span class="pill pill-green">05/04/2026</span></td></tr>
-                <tr class="row-green"><td>Zach Young</td><td class="eq">V023</td><td><span class="pill pill-green">05/05/2026</span></td></tr>
-                <tr class="row-green"><td>Mark Fehner</td><td class="eq">V009</td><td><span class="pill pill-green">05/06/2026</span></td></tr>
-                <tr class="row-green"><td>Cody Geffert</td><td class="eq">V006</td><td><span class="pill pill-green">05/11/2026</span></td></tr>
+                <tr><td colspan="3"><div class="empty-state">Loading latest Monthly Status...</div></td></tr>
               </tbody>
             </table>
           </div>
@@ -469,7 +451,7 @@ tr.row-neutral td{background:#fff}
         
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.9</div>
+  <div>SafetyHQ v3.0.10</div>
 </div>
 </main>
 <script>
@@ -593,12 +575,23 @@ function findTimestamp(source, depth = 0){
 function renderMonthly(rows){
   const tbodyOpen = document.getElementById("monthly-open-body");
   const tbodyComplete = document.getElementById("monthly-complete-body");
-  if(!tbodyOpen || !tbodyComplete || !rows.length) return;
+  if(!tbodyOpen || !tbodyComplete) return;
 
-  const filtered = rows.filter(r => {
+  const sourceRows = normalizeRows(rows);
+
+  if(!sourceRows.length){
+    tbodyOpen.innerHTML = `<tr><td colspan="3"><div class="empty-state">Live Monthly Status feed returned no rows.</div></td></tr>`;
+    tbodyComplete.innerHTML = `<tr><td colspan="3"><div class="empty-state">Live Monthly Status feed returned no completed rows.</div></td></tr>`;
+    text("monthly-open-small", "0 items");
+    text("monthly-complete-small", "0 items");
+    return;
+  }
+
+  const filtered = sourceRows.filter(r => {
     const emp = cell(r,["employee","Employee"],0);
-    const eq = cell(r,["eq","eqNumber","EQ #","vehicle"],1);
-    return emp && emp !== "Employee" && eq;
+    const eq = cell(r,["eq","eqNumber","EQ #","vehicle","Vehicle","Vehicle #"],1);
+    const include = String(cell(r,["includeOnSite","Include On Site?","Include On Site"],7) || "Yes").trim().toLowerCase();
+    return emp && emp !== "Employee" && eq && include !== "no" && include !== "false";
   });
 
   const open = [];
@@ -606,19 +599,38 @@ function renderMonthly(rows){
 
   filtered.forEach(r => {
     const employee = cell(r,["employee","Employee"],0);
-    const eq = cell(r,["eq","eqNumber","EQ #","vehicle"],1);
-    const completeDate = cell(r,["completionDate","completedAt","Completion Date"],3);
-    const status = cell(r,["dashboardStatus","status","Dashboard Status"],4);
+    const eq = cell(r,["eq","eqNumber","EQ #","vehicle","Vehicle","Vehicle #"],1);
+    const completeDate = cell(r,["completionDate","completedAt","Completion Date","Completed Date"],3);
+    const status = cell(r,["dashboardStatus","status","Dashboard Status","Status"],4);
     const days = cell(r,["daysOverdue","Days Overdue"],5);
     const notes = cell(r,["notes","Notes"],6);
-    const isComplete = String(status).toLowerCase().includes("complete") || !!completeDate;
+    const statusLower = String(status).toLowerCase();
+    const isComplete = statusLower.includes("complete") || !!completeDate;
     const item = {employee,eq,completeDate,status,days,notes};
     if(isComplete) complete.push(item); else open.push(item);
   });
 
-  tbodyOpen.innerHTML = open.length ? open.map(r => `<tr class="row-red"><td>${esc(r.employee)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-red${Number(r.days)>10?' severe':''}">${esc(r.days || '')}${r.days ? 'd Overdue' : esc(r.status || 'Overdue / Missing')}</span>${r.notes ? ' ' + esc(r.notes) : ''}</td></tr>`).join("") : `<tr><td colspan="3"><div class="empty-state">No overdue or missing monthly checklists.</div></td></tr>`;
+  open.sort((a,b) => {
+    const da = Number(a.days || 0);
+    const db = Number(b.days || 0);
+    if(db !== da) return db - da;
+    return String(a.employee).localeCompare(String(b.employee));
+  });
 
-  tbodyComplete.innerHTML = complete.length ? complete.map(r => `<tr class="row-green"><td>${esc(r.employee)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-green">${esc(fmtDate(r.completeDate))}</span></td></tr>`).join("") : `<tr><td colspan="3"><div class="empty-state">No completed checklists listed.</div></td></tr>`;
+  complete.sort((a,b) => {
+    const dateSort = String(a.completeDate || "").localeCompare(String(b.completeDate || ""));
+    if(dateSort !== 0) return dateSort;
+    return String(a.employee).localeCompare(String(b.employee));
+  });
+
+  tbodyOpen.innerHTML = open.length ? open.map(r => {
+    const dayNumber = Number(String(r.days || "").replace(/[^0-9.-]/g,""));
+    const severe = Number.isFinite(dayNumber) && dayNumber > 10;
+    const label = r.days ? `${esc(r.days)}d Overdue` : esc(r.status || "Overdue / Missing");
+    return `<tr class="row-red"><td>${esc(r.employee)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-red${severe?' severe':''}">${label}</span>${r.notes ? ' ' + esc(r.notes) : ''}</td></tr>`;
+  }).join("") : `<tr><td colspan="3"><div class="empty-state">No overdue or missing monthly checklists.</div></td></tr>`;
+
+  tbodyComplete.innerHTML = complete.length ? complete.map(r => `<tr class="row-green"><td>${esc(r.employee)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-green">${esc(fmtDate(r.completeDate))}</span>${r.notes ? ' ' + esc(r.notes) : ''}</td></tr>`).join("") : `<tr><td colspan="3"><div class="empty-state">No completed checklists listed.</div></td></tr>`;
 
   text("monthly-open-count", `${open.length} Overdue / Missing`);
   text("monthly-complete-count", `${complete.length} Completed`);
@@ -780,7 +792,7 @@ function updateSafetyHQDashboard(data){
     updateQuarter("Q4", "0", "0");
   }
 
-  renderMonthly(normalizeRows(data.monthlyStatus || data.monthly || data.checklistStatus || data.checklists || data["Monthly Status"]));
+  renderMonthly(data.monthlyStatus || data.monthlyItems || data.checklistStatus || data.monthly || data.checklists || data["Monthly Status"]);
   renderTraining(normalizeRows(data.trainingStatus || data.training || data.trainingItems || data.inTrainingWindowItems || data["Training Status"]));
 }
 
