@@ -268,7 +268,7 @@ tr.row-neutral td{background:#fff}
   .hero-media{border-radius:0 0 28px 28px}
   .header-banner,.hero-bg{height:100%;min-height:0;object-fit:cover;border-radius:0 0 28px 28px}
   .hero-inner{min-height:0;height:100%;padding:14px 26px 14px 33%;grid-template-columns:minmax(0,1fr);align-items:center;justify-items:center;text-align:left;gap:10px}
-  .hero-copy{width:min(100%,305px);max-width:305px;margin:0;padding:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;text-shadow:0 2px 12px rgba(0,0,0,.60)}
+  .hero-copy{width:min(100%,305px);max-width:305px;margin:0;padding:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;text-shadow:0 2px 12px rgba(0,0,0,.60);transform:none}
   .site-title{font-size:clamp(1.54rem,7.85vw,1.96rem)}
   .site-title::after{width:96px;margin:.24rem 0 0}
   .eyebrow{font-size:.43rem;letter-spacing:.085em;margin-bottom:5px;white-space:nowrap}
@@ -451,7 +451,7 @@ tr.row-neutral td{background:#fff}
         
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.10</div>
+  <div>SafetyHQ v3.0.11</div>
 </div>
 </main>
 <script>
@@ -802,40 +802,24 @@ function loadSafetyHQLive(){
   const requestId = String(Date.now());
   window.__safetyHQPendingRequest = requestId;
 
-  const s = document.createElement("script");
-  s.src = SAFETYHQ_LIVE_URL + "?callback=safetyHQLiveCallback&v=" + Date.now();
-  s.async = true;
-  s.onerror = () => {
+  const script = document.createElement("script");
+  script.src = `${SAFETYHQ_LIVE_URL}?callback=safetyHQLiveCallback&t=${requestId}`;
+  script.onerror = () => {
     if(window.__safetyHQPendingRequest === requestId){
-      text("last-update", "Last Update: Live feed did not respond");
-      window.__safetyHQPendingRequest = "";
+      text("last-update", "Last Update: Unable to load live data");
     }
-    console.warn("SafetyHQ live data failed to load; using page fallback data.");
   };
-
-  document.body.appendChild(s);
+  document.body.appendChild(script);
 
   setTimeout(() => {
     if(window.__safetyHQPendingRequest === requestId){
-      text("last-update", "Last Update: Live feed timeout");
-      window.__safetyHQPendingRequest = "";
+      text("last-update", "Last Update: Loading latest upload...");
     }
-    try { s.remove(); } catch(e){}
-  }, 15000);
+  }, 2500);
 }
 
 initTrainingEmployeeFilterFromExistingRows();
 loadSafetyHQLive();
-setInterval(loadSafetyHQLive, 5 * 60 * 1000);
-</script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js").catch(err => {
-      console.warn("SafetyHQ service worker registration failed:", err);
-    });
-  });
-}
 </script>
 </body>
 </html>
