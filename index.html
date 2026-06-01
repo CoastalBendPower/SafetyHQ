@@ -234,7 +234,12 @@ header::before,.hero::before{
 .status-count.warn{background:#fff4df;color:var(--warn);border:1px solid rgba(184,107,0,.24)}
 .status-count.neutral{background:#eef2f7;color:#475569;border:1px solid rgba(71,85,105,.18)}
 .employee-name{font-weight:inherit}
-.missed-warning{display:inline-flex;align-items:center;justify-content:center;margin-left:5px;font-size:12px;line-height:1;color:#b42318;vertical-align:middle;cursor:help}
+.missed-warning-wrap{position:relative;display:inline-flex;align-items:center;margin-left:5px;vertical-align:middle}
+.missed-warning{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border:1px solid rgba(180,35,24,.28);border-radius:999px;background:#fff4df;color:#b42318;font-size:12px;line-height:1;vertical-align:middle;cursor:pointer;padding:0;font-weight:900}
+.missed-warning:hover,.missed-warning:focus{outline:none;background:#fde8e8;border-color:rgba(180,35,24,.45)}
+.missed-popout{display:none;position:absolute;left:24px;top:50%;transform:translateY(-50%);z-index:50;min-width:190px;max-width:280px;padding:9px 10px;border-radius:12px;background:#fff;border:1px solid rgba(180,35,24,.24);box-shadow:0 12px 28px rgba(15,23,42,.18);color:#7f1d1d;font-size:12px;font-weight:850;line-height:1.35;white-space:normal}
+.missed-warning-wrap:hover .missed-popout,.missed-warning-wrap:focus-within .missed-popout,.missed-warning-wrap.open .missed-popout{display:block}
+@media(max-width:620px){.missed-popout{left:auto;right:0;top:24px;transform:none;min-width:180px;max-width:230px}}
 
 .training-employee-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .training-employee-filter{min-width:145px;max-width:210px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--brand-dark);font-size:11px;font-weight:900;padding:5px 24px 5px 9px;text-transform:none;letter-spacing:0;outline:none}
@@ -456,7 +461,7 @@ tr.row-neutral td{background:#fff}
         
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.13</div>
+  <div>SafetyHQ v3.0.14</div>
 </div>
 </main>
 <script>
@@ -532,6 +537,16 @@ function fmtWeekdayDateShort(value){
     return `${weekday}, ${date}`;
   }
   return fmtDateShort(value);
+}
+
+function formatWholeNumber(value){
+  if(value === undefined || value === null || value === "") return "";
+  const raw = String(value).trim();
+  const cleaned = raw.replace(/,/g, "").replace(/[^0-9.-]/g, "");
+  if(!cleaned || cleaned === "-" || cleaned === ".") return raw;
+  const num = Number(cleaned);
+  if(!Number.isFinite(num)) return raw;
+  return Math.round(num).toLocaleString("en-US");
 }
 
 function monthDisplayLabel(value){
@@ -717,10 +732,20 @@ function renderMonthly(rows){
   const dayMs = 24 * 60 * 60 * 1000;
   const daysUntil = dueDate => dueDate ? Math.round((dueDate.getTime() - todayOnly.getTime()) / dayMs) : null;
 
-  const missedIcon = notes => {
+  const formatMissedNote = notes => {
     const s = String(notes || "").trim();
     if(!/missed/i.test(s)) return "";
-    return ` <span class="missed-warning" title="${esc(s)}" aria-label="${esc(s)}" role="img">⚠</span>`;
+    const monthMatches = [...s.matchAll(/\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+\d{4}\b/gi)]
+      .map(m => m[0].replace(/\./g, "").replace(/\s+/g, " ").trim());
+    const uniqueMonths = [...new Set(monthMatches)];
+    if(uniqueMonths.length) return `Missed: ${uniqueMonths.join(", ")}`;
+    return s;
+  };
+
+  const missedIcon = notes => {
+    const label = formatMissedNote(notes);
+    if(!label) return "";
+    return ` <span class="missed-warning-wrap"><button type="button" class="missed-warning" title="${esc(label)}" aria-label="${esc(label)}">⚠</button><span class="missed-popout" role="tooltip">${esc(label)}</span></span>`;
   };
 
   const employeeCell = r => `<span class="employee-name">${esc(r.employee)}</span>${missedIcon(r.notes)}`;
@@ -942,7 +967,7 @@ function updateQuarter(q, recordables, manHours){
   const rec = document.querySelector(`[data-quarter="${q}"][data-field="recordables"]`);
   const hrs = document.querySelector(`[data-quarter="${q}"][data-field="manHours"]`);
   if(rec && recordables !== undefined && recordables !== "") rec.textContent = recordables;
-  if(hrs && manHours !== undefined && manHours !== "") hrs.textContent = manHours;
+  if(hrs && manHours !== undefined && manHours !== "") hrs.textContent = formatWholeNumber(manHours);
 }
 
 function updateSafetyHQDashboard(data){
@@ -959,7 +984,8 @@ function updateSafetyHQDashboard(data){
   else text("last-update", "Last Update: Latest upload loaded - timestamp not found");
 
   text("emr", getMetric(data,["emr","EMR"]));
-  text("ytd-man-hours", getMetric(data,["ytdManHours","totalManHours","YTD Man Hours","Total Man Hours","manHours"]));
+  const totalManHours = getMetric(data,["ytdManHours","totalManHours","YTD Man Hours","Total Man Hours","manHours"]);
+  if(totalManHours !== "") text("ytd-man-hours", formatWholeNumber(totalManHours));
 
   const month = getMetric(data,["currentMonth","Current Month"]);
   const due = getMetric(data,["monthlyDueDate","Monthly Due Date"]);
@@ -1010,6 +1036,24 @@ function loadSafetyHQLive(){
     }
   }, 2500);
 }
+
+document.addEventListener("click", event => {
+  const button = event.target.closest(".missed-warning");
+  document.querySelectorAll(".missed-warning-wrap.open").forEach(wrap => {
+    if(!button || wrap !== button.closest(".missed-warning-wrap")) wrap.classList.remove("open");
+  });
+  if(button){
+    event.preventDefault();
+    event.stopPropagation();
+    button.closest(".missed-warning-wrap")?.classList.toggle("open");
+  }
+});
+
+document.addEventListener("keydown", event => {
+  if(event.key === "Escape"){
+    document.querySelectorAll(".missed-warning-wrap.open").forEach(wrap => wrap.classList.remove("open"));
+  }
+});
 
 initTrainingEmployeeFilterFromExistingRows();
 loadSafetyHQLive();
