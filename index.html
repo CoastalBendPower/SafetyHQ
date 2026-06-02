@@ -566,6 +566,36 @@ function fmtDate(value){
   return s;
 }
 
+function fmtWeekdayDateShort(value){
+  if(!value) return "";
+  const s = String(value).trim();
+  let parsed = null;
+
+  let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if(m) parsed = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+
+  if(!parsed){
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+    if(m){
+      const y = String(m[3]).length === 2 ? Number(`20${m[3]}`) : Number(m[3]);
+      parsed = new Date(y, Number(m[1]) - 1, Number(m[2]));
+    }
+  }
+
+  if(!parsed){
+    const fallback = new Date(s);
+    if(!Number.isNaN(fallback.getTime())) parsed = fallback;
+  }
+
+  if(parsed && !Number.isNaN(parsed.getTime())){
+    const weekday = parsed.toLocaleDateString("en-US", {weekday:"long"});
+    const date = `${String(parsed.getMonth()+1).padStart(2,"0")}/${String(parsed.getDate()).padStart(2,"0")}/${String(parsed.getFullYear()).slice(-2)}`;
+    return `${weekday}, ${date}`;
+  }
+
+  return fmtDate(value);
+}
+
 function formatWholeNumber(value){
   if(value === undefined || value === null || value === "") return "";
   const raw = String(value).trim();
