@@ -463,8 +463,8 @@ tr.row-neutral td{background:#fff}
       <div class="status-layout">
         <section class="status-card">
           <div class="status-card-header">
-            <h3>Overdue / Missing</h3>
-            <span class="status-count bad" id="monthly-open-small">Loading</span>
+            <h3 id="monthly-open-title">Due</h3>
+            <span class="status-count neutral" id="monthly-open-small">Loading</span>
           </div>
           <div class="table-wrap">
             <table>
@@ -532,7 +532,7 @@ tr.row-neutral td{background:#fff}
         
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.16</div>
+  <div>SafetyHQ v3.0.19</div>
 </div>
 </main>
 <script>
@@ -565,35 +565,17 @@ function fmtDate(value){
   if(s.length >= 10 && s[4] === "-" && s[7] === "-") return `${s.slice(5,7)}/${s.slice(8,10)}/${s.slice(0,4)}`;
   return s;
 }
-function fmtWeekdayDateShort(value){
-  if(!value) return "";
-  const s = String(value).trim();
-  let parsed = null;
 
-  let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-  if(m) parsed = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-
-  if(!parsed){
-    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
-    if(m){
-      const y = String(m[3]).length === 2 ? Number(`20${m[3]}`) : Number(m[3]);
-      parsed = new Date(y, Number(m[1]) - 1, Number(m[2]));
-    }
-  }
-
-  if(!parsed){
-    const fallback = new Date(s);
-    if(!Number.isNaN(fallback.getTime())) parsed = fallback;
-  }
-
-  if(parsed && !Number.isNaN(parsed.getTime())){
-    const weekday = parsed.toLocaleDateString("en-US", {weekday:"long"});
-    const date = `${String(parsed.getMonth()+1).padStart(2,"0")}/${String(parsed.getDate()).padStart(2,"0")}/${String(parsed.getFullYear()).slice(-2)}`;
-    return `${weekday}, ${date}`;
-  }
-
-  return fmtDate(value);
+function formatWholeNumber(value){
+  if(value === undefined || value === null || value === "") return "";
+  const raw = String(value).trim();
+  const cleaned = raw.replace(/,/g, "").replace(/[^0-9.-]/g, "");
+  if(!cleaned || cleaned === "-" || cleaned === ".") return raw;
+  const num = Number(cleaned);
+  if(!Number.isFinite(num)) return raw;
+  return Math.round(num).toLocaleString("en-US");
 }
+
 function normalizeRows(source){
   if(!source) return [];
   if(Array.isArray(source)) return source;
@@ -687,50 +669,81 @@ function renderMonthly(rows){
   if(!tbodyOpen || !tbodyComplete) return;
 
   const sourceRows = normalizeRows(rows);
+  const openTitle = document.getElementById("monthly-open-title");
+  const openSmall = document.getElementById("monthly-open-small");
+
+  const setOpenSummary = (title, countText, state = "neutral") => {
+    if(openTitle) openTitle.textContent = title;
+    if(openSmall){
+      openSmall.textContent = countText;
+      openSmall.classList.remove("bad","warn","neutral");
+      openSmall.classList.add(state);
+    }
+  };
 
   if(!sourceRows.length){
     tbodyOpen.innerHTML = `<tr><td colspan="4"><div class="empty-state">Live Monthly Status feed returned no rows.</div></td></tr>`;
     tbodyComplete.innerHTML = `<tr><td colspan="4"><div class="empty-state">Live Monthly Status feed returned no completed rows.</div></td></tr>`;
-    text("monthly-open-small", "0 items");
+    setOpenSummary("Due", "0 items", "neutral");
     text("monthly-complete-small", "0 items");
     return;
   }
 
-  const filtered = sourceRows.filter(r => {
-    const emp = cell(r,["employee","Employee"],0);
-    const eq = cell(r,["eq","eqNumber","EQ #","vehicle","Vehicle","Vehicle #"],1);
-    const include = String(cell(r,["includeOnSite","Include On Site?","Include On Site"],7) || "Yes").trim().toLowerCase();
-    return emp && emp !== "Employee" && eq && include !== "no" && include !== "false";
-  });
+  const statusLike = value => /(complete|overdue|missing|due|window|not complete)/i.test(String(value || ""));
+  const dateLike = value => {
+    const s = String(value || "").trim();
+    return /^\d{4}-\d{1,2}-\d{1,2}/.test(s) ||
+           /^\d{1,2}\/\d{1,2}\/\d{2,4}/.test(s) ||
+           /^[A-Za-z]{3}\s+[A-Za-z]{3}\s+\d{1,2}\s+\d{4}/.test(s);
+  };
 
-  const open = [];
-  const complete = [];
+  const readMonthly = (row, field) => {
+    if(!Array.isArray(row)){
+      const keyMap = {
+        employee:["employee","Employee"],
+        eq:["eq","eqNumber","EQ #","vehicle","Vehicle","Vehicle #"],
+        dueDate:["dueDate","Due Date","monthlyDueDate","Monthly Due Date"],
+        completeDate:["completionDate","completedAt","Completion Date","Completed Date"],
+        status:["dashboardStatus","Dashboard Status","status","Status","timingLabel","Timing Label"],
+        days:["daysOverdue","Days Overdue"],
+        notes:["notes","Notes","missedMonths","Missed Months","Missed Months / Notes"],
+        missedInspections12mo:["missedInspections12mo","missedInspections12Mo","missedInspections","Missed Inspections 12mo","Missed Inspections"],
+        include:["includeOnSite","Include On Site?","Include On Site"]
+      };
+      return cell(row, keyMap[field] || [], -1);
+    }
 
-  filtered.forEach(r => {
-    const employee = cell(r,["employee","Employee"],0);
-    const eq = cell(r,["eq","eqNumber","EQ #","vehicle","Vehicle","Vehicle #"],1);
-    const completeDate = cell(r,["completionDate","completedAt","Completion Date","Completed Date"],3);
-    const status = cell(r,["dashboardStatus","status","Dashboard Status","Status"],4);
-    const days = cell(r,["daysOverdue","Days Overdue"],5);
-    const notes = cell(r,["notes","Notes"],6);
-    const statusLower = String(status).toLowerCase();
-    const isComplete = statusLower.includes("complete") || !!completeDate;
-    const item = {employee,eq,completeDate,status,days,notes};
-    if(isComplete) complete.push(item); else open.push(item);
-  });
+    const checklistStatusShape = row.length >= 12 || statusLike(row[7]) || dateLike(row[4]);
+    if(checklistStatusShape){
+      const map = {employee:0, eq:1, dueDate:4, completeDate:5, status:7, days:8, notes:10, include:11};
+      return row[map[field]] ?? "";
+    }
 
-  open.sort((a,b) => {
-    const da = Number(a.days || 0);
-    const db = Number(b.days || 0);
-    if(db !== da) return db - da;
-    return String(a.employee).localeCompare(String(b.employee));
-  });
+    const bridgeMap = {employee:0, eq:1, status:2, completeDate:3, dueDate:4, days:5, notes:6, include:7};
+    return row[bridgeMap[field]] ?? "";
+  };
 
-  complete.sort((a,b) => {
-    const dateSort = String(a.completeDate || "").localeCompare(String(b.completeDate || ""));
-    if(dateSort !== 0) return dateSort;
-    return String(a.employee).localeCompare(String(b.employee));
-  });
+  const parseDateOnly = value => {
+    if(!value) return null;
+    const s = String(value).trim();
+
+    let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if(m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+    if(m){
+      const year = Number(String(m[3]).length === 2 ? `20${m[3]}` : m[3]);
+      return new Date(year, Number(m[1]) - 1, Number(m[2]));
+    }
+
+    const parsed = new Date(s);
+    if(!Number.isNaN(parsed.getTime())) return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+
+    return null;
+  };
+
+  const today = new Date();
+  const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
   const monthNameMap = {
     january:0, jan:0,
@@ -756,61 +769,119 @@ function renderMonthly(rows){
     return `${monthName} ${year}`;
   };
 
-  const formatMissedNote = notes => {
-    const s = String(notes || "").trim();
-    if(!/missed/i.test(s)) return "";
-
-    const monthMatches = [...s.matchAll(/\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+\d{4}\b/gi)]
-      .map(m => m[0].replace(/\./g, "").replace(/\s+/g, " ").trim());
-
+  const normalizeMissedMonths = value => {
+    if(value === undefined || value === null || value === "") return [];
+    const rawValues = Array.isArray(value) ? value : String(value).split(/[,;\n]+/);
     const now = new Date();
     const cutoff = new Date(now.getFullYear(), now.getMonth() - 11, 1);
 
-    const recentMonths = monthMatches
-      .map(raw => {
-        const normalized = monthDisplay(raw);
+    const months = [];
+    rawValues.forEach(raw => {
+      const textValue = String(raw || "").trim();
+      const matches = [...textValue.matchAll(/\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+\d{4}\b/gi)]
+        .map(m => m[0].replace(/\./g, "").replace(/\s+/g, " ").trim());
+      matches.forEach(match => {
+        const normalized = monthDisplay(match);
         const parts = normalized.split(/\s+/);
         const monthIndex = monthNameMap[String(parts[0] || "").toLowerCase()];
         const year = Number(parts[1]);
-        return {label: normalized, date: new Date(year, monthIndex, 1)};
-      })
-      .filter(item => item.label && item.date >= cutoff)
-      .sort((a,b) => b.date - a.date)
-      .map(item => item.label);
+        const date = new Date(year, monthIndex, 1);
+        if(normalized && date >= cutoff) months.push({label: normalized, date});
+      });
+    });
 
-    const uniqueMonths = [...new Set(recentMonths)];
-    if(uniqueMonths.length) return `Missed Inspections:\n${uniqueMonths.join("\n")}`;
+    return [...new Map(months.sort((a,b) => b.date - a.date).map(item => [item.label, item.label])).values()];
+  };
 
+  const formatMissedNote = (missedInspections12mo, notes) => {
+    const feedMonths = normalizeMissedMonths(missedInspections12mo);
+    if(feedMonths.length) return `Missed Inspections:\n${feedMonths.join("\n")}`;
+
+    const s = String(notes || "").trim();
+    if(!/missed/i.test(s)) return "";
+    const noteMonths = normalizeMissedMonths(s);
+    if(noteMonths.length) return `Missed Inspections:\n${noteMonths.join("\n")}`;
     return "";
   };
 
-  const missedIcon = notes => {
-    const label = formatMissedNote(notes);
+  const missedIcon = (missedInspections12mo, notes) => {
+    const label = formatMissedNote(missedInspections12mo, notes);
     if(!label) return "";
     const ariaLabel = label.replace(/\s+/g, " ");
     return `<span class="missed-warning-wrap"><button type="button" class="missed-warning" title="${esc(ariaLabel)}" aria-label="${esc(ariaLabel)}">!</button><span class="missed-popout" role="tooltip">${esc(label)}</span></span>`;
   };
 
-  const visibleNote = notes => formatMissedNote(notes) ? "" : String(notes || "").trim();
+  const visibleNote = r => formatMissedNote(r.missedInspections12mo, r.notes) ? "" : String(r.notes || "").trim();
   const employeeCell = r => `<span class="employee-name">${esc(r.employee)}</span>`;
-  const missedCell = r => `<td class="missed-history-cell">${missedIcon(r.notes)}</td>`;
+  const missedCell = r => `<td class="missed-history-cell">${missedIcon(r.missedInspections12mo, r.notes)}</td>`;
+
+  const filtered = sourceRows.filter(r => {
+    const emp = readMonthly(r,"employee");
+    const eq = readMonthly(r,"eq");
+    const include = String(readMonthly(r,"include") || "Yes").trim().toLowerCase();
+    return emp && emp !== "Employee" && eq && include !== "no" && include !== "false";
+  });
+
+  const open = [];
+  const complete = [];
+
+  filtered.forEach(r => {
+    const employee = readMonthly(r,"employee");
+    const eq = readMonthly(r,"eq");
+    const dueDate = readMonthly(r,"dueDate");
+    const completeDate = readMonthly(r,"completeDate");
+    const status = readMonthly(r,"status");
+    const days = readMonthly(r,"days");
+    const notes = readMonthly(r,"notes");
+    const missedInspections12mo = readMonthly(r,"missedInspections12mo");
+    const statusLower = String(status).toLowerCase();
+    const dueDateObj = parseDateOnly(dueDate);
+    const isComplete = (statusLower.includes("complete") && !statusLower.includes("not complete")) || !!completeDate;
+    const isOverdue = !isComplete && dueDateObj && todayOnly > dueDateObj;
+    const item = {employee, eq, dueDate, dueDateObj, completeDate, status, days, notes, missedInspections12mo, isOverdue};
+
+    if(isComplete) complete.push(item);
+    else open.push(item);
+  });
+
+  open.sort((a,b) => {
+    if(a.isOverdue !== b.isOverdue) return a.isOverdue ? -1 : 1;
+    const ad = a.dueDateObj ? a.dueDateObj.getTime() : Number.MAX_SAFE_INTEGER;
+    const bd = b.dueDateObj ? b.dueDateObj.getTime() : Number.MAX_SAFE_INTEGER;
+    if(ad !== bd) return ad - bd;
+    return String(a.employee).localeCompare(String(b.employee));
+  });
+
+  complete.sort((a,b) => {
+    const dateSort = String(a.completeDate || "").localeCompare(String(b.completeDate || ""));
+    if(dateSort !== 0) return dateSort;
+    return String(a.employee).localeCompare(String(b.employee));
+  });
+
+  const overdueOpen = open.filter(r => r.isOverdue);
 
   tbodyOpen.innerHTML = open.length ? open.map(r => {
-    const dayNumber = Number(String(r.days || "").replace(/[^0-9.-]/g,""));
-    const severe = Number.isFinite(dayNumber) && dayNumber > 10;
-    const label = r.days ? `${esc(r.days)}d Overdue` : esc(r.status || "Overdue / Missing");
-    const note = visibleNote(r.notes);
-    return `<tr class="row-red"><td>${employeeCell(r)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-red${severe?' severe':''}">${label}</span>${note ? ' ' + esc(note) : ''}</td>${missedCell(r)}</tr>`;
-  }).join("") : `<tr><td colspan="4"><div class="empty-state">No overdue or missing monthly checklists.</div></td></tr>`;
+    const note = visibleNote(r);
+
+    if(r.isOverdue){
+      const dayNumber = Number(String(r.days || "").replace(/[^0-9.-]/g,""));
+      const severe = Number.isFinite(dayNumber) && dayNumber > 10;
+      const label = r.days ? `${esc(r.days)}d Overdue` : "Overdue / Missing";
+      return `<tr class="row-red"><td>${employeeCell(r)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-red${severe?' severe':''}">${label}</span>${note ? ' ' + esc(note) : ''}</td>${missedCell(r)}</tr>`;
+    }
+
+    const label = r.dueDate ? `Due ${esc(fmtDate(r.dueDate))}` : "Due";
+    return `<tr class="row-neutral"><td>${employeeCell(r)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-neutral">${label}</span>${note ? ' ' + esc(note) : ''}</td>${missedCell(r)}</tr>`;
+  }).join("") : `<tr><td colspan="4"><div class="empty-state">No monthly checklists currently due.</div></td></tr>`;
 
   tbodyComplete.innerHTML = complete.length ? complete.map(r => {
-    const note = visibleNote(r.notes);
+    const note = visibleNote(r);
     return `<tr class="row-green"><td>${employeeCell(r)}</td><td class="eq">${esc(r.eq)}</td><td><span class="pill pill-green">${esc(fmtDate(r.completeDate))}</span>${note ? ' ' + esc(note) : ''}</td>${missedCell(r)}</tr>`;
   }).join("") : `<tr><td colspan="4"><div class="empty-state">No completed checklists listed.</div></td></tr>`;
 
-  text("monthly-open-count", `${open.length} Overdue / Missing`);
+  setOpenSummary(overdueOpen.length ? "Overdue / Missing" : "Due", `${open.length} item${open.length===1?'':'s'}`, overdueOpen.length ? "bad" : "neutral");
+  text("monthly-open-count", overdueOpen.length ? `${overdueOpen.length} Overdue / Missing` : `${open.length} Due`);
   text("monthly-complete-count", `${complete.length} Completed`);
-  text("monthly-open-small", `${open.length} item${open.length===1?'':'s'}`);
   text("monthly-complete-small", `${complete.length} item${complete.length===1?'':'s'}`);
 }
 
@@ -925,7 +996,7 @@ function updateQuarter(q, recordables, manHours){
   const rec = document.querySelector(`[data-quarter="${q}"][data-field="recordables"]`);
   const hrs = document.querySelector(`[data-quarter="${q}"][data-field="manHours"]`);
   if(rec && recordables !== undefined && recordables !== "") rec.textContent = recordables;
-  if(hrs && manHours !== undefined && manHours !== "") hrs.textContent = manHours;
+  if(hrs && manHours !== undefined && manHours !== "") hrs.textContent = formatWholeNumber(manHours);
 }
 
 function updateSafetyHQDashboard(data){
@@ -942,11 +1013,13 @@ function updateSafetyHQDashboard(data){
   else text("last-update", "Last Update: Latest upload loaded - timestamp not found");
 
   text("emr", getMetric(data,["emr","EMR"]));
-  text("ytd-man-hours", getMetric(data,["ytdManHours","totalManHours","YTD Man Hours","Total Man Hours","manHours"]));
+  const totalManHours = getMetric(data,["ytdManHours","totalManHours","YTD Man Hours","Total Man Hours","manHours"]);
+  if(totalManHours !== "") text("ytd-man-hours", formatWholeNumber(totalManHours));
 
   const due = getMetric(data,["monthlyDueDate","Monthly Due Date"]);
-    if(due) text("monthly-note", `Checklist due ${fmtWeekdayDateShort(due)}. Required for all employees assigned a company vehicle.`);
-    else text("monthly-note", "Monthly checklist required for all employees assigned a company vehicle.");
+  if(due) text("monthly-note", `Checklist due ${fmtWeekdayDateShort(due)}. Required for all employees assigned a company vehicle.`);
+  else text("monthly-note", "Monthly checklist required for all employees assigned a company vehicle.");
+
   const quarters = data.quarters || data.quarterly || data.oshaQuarters || data.oshaSnapshot;
   if(Array.isArray(quarters)){
     quarters.forEach(q => {
