@@ -376,7 +376,13 @@ tr.row-neutral td{background:#fff}
   th,td{padding:9px 6px}
   #training > .table-wrap.status-card{overflow-x:visible}
   #training table,#training tbody,#training tr,#training td{display:block;width:100%}
-  #training thead{display:none}
+  #training thead{display:block;background:transparent}
+  #training thead tr{display:block;width:100%;padding:0 8px 8px;border:0;box-shadow:none;background:transparent}
+  #training thead th{display:none;border:0;background:transparent;padding:0}
+  #training thead th:first-child{display:block;width:100%}
+  #training .training-employee-head{display:flex;align-items:center;gap:8px;justify-content:flex-start}
+  #training .training-employee-head > span{font-size:11px;color:var(--muted);font-weight:950;letter-spacing:.06em;text-transform:uppercase}
+  #training .training-employee-filter{width:auto;min-width:170px;max-width:260px;font-size:11px;padding:6px 24px 6px 9px}
   #training tbody{display:grid;gap:8px;background:transparent;padding:8px}
   #training tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:4px 10px;border:1px solid rgba(216,224,234,.78);border-radius:14px;padding:11px 12px;box-shadow:0 6px 16px rgba(15,23,42,.06);background:#fff}
   #training tbody tr.row-red{background:#fff5f5;border-color:rgba(180,35,24,.24)}
@@ -550,7 +556,7 @@ tr.row-neutral td{background:#fff}
         
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.22</div>
+  <div>SafetyHQ v3.0.23</div>
 </div>
 </main>
 <script>
