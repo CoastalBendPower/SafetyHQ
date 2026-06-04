@@ -314,6 +314,7 @@ header::before,.hero::before{
 }
 .training-employee-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .training-employee-filter{min-width:145px;max-width:210px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--brand-dark);font-size:11px;font-weight:900;padding:5px 24px 5px 9px;text-transform:none;letter-spacing:0;outline:none}
+.training-due-mobile{display:none}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}
 th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -373,6 +374,23 @@ tr.row-neutral td{background:#fff}
   .training-employee-head{display:grid;gap:5px}
   .training-employee-filter{width:100%;min-width:118px;max-width:150px;font-size:10px;padding:5px 18px 5px 7px}
   th,td{padding:9px 6px}
+  #training > .table-wrap.status-card{overflow-x:visible}
+  #training table,#training tbody,#training tr,#training td{display:block;width:100%}
+  #training thead{display:none}
+  #training tbody{display:grid;gap:8px;background:transparent;padding:8px}
+  #training tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:4px 10px;border:1px solid rgba(216,224,234,.78);border-radius:14px;padding:11px 12px;box-shadow:0 6px 16px rgba(15,23,42,.06);background:#fff}
+  #training tbody tr.row-red{background:#fff5f5;border-color:rgba(180,35,24,.24)}
+  #training tbody tr.row-orange{background:#fffaf0;border-color:rgba(184,107,0,.24)}
+  #training tbody tr.row-neutral{background:#fff;border-color:rgba(216,224,234,.78)}
+  #training tbody tr td{padding:0;border:0;background:transparent!important;min-width:0}
+  #training tbody tr td:nth-child(1){grid-column:1;grid-row:1;font-weight:950;color:var(--brand-dark);font-size:.92rem;line-height:1.25}
+  #training tbody tr td:nth-child(2){grid-column:1 / -1;grid-row:2;color:var(--text);font-weight:750;font-size:.84rem;line-height:1.32;overflow-wrap:anywhere}
+  #training tbody tr td:nth-child(3){grid-column:2;grid-row:1;justify-self:end;text-align:right;width:auto}
+  #training .pill{font-size:11px;padding:4px 7px;max-width:132px;white-space:normal;text-align:center;line-height:1.15}
+  #training .training-due-mobile{display:inline;color:var(--muted);font-weight:850}
+  #training tr.training-filter-empty{display:block;padding:0;border:0;box-shadow:none;background:transparent}
+  #training tr.training-filter-empty td{display:block;width:100%}
+  #training tr.training-filter-empty .empty-state{border-radius:14px}
   .section-title{font-size:20px}
 }
 </style>
@@ -532,7 +550,7 @@ tr.row-neutral td{background:#fff}
         
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.19</div>
+  <div>SafetyHQ v3.0.22</div>
 </div>
 </main>
 <script>
@@ -942,15 +960,31 @@ function renderTraining(rows){
     };
   }
 
+  const statusBadgeText = (dashboardStatus, due, daysUntilDue) => {
+    const rawStatus = String(dashboardStatus || "").trim();
+    const lower = rawStatus.toLowerCase();
+    const daysNumber = Number(String(daysUntilDue ?? "").replace(/[^0-9.-]/g,""));
+
+    if(lower.includes("overdue")){
+      if(Number.isFinite(daysNumber) && daysNumber < 0) return `${Math.abs(daysNumber)}d Overdue`;
+      return rawStatus || "Overdue";
+    }
+
+    if(lower.includes("within 7")) return rawStatus || `Due ${fmtDate(due)}`;
+    return rawStatus || `Due ${fmtDate(due)}`;
+  };
+
   tbody.innerHTML = filtered.map(r => {
     const employee = cell(r,["employee","Employee"],0);
     const req = cell(r,["requirementName","requirement","training","Requirement"],1);
     const due = cell(r,["dueDate","Due Date"],3);
+    const daysUntilDue = cell(r,["daysUntilDue","Days Until Due"],4);
     const dashboardStatus = cell(r,["dashboardStatus","Dashboard Status","status"],5) || cell(r,["status"],2);
     const statusLower = String(dashboardStatus).toLowerCase();
     const rowClass = statusLower.includes("overdue") ? "row-red" : statusLower.includes("within 7") ? "row-orange" : "row-neutral";
     const pillClass = statusLower.includes("overdue") ? "pill-red" : statusLower.includes("within 7") ? "pill-orange" : "pill-neutral";
-    return `<tr class="${rowClass}" data-employee="${esc(employee)}" data-training-status="${esc(statusLower)}"><td>${esc(employee)}</td><td>${esc(req)}</td><td><span class="pill ${pillClass}">Due ${esc(fmtDate(due))}</span></td></tr>`;
+    const badge = statusBadgeText(dashboardStatus, due, daysUntilDue);
+    return `<tr class="${rowClass}" data-employee="${esc(employee)}" data-training-status="${esc(statusLower)}"><td>${esc(employee)}</td><td><span class="training-title">${esc(req)}</span><span class="training-due-mobile"> — Due ${esc(fmtDate(due))}</span></td><td><span class="pill ${pillClass}">${esc(badge)}</span></td></tr>`;
   }).join("") || `<tr><td colspan="3"><div class="empty-state">No training items listed.</div></td></tr>`;
 
   applyTrainingEmployeeFilter();
