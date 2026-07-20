@@ -1081,24 +1081,19 @@ function applyTrainingEmployeeFilter(){
 }
 
 function updateQuarter(q, recordables, manHours){
-  const rec = document.querySelector(`[data-quarter="${q}"][data-field="recordables"]`);
-  const hrs = document.querySelector(`[data-quarter="${q}"][data-field="manHours"]`);
-  if(rec && recordables !== undefined && recordables !== "") rec.textContent = recordables;
-  if(hrs && manHours !== undefined && manHours !== "") hrs.textContent = formatWholeNumber(manHours);
-}
-
-function updateSafetyHQDashboard(data){
-  window.__safetyHQPendingRequest = "";
-
-  function updateQuarter(q, recordables, manHours){
   const key = String(q || "").trim().toUpperCase();
   if(!key) return;
 
   const rec = document.querySelector(`[data-quarter="${key}"][data-field="recordables"]`);
   const hrs = document.querySelector(`[data-quarter="${key}"][data-field="manHours"]`);
 
-  if(rec && recordables !== undefined && recordables !== null && recordables !== "") rec.textContent = formatWholeNumber(recordables);
-  if(hrs && manHours !== undefined && manHours !== null && manHours !== "") hrs.textContent = formatWholeNumber(manHours);
+  if(rec && recordables !== undefined && recordables !== null && recordables !== ""){
+    rec.textContent = formatWholeNumber(recordables);
+  }
+
+  if(hrs && manHours !== undefined && manHours !== null && manHours !== ""){
+    hrs.textContent = formatWholeNumber(manHours);
+  }
 }
 
 function updateQuarterFromFlatMetrics(data, q){
