@@ -443,7 +443,7 @@ tr.row-neutral td{background:#fff}
           <div class="kpi-row two">
             <div class="kpi good">
               <div class="label">Total Man Hours</div>
-              <div class="value" id="ytd-man-hours">22,343</div>
+              <div class="value" id="ytd-man-hours">30,317</div>
             </div>
             <div class="kpi good">
               <div class="label">EMR</div>
@@ -460,11 +460,11 @@ tr.row-neutral td{background:#fff}
             </div>
             <div class="kpi brand">
               <div class="q-label">🔵 Q2 Active</div>
-              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q2" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q2" data-field="manHours">6,465</span></div>
+              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q2" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q2" data-field="manHours">13,662</span></div>
             </div>
             <div class="kpi neutral">
               <div class="q-label">⏳ Q3 Pending</div>
-              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q3" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q3" data-field="manHours">0</span></div>
+              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q3" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q3" data-field="manHours">777</span></div>
             </div>
             <div class="kpi neutral">
               <div class="q-label">⏳ Q4 Pending</div>
@@ -540,7 +540,7 @@ tr.row-neutral td{background:#fff}
         
   </section><div class="footer">
     <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.24</div>
+  <div>SafetyHQ v3.0.25</div>
 </div>
 </main>
 <script>
@@ -1090,6 +1090,49 @@ function updateQuarter(q, recordables, manHours){
 function updateSafetyHQDashboard(data){
   window.__safetyHQPendingRequest = "";
 
+  function updateQuarter(q, recordables, manHours){
+  const key = String(q || "").trim().toUpperCase();
+  if(!key) return;
+
+  const rec = document.querySelector(`[data-quarter="${key}"][data-field="recordables"]`);
+  const hrs = document.querySelector(`[data-quarter="${key}"][data-field="manHours"]`);
+
+  if(rec && recordables !== undefined && recordables !== null && recordables !== "") rec.textContent = formatWholeNumber(recordables);
+  if(hrs && manHours !== undefined && manHours !== null && manHours !== "") hrs.textContent = formatWholeNumber(manHours);
+}
+
+function updateQuarterFromFlatMetrics(data, q){
+  const n = String(q || "").replace(/[^1-4]/g, "");
+  if(!n) return;
+
+  const label = `Q${n}`;
+
+  const recordables = getMetric(data,[
+    `q${n}Recordables`,
+    `Q${n} Recordables`,
+    `q${n}Incidents`,
+    `Q${n} Incidents`,
+    `${label} Recordables`,
+    `${label} Incidents`
+  ]);
+
+  const manHours = getMetric(data,[
+    `q${n}ManHours`,
+    `Q${n} Man Hours`,
+    `q${n}Man Hours`,
+    `Q${n} ManHours`,
+    `q${n}Hours`,
+    `Q${n} Hours`,
+    `${label} Man Hours`,
+    `${label} Hours`
+  ]);
+
+  updateQuarter(label, recordables, manHours);
+}
+
+function updateSafetyHQDashboard(data){
+  window.__safetyHQPendingRequest = "";
+
   if(!data || typeof data !== "object"){
     text("last-update", "Last Update: Live feed returned no data");
     return;
@@ -1101,6 +1144,7 @@ function updateSafetyHQDashboard(data){
   else text("last-update", "Last Update: Latest upload loaded - timestamp not found");
 
   text("emr", getMetric(data,["emr","EMR"]));
+
   const totalManHours = getMetric(data,["ytdManHours","totalManHours","YTD Man Hours","Total Man Hours","manHours"]);
   if(totalManHours !== "") text("ytd-man-hours", formatWholeNumber(totalManHours));
 
@@ -1109,24 +1153,30 @@ function updateSafetyHQDashboard(data){
   else text("monthly-note", "Monthly checklist required for all employees assigned a company vehicle.");
 
   const quarters = data.quarters || data.quarterly || data.oshaQuarters || data.oshaSnapshot;
+
   if(Array.isArray(quarters)){
     quarters.forEach(q => {
-      updateQuarter(q.quarter || q.Quarter, q.recordables ?? q.Recordables, q.manHours ?? q["Man Hours"] ?? q.man_hours ?? q.hours);
+      const quarterKey = q.quarter || q.Quarter || q.name || q.Name || q.label || q.Label;
+      updateQuarter(
+        quarterKey,
+        q.recordables ?? q.Recordables ?? q.incidents ?? q.Incidents,
+        q.manHours ?? q["Man Hours"] ?? q.man_hours ?? q.hours ?? q.Hours
+      );
     });
   } else if(quarters && typeof quarters === "object"){
     ["Q1","Q2","Q3","Q4"].forEach(q => {
       const item = quarters[q] || quarters[q.toLowerCase()];
-      if(item) updateQuarter(q, item.recordables ?? item.Recordables, item.manHours ?? item["Man Hours"] ?? item.man_hours ?? item.hours);
+      if(item){
+        updateQuarter(
+          q,
+          item.recordables ?? item.Recordables ?? item.incidents ?? item.Incidents,
+          item.manHours ?? item["Man Hours"] ?? item.man_hours ?? item.hours ?? item.Hours
+        );
+      }
     });
   }
 
-  const q2Hours = document.querySelector('[data-quarter="Q2"][data-field="manHours"]');
-  if(q2Hours && q2Hours.textContent === "0"){
-    updateQuarter("Q1", "0", "15,878");
-    updateQuarter("Q2", "0", "6,465");
-    updateQuarter("Q3", "0", "0");
-    updateQuarter("Q4", "0", "0");
-  }
+  ["Q1","Q2","Q3","Q4"].forEach(q => updateQuarterFromFlatMetrics(data, q));
 
   renderMonthly(data.monthlyStatus || data.monthlyItems || data.checklistStatus || data.monthly || data.checklists || data["Monthly Status"]);
   renderTraining(normalizeRows(data.trainingStatus || data.training || data.trainingItems || data.inTrainingWindowItems || data["Training Status"]));
