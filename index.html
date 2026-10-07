@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -10,177 +10,19 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SafetyHQ">
 <link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="stylesheet" href="ui-kit.css">
 <style>
+/* SafetyHQ-specific styles. Shared look (shell, sidebar, pill, hero, modals) comes from ui-kit.css. */
 :root{
-  --blue:#123f73;
-  --blue-dark:#0b2a4e;
-  --blue-soft:#eaf2fb;
-  --border:#d8e0ea;
-  --text:#1f2933;
-  --muted:#64748b;
-  --green:#1f7a4d;
-  --orange:#b86b00;
-  --red:#b42318;
-  --white:#ffffff;
-  --shadow:0 10px 28px rgba(15,23,42,.10);
-  --bg:#eef3f8;
-  --line:var(--border);
-  --brand:var(--blue);
-  --brand-dark:var(--blue-dark);
-  --ok:var(--green);
-  --warn:var(--orange);
-  --bad:var(--red);
-  --card:#ffffff;
-  --soft:#f8fbff;
+  --bg:#eef3f8; --line:var(--border); --brand:var(--blue); --brand-dark:var(--blue-dark);
+  --ok:var(--green); --warn:var(--orange); --bad:var(--red); --card:#ffffff; --soft:#f8fbff;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,Helvetica,sans-serif;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(247,249,252,.08) 0%,
-      rgba(247,249,252,.38) 22%,
-      rgba(247,249,252,.55) 50%,
-      rgba(247,249,252,.38) 78%,
-      rgba(247,249,252,.08) 100%
-    ),
-    radial-gradient(circle at 18% 18%, rgba(0,157,255,.16), transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(18,63,115,.16), transparent 30%),
-    url("https://coastalbendpower.github.io/Hub/assets/background_hub_v2.png") center top / cover fixed no-repeat,
-    linear-gradient(180deg,#f3f6fa 0%,#eef2f6 45%,#f7f9fb 100%);
-  color:var(--text);
-}
-header,.hero{
-  position:relative;
-  overflow:visible;
-  background:transparent;
-  color:#fff;
-  border-radius:0 0 34px 34px;
-  min-height:230px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:0 auto 18px;
-  width:min(1180px,calc(100% - 96px));
-  box-shadow:var(--shadow);
-  line-height:0;
-  border:1px solid rgba(0,157,255,.12);
-  border-top:0;
-}
-header::before,.hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:1;
-  border-radius:0 0 34px 34px;
-  background:transparent;
-  pointer-events:none;
-}
-.hero-media{
-  position:absolute;
-  inset:0;
-  border-radius:0 0 34px 34px;
-  z-index:0;
-  overflow:hidden;
-}
-.hero-inner{
-  position:relative;
-  z-index:20;
-  padding:32px 18px 32px clamp(185px,20vw,343px);
-  width:100%;
-  display:grid;
-  grid-template-columns:minmax(0,1fr);
-  align-items:center;
-  gap:22px;
-  line-height:1.1;
-}
-.hero-copy{max-width:760px;text-shadow:0 2px 12px rgba(0,0,0,.55);transform:translateX(10%)}
-.eyebrow{margin:0 0 10px;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;font-weight:850;opacity:.9;color:rgba(255,255,255,.9)}
-.site-title{margin:0;font-size:clamp(2.65rem,5.35vw,5.05rem);line-height:.95;font-weight:950;letter-spacing:-.055em;color:#fff}
 .title-safety{color:#fff}
-.title-hq{color:#009dff;text-shadow:0 0 14px rgba(0,157,255,.48)}
-.site-title::after{content:"";display:block;width:170px;height:3px;margin-top:.45rem;border-radius:999px;background:linear-gradient(90deg,transparent,#009dff,transparent)}
-.site-subtitle{margin:.7rem 0 0;font-size:clamp(.86rem,1.14vw,1.05rem);font-weight:750;letter-spacing:.08em;color:rgba(255,255,255,.88)}
-.header-banner,.hero-bg{
-  display:block;
-  width:100%;
-  height:100%;
-  min-height:230px;
-  object-fit:cover;
-  object-position:center center;
-  border-radius:0 0 34px 34px;
-}
-.wrap{width:min(1180px,calc(100% - 96px));max-width:none;margin:0 auto;padding:16px;background:transparent;box-shadow:none}
+.title-hq{color:var(--accent);text-shadow:0 0 14px rgba(0,157,255,.48)}
 .section{margin-top:18px}
-.section-title{font-size:1.28rem;font-weight:950;margin:0 0 10px;letter-spacing:.055em;color:var(--blue-dark);text-transform:uppercase}
-.section-note{color:var(--muted);font-size:.9rem;margin:-4px 0 12px;line-height:1.35;font-weight:650}
-.panel,.card{
-  background:rgba(255,255,255,.82);
-  border:1px solid rgba(216,224,234,.72);
-  border-radius:22px;
-  box-shadow:0 8px 22px rgba(15,23,42,.07);
-  backdrop-filter:blur(8px);
-}
+.panel,.card{background:rgba(255,255,255,.20);border:1px solid rgba(15,23,42,.08);border-radius:22px;backdrop-filter:blur(14px);box-shadow:none}
 .panel{padding:16px}
-.card{padding:16px}
-/* Top utility image buttons */
-.utility-row{
-  min-height:0;
-  margin:2px auto 6px;
-  position:relative;
-  z-index:5;
-  padding:0 8px;
-  display:grid;
-  grid-template-columns:auto auto 1fr auto;
-  align-items:center;
-  gap:8px;
-  background:transparent;
-  backdrop-filter:none;
-  border:0;
-  box-shadow:none;
-}
-.nav-button{
-  width:235px;
-  height:52px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:visible;
-  border-radius:14px;
-  background:transparent;
-  text-decoration:none;
-  transition:transform .18s ease,filter .18s ease;
-}
-.nav-button:hover{transform:translateY(-2px);filter:brightness(1.03)}
-.nav-button img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  padding:0;
-  object-position:center;
-  display:block;
-  border-radius:12px;
-}
-.procedure-link-main{
-  justify-self:start;
-  width:72px;
-  height:72px;
-}
-.procedure-link-main img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  display:block;
-}
-.hsi-login-link{justify-self:start;width:72px;height:72px}
-.hsi-login-link img{width:100%;height:100%;border-radius:50%;object-fit:contain;display:block}
-.updated-line{display:flex;align-items:center;justify-content:flex-start;gap:12px;width:100%;color:var(--blue-dark);background:transparent;border:0;border-radius:0;font-size:.92rem;font-weight:800;margin:4px 0 18px;padding:4px 0 8px;box-shadow:none;text-align:left;backdrop-filter:none}
-.last-update-text{display:inline-block;text-align:left}
-.return-hub-link{justify-self:end;margin-left:auto;width:72px;height:72px;border:0;background:transparent;border-radius:50%;padding:0;box-shadow:none}
-.return-hub-link img{width:100%;height:100%;object-fit:contain;display:block;border-radius:50%}
-.return-hub-link:hover{background:transparent;border:0;filter:brightness(1.05)}
+.osha-summary .section-title,.status-summary .section-title{margin:0}
 /* KPI cards */
 .label{font-size:12px;color:var(--muted);font-weight:900;text-transform:uppercase;letter-spacing:.07em}
 .value{font-size:34px;font-weight:900;margin-top:8px;line-height:1.05;color:#111827}
@@ -216,21 +58,16 @@ header::before,.hero::before{
 .panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
 .count-wrap{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .count-pill{border-radius:999px;padding:6px 10px;font-size:13px;font-weight:900;white-space:nowrap}
-.count-pill.bad{background:#fde8e8;color:var(--bad)}
+.count-pill.bad{background:#b42318;color:#fff}
 .count-pill.warn{background:#fff4df;color:var(--warn)}
 .count-pill.good{background:#e8f7e8;color:var(--ok)}
 .count-pill.neutral{background:#eef6ff;color:var(--brand-dark)}
-.status-layout{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(360px,1.1fr);gap:14px;align-items:start}
+.status-layout{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
 .status-card{background:rgba(255,255,255,.86);border:1px solid rgba(216,224,234,.72);border-radius:16px;overflow:hidden;box-shadow:0 8px 22px rgba(15,23,42,.05);backdrop-filter:blur(8px)}
-.completed-collapse{padding:0}
-.completed-collapse summary{list-style:none;cursor:pointer}
-.completed-collapse summary::-webkit-details-marker{display:none}
-.completed-collapse:not([open]) .status-card-header{background:linear-gradient(180deg,#f3fbf3,#e8f7e8);border-bottom:none}
-.completed-collapse:not([open]){border-color:rgba(31,122,31,.35);box-shadow:0 10px 28px rgba(31,122,31,.10)}
 .status-card-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--soft);border-bottom:1px solid var(--line)}
 .status-card-header h3{margin:0;font-size:16px;font-weight:900;color:#334155}
 .status-count{border-radius:999px;background:#e8eefc;color:var(--brand-dark);font-size:12px;font-weight:900;padding:4px 8px;white-space:nowrap}
-.status-count.bad{background:#fde8e8;color:var(--bad);border:1px solid rgba(180,35,24,.22)}
+.status-count.bad{background:#b42318;color:#fff;border:1px solid #8f1b11}
 .employee-name{font-weight:inherit}
 
 .missed-warning-wrap{
@@ -320,19 +157,19 @@ table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-
 th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;background:var(--soft)}
 tbody tr:hover{background:rgba(31,78,121,.05)}
-tr.row-red td{background:#fff5f5}
+tr.row-red td{background:#fde4e4}
+tr.row-red td:first-child{box-shadow:inset 4px 0 0 #b42318}
 tr.row-orange td{background:#fffaf0}
 tr.row-green td{background:#f3fbf3}
 tr.row-neutral td{background:#fff}
 .pill{display:inline-block;border-radius:999px;padding:4px 8px;font-weight:900;font-size:12px;white-space:nowrap}
-.pill-red{background:#fde8e8;color:var(--bad)}
-.pill-red.severe{background:#7f1d1d;color:#fff;border:1px solid #991b1b}
+.pill-red{background:#b42318;color:#fff}
+.pill-red.severe{background:#7f1d1d;color:#fff;border:1px solid #5f1212}
 .pill-orange{background:#fff4df;color:var(--warn)}
 .pill-green{background:#e8f7e8;color:var(--ok)}
 .pill-neutral{background:#eef2f7;color:#475569}
 .eq{font-weight:900;color:var(--brand-dark)}
 .empty-state{padding:14px;color:var(--muted);font-weight:800;background:#fff}
-.footer{margin:30px 0 8px;padding:18px 4px 20px;color:var(--muted);font-size:.82rem;text-align:center;border-top:1px solid rgba(216,224,234,.9);font-weight:700}
 @media(max-width:980px){
   .osha-split{grid-template-columns:1fr;gap:12px}
   .osha-quarterlies-side{padding-top:0}
@@ -345,25 +182,6 @@ tr.row-neutral td{background:#fff}
   .kpi-row{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:620px){
-  header,.hero{width:min(100%,calc(100% - 24px));min-height:0;aspect-ratio:16/6.3;margin:0 auto 18px;border-radius:0 0 28px 28px;overflow:hidden}
-  header::before,.hero::before{border-radius:0 0 28px 28px;background:transparent}
-  .hero-media{border-radius:0 0 28px 28px}
-  .header-banner,.hero-bg{height:100%;min-height:0;object-fit:cover;border-radius:0 0 28px 28px}
-  .hero-inner{min-height:0;height:100%;padding:14px 26px 14px 33%;grid-template-columns:minmax(0,1fr);align-items:center;justify-items:center;text-align:left;gap:10px}
-  .hero-copy{width:min(100%,305px);max-width:305px;margin:0;padding:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none;text-shadow:0 2px 12px rgba(0,0,0,.60);transform:none}
-  .site-title{font-size:clamp(1.54rem,7.85vw,1.96rem)}
-  .site-title::after{width:96px;margin:.24rem 0 0}
-  .eyebrow{font-size:.43rem;letter-spacing:.085em;margin-bottom:5px;white-space:nowrap}
-  .site-subtitle{font-size:.54rem;letter-spacing:.045em;margin-top:.38rem;white-space:nowrap}
-  .wrap{width:min(100%,calc(100% - 24px));padding:12px}
-  .utility-row{display:grid;grid-template-columns:72px 72px 1fr;align-items:center;justify-content:start;padding:0 8px;gap:8px;min-height:0;margin:0 auto 4px;background:transparent;border:0;box-shadow:none;backdrop-filter:none}
-  .utility-row .return-hub-link{grid-column:auto;justify-self:end;margin-left:0;width:72px;max-width:72px;height:72px}
-  .nav-button,.hsi-dropdown,.hsi-dropdown summary{width:100%;max-width:100%;height:58px}
-  .hsi-login-link{width:72px;max-width:72px;height:72px;justify-self:start}
-  .utility-row .procedure-link-main{width:72px;max-width:72px;height:72px;justify-self:start}
-  .hsi-menu{position:absolute;top:62px;left:0;width:220px;grid-template-columns:1fr;margin-top:0}
-  .updated-line{display:flex;width:100%;align-items:center;justify-content:flex-start;gap:8px;font-size:13px;margin:2px 0 12px;padding:4px 0;text-align:left}
-  .last-update-text{flex:1;text-align:left;line-height:1.25}
   .osha-summary{align-items:center;padding:14px}
   .osha-split{grid-template-columns:1fr;gap:12px;padding:0 12px 12px}
   .osha-quarter-row,.kpi-row,.kpi-row.two{grid-template-columns:1fr}
@@ -385,7 +203,7 @@ tr.row-neutral td{background:#fff}
   #training .training-employee-filter{width:auto;min-width:170px;max-width:260px;font-size:11px;padding:6px 24px 6px 9px}
   #training tbody{display:grid;gap:8px;background:transparent;padding:8px}
   #training tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:4px 10px;border:1px solid rgba(216,224,234,.78);border-radius:14px;padding:11px 12px;box-shadow:0 6px 16px rgba(15,23,42,.06);background:#fff}
-  #training tbody tr.row-red{background:#fff5f5;border-color:rgba(180,35,24,.24)}
+  #training tbody tr.row-red{background:#fde4e4;border-color:rgba(180,35,24,.55);box-shadow:inset 4px 0 0 #b42318}
   #training tbody tr.row-orange{background:#fffaf0;border-color:rgba(184,107,0,.24)}
   #training tbody tr.row-neutral{background:#fff;border-color:rgba(216,224,234,.78)}
   #training tbody tr td{padding:0;border:0;background:transparent!important;min-width:0}
@@ -397,152 +215,317 @@ tr.row-neutral td{background:#fff}
   #training tr.training-filter-empty{display:block;padding:0;border:0;box-shadow:none;background:transparent}
   #training tr.training-filter-empty td{display:block;width:100%}
   #training tr.training-filter-empty .empty-state{border-radius:14px}
-  .section-title{font-size:20px}
 }
+
+/* ---- Slim header bar ---- */
+.shq-bar{position:relative;z-index:200;display:flex;align-items:center;gap:14px;margin:16px 0 16px;padding:10px 14px;border-radius:18px;background:linear-gradient(90deg,rgba(4,16,31,.96),rgba(10,38,72,.94));border:1px solid rgba(0,157,255,.22);color:#fff}
+.shq-seal{flex:0 0 44px;width:44px;height:44px;border-radius:12px;object-fit:cover}
+.shq-brand{min-width:0;flex:1 1 auto}
+.shq-title{margin:0;font-size:1.5rem;line-height:1;font-weight:950;letter-spacing:-.04em}
+.shq-tagline{margin:3px 0 0;color:rgba(255,255,255,.78);font-size:.78rem;font-weight:750;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shq-updated-m{display:none;margin:3px 0 0;color:rgba(255,255,255,.78);font-size:.72rem;font-weight:750;white-space:nowrap}
+.shq-updated{flex:0 0 auto;color:rgba(255,255,255,.85);font-size:.8rem;font-weight:750;white-space:nowrap}
+.shq-actions{flex:0 0 auto;display:flex;align-items:center;gap:4px}
+.shq-bar .u-btn,.shq-bar .user-btn{width:44px;height:44px;min-width:44px;padding:0;justify-content:center}
+.shq-bar .user-caret{display:none}
+.shq-bar .user-menu{top:calc(100% + 10px);right:0}
+/* ---- Two columns: checklist left, training right (same height) ---- */
+.checklist-panel,.training-panel{display:flex;flex-direction:column;min-width:0}
+.status-collapse > .table-wrap.training-scroll{margin:0 16px 16px}
+@media(max-width:980px){.status-collapse > .table-wrap.training-scroll{margin:0 12px 12px}}
+.completed-row{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:10px 14px;border:0;border-top:1px solid rgba(31,138,88,.25);background:linear-gradient(180deg,#f3fbf3,#e8f7e8);color:#334155;font:inherit;font-size:16px;font-weight:900;text-align:left;cursor:pointer}
+.completed-row .status-count{margin-left:auto}
+.completed-row svg{flex:0 0 18px;width:18px;height:18px;fill:none;stroke:var(--ok);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.completed-row:hover,.completed-row:focus-visible{background:#dff3df;outline:none}
+.completed-modal .modal-card{padding:16px 16px 12px}
+.completed-modal .modal-close{width:44px;height:44px;flex:0 0 44px;margin:-6px -6px 0 0}
+@media(min-width:901px){
+  .overdue-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:stretch}
+  .overdue-grid .panel{margin:0}
+  .training-panel{height:0;min-height:100%;overflow:hidden}
+  .training-scroll{flex:1 1 0;min-height:0;overflow:auto;border-radius:16px}
+  .training-scroll thead th{position:sticky;top:0;z-index:2}
+}
+@media(max-width:900px){
+  .overdue-grid{display:grid;grid-template-columns:1fr;gap:16px}
+  .training-scroll{max-height:70vh;overflow:auto}
+}
+/* ---- Phone ---- */
+@media(max-width:700px){
+  .shq-bar{gap:10px;padding:8px 10px;margin:12px 0 14px;border-radius:16px}
+  .shq-seal{flex-basis:40px;width:40px;height:40px}
+  .shq-title{font-size:1.3rem}
+  .shq-tagline,.shq-updated{display:none}
+  .shq-updated-m{display:block}
+  .completed-modal{align-items:flex-end;padding:0}
+  .completed-modal .modal-card{width:100%;max-height:82vh;border-radius:22px 22px 0 0;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+  .missed-history-head,.missed-history-cell{width:44px;min-width:44px}
+  .missed-warning{min-width:44px;min-height:44px;margin:-14px -6px -14px 0}
+  .training-employee-filter,#training .training-employee-filter{min-height:44px}
+  .count-pill{min-height:32px}
+}
+/* Overdue training rows: solid dark red, bold white text */
+#training tr.row-red td{background:#a3281c;color:#fff;font-weight:900;box-shadow:none;border-bottom-color:rgba(255,255,255,.18)}
+#training tr.row-red .pill-red{background:#fff;color:#a3281c}
+#training tr.row-red .pill-red.severe{background:#fff;color:#7f1d1d;border-color:#fff}
+#training tr.row-red .training-due-mobile{color:rgba(255,255,255,.85)}
+@media(max-width:620px){
+  #training tbody tr.row-red{background:#a3281c;border-color:#7f1d1d;box-shadow:0 6px 16px rgba(127,29,29,.3)}
+  #training tbody tr.row-red td:nth-child(1),#training tbody tr.row-red td:nth-child(2){color:#fff}
+}
+/* Status chips: squared-off, status dot, soft tint + hairline border */
+.pill{display:inline-flex;align-items:center;gap:7px;border-radius:8px;padding:5px 10px 5px 9px;font-size:12px;font-weight:800;letter-spacing:.01em;font-variant-numeric:tabular-nums;border:1px solid transparent;line-height:1.2}
+.pill::before{content:'';flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:currentColor}
+.pill-orange{background:#fff1d6;color:#8a5200;border-color:rgba(184,107,0,.32)}
+.pill-orange::before{background:#e59a1a;box-shadow:0 0 0 3px rgba(229,154,26,.22)}
+.pill-neutral{background:rgba(100,116,139,.08);color:#475569;border-color:rgba(100,116,139,.28)}
+.pill-neutral::before{background:transparent;border:2px solid #94a3b8}
+.pill-green{background:#e4f5ea;color:#17613c;border-color:rgba(31,122,77,.28)}
+.pill-green::before{background:var(--tone-green)}
+.pill-red{background:#b42318;color:#fff;border-color:#8f1b11}
+.pill-red::before{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.28)}
+.pill-red.severe{background:#7f1d1d;border-color:#5f1212}
+#training tr.row-red .pill-red,#training tr.row-red .pill-red.severe{background:#fff;color:#a3281c;border-color:#fff}
+#training tr.row-red .pill-red::before{background:#b42318;box-shadow:0 0 0 3px rgba(180,35,24,.22)}
+/* Larger employee names */
+#monthly-open-body td:first-child,#monthly-complete-body td:first-child,#training-body td:first-child{font-size:16px;font-weight:800;line-height:1.25;color:var(--blue-dark)}
+#training tr.row-red td:first-child{color:#fff}
+@media(max-width:620px){
+  #training tbody tr td:nth-child(1){font-size:1.05rem}
+}
+/* Vertically center cells in each row */
+#monthly-open-body td,#monthly-complete-body td,#training-body td{vertical-align:middle}
+@media(max-width:620px){#training tbody tr{align-items:center}}
 </style>
 </head>
 <body>
-<header class="hero">
-  <picture class="hero-media" aria-hidden="true">
-    <source media="(max-width: 700px)" srcset="assets/banner_the_hub_mobile_v1.png">
-    <img class="hero-bg header-banner" src="assets/banner_the_hub_v3.png?v=final" alt="">
-  </picture>
-  <div class="hero-inner">
-    <div class="hero-copy">
-      <p class="eyebrow">Coastal Bend Power Services, LLC</p>
-      <h1 class="site-title"><span class="title-safety">Safety</span><span class="title-hq">HQ</span></h1>
-      <p class="site-subtitle">Safety. Training. Procedures. Resources.</p>
+<script>try { if (localStorage.getItem("powerhubSidebarCollapsed") === "1") document.documentElement.classList.add("sb-collapsed"); } catch (e) {}</script>
+<div class="app-shell">
+  <nav class="side-nav" aria-label="Main navigation">
+    <button class="side-toggle" type="button" id="sideToggle" aria-label="Collapse sidebar" aria-expanded="true" title="Collapse sidebar">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 7-5 5 5 5M18 7l-5 5 5 5"/></svg>
+    </button>
+    <a class="side-link" href="https://coastalbendpower.github.io/PowerHub/">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      <span>PowerHub<small>Home</small></span>
+    </a>
+    <a class="side-link" href="https://coastalbendpower.github.io/Whiteboard/view.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg>
+      <span>Whiteboard</span>
+    </a>
+    <span class="side-link is-disabled" aria-disabled="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span>Timesheet</span><em class="side-soon">Soon</em>
+    </span>
+    <a class="side-link" href="https://account.sharesync.serverdata.net/login/v1.2/?client_id=sharesync_web_app_sts&amp;client_type=Sync-WebApp&amp;client_version=3.48.1&amp;application_client_id=5d5c5f78-10b2-0f0b-a925-606d43526abe&amp;redirect_uri=https%3A%2F%2Fsharesync.serverdata.net%2Fus4%2F&amp;locale=en-us" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <span>ShareSync</span>
+    </a>
+    <div class="side-group-label">Safety</div>
+    <a class="side-link is-active" href="./" aria-current="page">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V6z"/></svg>
+      <span>SafetyHQ</span>
+    </a>
+    <a class="side-link" href="procedures.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"/></svg>
+      <span>Procedures</span>
+    </a>
+    <a class="side-link" href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8l10 5 8-4v6h2V8zM6 12.5v4c0 1.7 2.7 3 6 3s6-1.3 6-3v-4l-6 3z"/></svg>
+      <span>Training</span>
+    </a>
+    <span class="side-link is-disabled" aria-disabled="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1zM17 8.5a5 5 0 0 1 0 7"/></svg>
+      <span>LiveWire</span><em class="side-soon">Soon</em>
+    </span>
+    <div class="side-group-label">Admin / HR</div>
+    <span class="side-link is-disabled" aria-disabled="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4M6 16v-4h12v4"/></svg>
+      <span>Org Chart</span><em class="side-soon">Soon</em>
+    </span>
+    <span class="side-link is-disabled" aria-disabled="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11"/></svg>
+      <span>Company Policies</span><em class="side-soon">Soon</em>
+    </span>
+    <span class="side-link is-disabled" aria-disabled="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h6"/></svg>
+      <span>Forms Library</span><em class="side-soon">Soon</em>
+    </span>
+    <div class="side-spacer"></div>
+  </nav>
+
+  <main class="page-shell">
+    <header class="shq-bar">
+      <img class="shq-seal" src="assets/icon-192.png" alt="" width="44" height="44">
+      <div class="shq-brand">
+        <h1 class="shq-title"><span class="title-safety">Safety</span><span class="title-hq">HQ</span></h1>
+        <p class="shq-tagline">Safety. Training. Procedures. Resources.</p>
+        <p class="shq-updated-m" id="last-update-m" aria-hidden="true"></p>
+      </div>
+      <span id="last-update" class="shq-updated">Last Update: Loading Latest Update</span>
+      <div class="shq-actions">
+        <button class="u-btn" type="button" id="searchOpen" aria-label="Search SafetyHQ (Ctrl+K)" title="Search (Ctrl+K)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </button>
+        <div class="user-wrap">
+          <button class="user-btn" type="button" id="userBtn" aria-label="Employee menu" aria-expanded="false" aria-controls="userMenu">
+            <span class="user-avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span>
+            <span class="notif-badge" id="notifBadge" hidden>0</span>
+          </button>
+          <div class="user-menu" id="userMenu" hidden>
+            <div class="um-head">
+              <strong>Employee</strong>
+              <span>Sign-in isn't set up yet. It will connect with Microsoft 365.</span>
+            </div>
+            <div class="notif-panel" id="notifPanel"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <details class="panel quarterly-collapse osha-panel" open>
+        <summary class="osha-summary">
+          <div class="section-title">
+            <h2>2026 OSHA Snapshot</h2>
+            <p>Company OSHA statistics, totals, and quarterly activity.</p>
+          </div>
+        </summary>
+        <div class="osha-split">
+          <div class="osha-totals-side">
+            <h3 class="subsection-title">2026 Totals</h3>
+            <div class="kpi-row two">
+              <div class="kpi good">
+                <div class="label">Total Man Hours</div>
+                <div class="value" id="ytd-man-hours">30,317</div>
+              </div>
+              <div class="kpi good">
+                <div class="label">EMR</div>
+                <div class="value" id="emr" style="color:var(--ok)">0.79</div>
+              </div>
+            </div>
+          </div>
+          <div class="osha-divider" aria-hidden="true"></div>
+          <div class="osha-quarterlies-side">
+            <div class="kpi-row osha-quarter-row" id="quarterly-cards">
+              <div class="kpi good">
+                <div class="q-label">✅ Q1 Complete</div>
+                <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q1" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q1" data-field="manHours">15,878</span></div>
+              </div>
+              <div class="kpi brand">
+                <div class="q-label">🔵 Q2 Active</div>
+                <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q2" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q2" data-field="manHours">13,662</span></div>
+              </div>
+              <div class="kpi neutral">
+                <div class="q-label">⏳ Q3 Pending</div>
+                <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q3" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q3" data-field="manHours">777</span></div>
+              </div>
+              <div class="kpi neutral">
+                <div class="q-label">⏳ Q4 Pending</div>
+                <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q4" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q4" data-field="manHours">0</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section class="section overdue-grid">
+      <section id="monthly" class="panel status-collapse checklist-panel">
+        <div class="panel-head status-summary">
+          <div class="section-title">
+            <h2>Monthly Safety Equipment Checklist Status</h2>
+            <p id="monthly-note">Checklist due Friday, 06/05/26. Required for all employees assigned a company vehicle.</p>
+          </div>
+        </div>
+        <div class="status-layout">
+          <section class="status-card">
+            <div class="status-card-header">
+              <h3 id="monthly-open-title">Due</h3>
+              <span class="status-count neutral" id="monthly-open-small">Loading</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Employee</th><th>EQ #</th><th>Status</th><th class="missed-history-head" aria-label="Missed Inspections"></th></tr></thead>
+                <tbody id="monthly-open-body">
+                  <tr><td colspan="4"><div class="empty-state"><span class="power-loader power-loader--inline" role="status"><img src="assets/loading_spinner_electric_ring.svg" alt="" aria-hidden="true">Loading latest Monthly Status...</span></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <button type="button" class="completed-row" id="completedOpen" aria-haspopup="dialog" aria-controls="completedModal">
+              <span class="completed-row-title">Completed</span>
+              <span class="status-count" id="monthly-complete-small">Loading</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+            </button>
+          </section>
+        </div>
+      </section>
+
+      <section id="training" class="panel status-collapse training-panel">
+        <div class="panel-head status-summary">
+          <div class="section-title">
+            <h2>Training Status</h2>
+            <p>Please remind your team to complete training in a timely manner.</p>
+          </div>
+          <div class="count-wrap">
+            <span class="count-pill bad" id="training-overdue-count">Loading</span>
+            <span class="count-pill warn" id="training-soon-count">Latest Data</span>
+          </div>
+        </div>
+        <div class="table-wrap status-card training-scroll">
+          <table>
+            <thead><tr><th><span class="training-employee-head"><span>Employee</span><select id="training-employee-filter" class="training-employee-filter" aria-label="Filter Training Status by employee"><option value="">All</option></select></span></th><th>Training</th><th>Status</th></tr></thead>
+            <tbody id="training-body">
+              <tr class="training-filter-empty training-loading-row">
+                <td colspan="3"><div class="empty-state"><span class="power-loader power-loader--inline" role="status"><img src="assets/loading_spinner_electric_ring.svg" alt="" aria-hidden="true">Loading latest Training Status...</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-disclaimer">Internal use only. This site is intended for Coastal Bend Power Services, LLC employees and authorized personnel. Do not share links, documents, screenshots, or site content with external parties unless approved by company management.</p>
+    </footer>
+  </main>
+</div>
+
+<div class="modal-backdrop completed-modal" id="completedModal" role="dialog" aria-modal="true" aria-labelledby="completedModalTitle">
+  <div class="modal-card">
+    <div class="modal-head"><h2 id="completedModalTitle">Completed Checklists</h2><button class="modal-close" id="completedClose" type="button" aria-label="Close completed list">×</button></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Employee</th><th>EQ #</th><th>Completed</th><th class="missed-history-head" aria-label="Missed Inspections"></th></tr></thead>
+        <tbody id="monthly-complete-body">
+          <tr><td colspan="4"><div class="empty-state"><span class="power-loader power-loader--inline" role="status"><img src="assets/loading_spinner_electric_ring.svg" alt="" aria-hidden="true">Loading latest Monthly Status...</span></div></td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
-</header>
-<main class="wrap">
-  <section class="panel utility-row">
-        <a class="nav-button hsi-login-link" href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer" aria-label="HSI Login">
-      <img src="assets/button_HSI_Login_round_300.png" alt="HSI Login">
-    </a>
-    <a class="nav-button procedure-link-main" href="https://coastalbendpower.github.io/SafetyHQ/procedures.html" target="_blank" rel="noopener noreferrer" aria-label="Procedure Center">
-      <img src="assets/button_Procedures_round_300.png" alt="Procedure Center">
-    </a>
-    <a class="nav-button return-hub-link" href="https://coastalbendpower.github.io/PowerHub" aria-label="Return to PowerHub">      
-      <img src="assets/button_Return_to_PowerHub_round_300.png" alt="Return to PowerHub">     </a>
-  </section>
-  <div class="updated-line">
-    <span id="last-update" class="last-update-text">Last Update: Loading Latest Update</span>
-  </div>
-  <section class="section">
-    <details class="panel quarterly-collapse osha-panel" open>
-      <summary class="osha-summary">
-        <div>
-          <h2 class="section-title">2026 OSHA Snapshot</h2>
-          <p class="section-note">Company OSHA statistics, totals, and quarterly activity.</p>
-        </div>
-      </summary>
-      <div class="osha-split">
-        <div class="osha-totals-side">
-          <h3 class="subsection-title">2026 Totals</h3>
-          <div class="kpi-row two">
-            <div class="kpi good">
-              <div class="label">Total Man Hours</div>
-              <div class="value" id="ytd-man-hours">30,317</div>
-            </div>
-            <div class="kpi good">
-              <div class="label">EMR</div>
-              <div class="value" id="emr" style="color:var(--ok)">0.79</div>
-            </div>
-          </div>
-        </div>
-        <div class="osha-divider" aria-hidden="true"></div>
-        <div class="osha-quarterlies-side">
-          <div class="kpi-row osha-quarter-row" id="quarterly-cards">
-            <div class="kpi good">
-              <div class="q-label">✅ Q1 Complete</div>
-              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q1" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q1" data-field="manHours">15,878</span></div>
-            </div>
-            <div class="kpi brand">
-              <div class="q-label">🔵 Q2 Active</div>
-              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q2" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q2" data-field="manHours">13,662</span></div>
-            </div>
-            <div class="kpi neutral">
-              <div class="q-label">⏳ Q3 Pending</div>
-              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q3" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q3" data-field="manHours">777</span></div>
-            </div>
-            <div class="kpi neutral">
-              <div class="q-label">⏳ Q4 Pending</div>
-              <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q4" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q4" data-field="manHours">0</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </details>
-  </section>
-  <section class="section overdue-grid">
-    <details id="monthly" class="panel status-collapse" open>
-      <summary class="panel-head status-summary">
-        <div>
-          <h2 class="section-title">Monthly Safety Equipment Checklist Status</h2>
-          <p class="section-note" id="monthly-note">Checklist due Friday, 06/05/26. Required for all employees assigned a company vehicle.</p>
-        </div>
-        
-      </summary>
-      <div class="status-layout">
-        <section class="status-card">
-          <div class="status-card-header">
-            <h3 id="monthly-open-title">Due</h3>
-            <span class="status-count neutral" id="monthly-open-small">Loading</span>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Employee</th><th>EQ #</th><th>Status</th><th class="missed-history-head" aria-label="Missed Inspections"></th></tr></thead>
-              <tbody id="monthly-open-body">
-                <tr><td colspan="4"><div class="empty-state">Loading latest Monthly Status...</div></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <details class="status-card completed-collapse">
-          <summary class="status-card-header">
-            <h3>Completed</h3>
-            <span class="status-count" id="monthly-complete-small">Loading</span>
-          </summary>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>Employee</th><th>EQ #</th><th>Completed</th><th class="missed-history-head" aria-label="Missed Inspections"></th></tr></thead>
-              <tbody id="monthly-complete-body">
-                <tr><td colspan="4"><div class="empty-state">Loading latest Monthly Status...</div></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-      </div>
-    </details>
-    <details id="training" class="panel status-collapse" open>
-      <summary class="panel-head status-summary">
-        <div>
-          <h2 class="section-title">Training Status</h2>
-          <p class="section-note">Please remind your team to complete training in a timely manner.</p>
-        </div>
-        <div class="count-wrap">
-          <span class="count-pill bad" id="training-overdue-count">Loading</span>
-          <span class="count-pill warn" id="training-soon-count">Latest Data</span>
-        </div>
-      </summary>
-      <div class="table-wrap status-card">
-        <table>
-          <thead><tr><th><span class="training-employee-head"><span>Employee</span><select id="training-employee-filter" class="training-employee-filter" aria-label="Filter Training Status by employee"><option value="">All</option></select></span></th><th>Training</th><th>Status</th></tr></thead>
-          <tbody id="training-body">
-            <tr class="training-filter-empty training-loading-row">
-              <td colspan="3"><div class="empty-state">Loading latest Training Status...</div></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </details>
-        
-  </section><div class="footer">
-    <div>Coastal Bend Power Services, LLC</div>
-  <div>SafetyHQ v3.0.25</div>
 </div>
-</main>
+
+<div class="search-overlay" id="searchOverlay" hidden>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="Search SafetyHQ">
+    <form class="search-form" id="hubSearchForm" role="search" autocomplete="off">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="hubSearch" placeholder="Search tools, employees, overdue items..." aria-label="Search SafetyHQ" aria-controls="hubSearchResults" />
+      <kbd>Esc</kbd>
+    </form>
+    <div class="search-results" id="hubSearchResults" role="listbox" hidden></div>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="Primary">
+  <a class="bn-item" href="https://coastalbendpower.github.io/PowerHub/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
+  <a class="bn-item" href="https://coastalbendpower.github.io/Whiteboard/view.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg><span>Whiteboard</span></a>
+  <a class="bn-item is-active" href="./" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.4 8.2 8 9 4.6-.8 8-4 8-9V6z"/></svg><span>SafetyHQ</span></a>
+  <a class="bn-item" href="https://coastalbendpower.na.hsiplatform.com/users/sign_in" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8l10 5 8-4v6h2V8zM6 12.5v4c0 1.7 2.7 3 6 3s6-1.3 6-3v-4l-6 3z"/></svg><span>Training</span></a>
+  <button class="bn-item" type="button" id="bnMore" aria-expanded="false" aria-controls="moreSheet"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>More</span></button>
+</nav>
+<div class="more-backdrop" id="moreBackdrop"></div>
+<div class="more-sheet" id="moreSheet" role="dialog" aria-label="All links"><div class="more-grip"></div><div class="more-body" id="moreBody"></div></div>
+
 <script>
 (function(){
   const quarterly = document.querySelector(".quarterly-collapse");
@@ -923,6 +906,7 @@ function renderMonthly(rows){
   text("monthly-complete-small", `${complete.length} item${complete.length===1?'':'s'}`);
 }
 
+const TRAINING_SOON_DAYS = 10; // amber "due soon" window, in days
 let trainingEmployeeFilterValue = "";
   function setTrainingLoadingState(){
   const tbody = document.getElementById("training-body");
@@ -958,7 +942,7 @@ function renderTraining(rows){
     }
 
     text("training-overdue-count", "0 Overdue");
-    text("training-soon-count", "0 Due Within 7 Days");
+    text("training-soon-count", `0 Due Within ${TRAINING_SOON_DAYS} Days`);
     return;
   }
 
@@ -984,17 +968,32 @@ function renderTraining(rows){
     };
   }
 
+  const dayWord = n => n === 1 ? '1 Day' : n + ' Days';
+  const daysAway = (due, daysUntilDue) => {
+    let n = Number(String(daysUntilDue ?? '').replace(/[^0-9.-]/g,''));
+    if(String(daysUntilDue ?? '').trim() === '' || !Number.isFinite(n)){
+      const d = new Date(String(due || '').trim());
+      n = Number.isNaN(d.getTime()) ? NaN : Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())) / 86400000);
+    }
+    return n;
+  };
   const statusBadgeText = (dashboardStatus, due, daysUntilDue) => {
-    const rawStatus = String(dashboardStatus || "").trim();
+    const rawStatus = String(dashboardStatus || '').trim();
     const lower = rawStatus.toLowerCase();
-    const daysNumber = Number(String(daysUntilDue ?? "").replace(/[^0-9.-]/g,""));
+    const daysNumber = daysAway(due, daysUntilDue);
 
-    if(lower.includes("overdue")){
-      if(Number.isFinite(daysNumber) && daysNumber < 0) return `${Math.abs(daysNumber)}d Overdue`;
-      return rawStatus || "Overdue";
+    if(lower.includes('overdue')){
+      if(Number.isFinite(daysNumber) && daysNumber < 0) return dayWord(Math.abs(daysNumber)) + ' Overdue';
+      return rawStatus || 'Overdue';
     }
 
-    if(lower.includes("within 7")) return rawStatus || `Due ${fmtDate(due)}`;
+    {
+      if(Number.isFinite(daysNumber)){
+        if(daysNumber <= 0) return 'Due Today';
+        return 'Due in ' + dayWord(daysNumber);
+      }
+      return rawStatus || `Due ${fmtDate(due)}`;
+    }
     return rawStatus || `Due ${fmtDate(due)}`;
   };
 
@@ -1005,10 +1004,13 @@ function renderTraining(rows){
     const daysUntilDue = cell(r,["daysUntilDue","Days Until Due"],4);
     const dashboardStatus = cell(r,["dashboardStatus","Dashboard Status","status"],5) || cell(r,["status"],2);
     const statusLower = String(dashboardStatus).toLowerCase();
-    const rowClass = statusLower.includes("overdue") ? "row-red" : statusLower.includes("within 7") ? "row-orange" : "row-neutral";
-    const pillClass = statusLower.includes("overdue") ? "pill-red" : statusLower.includes("within 7") ? "pill-orange" : "pill-neutral";
+    const dn = daysAway(due, daysUntilDue);
+    const isOverdue = statusLower.includes("overdue");
+    const isSoon = !isOverdue && Number.isFinite(dn) && dn <= TRAINING_SOON_DAYS;
+    const rowClass = isOverdue ? "row-red" : isSoon ? "row-orange" : "row-neutral";
+    const pillClass = isOverdue ? "pill-red" : isSoon ? "pill-orange" : "pill-neutral";
     const badge = statusBadgeText(dashboardStatus, due, daysUntilDue);
-    return `<tr class="${rowClass}" data-employee="${esc(employee)}" data-training-status="${esc(statusLower)}"><td>${esc(employee)}</td><td><span class="training-title">${esc(req)}</span><span class="training-due-mobile"> — Due ${esc(fmtDate(due))}</span></td><td><span class="pill ${pillClass}">${esc(badge)}</span></td></tr>`;
+    return `<tr class="${rowClass}" data-employee="${esc(employee)}" data-training-status="${isOverdue ? 'overdue' : isSoon ? 'soon' : 'later'}"><td>${esc(employee)}</td><td><span class="training-title">${esc(req)}</span><span class="training-due-mobile"> — Due ${esc(fmtDate(due))}</span></td><td><span class="pill ${pillClass}">${esc(badge)}</span></td></tr>`;
   }).join("") || `<tr><td colspan="3"><div class="empty-state">No training items listed.</div></td></tr>`;
 
   applyTrainingEmployeeFilter();
@@ -1027,7 +1029,7 @@ function initTrainingEmployeeFilterFromExistingRows(){
     if(!employee || employee === "Employee") return;
     row.dataset.employee = employee;
     const rowClass = row.className || "";
-    row.dataset.trainingStatus = rowClass.includes("row-red") ? "overdue" : rowClass.includes("row-orange") ? "within 7" : "in training window";
+    row.dataset.trainingStatus = rowClass.includes("row-red") ? "overdue" : rowClass.includes("row-orange") ? "soon" : "later";
     employees.push(employee);
   });
 
@@ -1060,7 +1062,7 @@ function applyTrainingEmployeeFilter(){
       visible++;
       const status = row.dataset.trainingStatus || "";
       if(status.includes("overdue")) overdue++;
-      if(status.includes("within 7")) soon++;
+      if(status === "soon") soon++;
     }
   });
 
@@ -1077,7 +1079,7 @@ function applyTrainingEmployeeFilter(){
   }
 
   text("training-overdue-count", `${overdue} Overdue`);
-  text("training-soon-count", `${soon} Due Within 7 Days`);
+  text("training-soon-count", `${soon} Due Within ${TRAINING_SOON_DAYS} Days`);
 }
 
 function updateQuarter(q, recordables, manHours){
@@ -1222,6 +1224,173 @@ document.addEventListener("keydown", event => {
 
 initTrainingEmployeeFilterFromExistingRows();
 loadSafetyHQLive();
+</script>
+<script>
+// Shell behavior (copied/adapted from PowerHub): utility pill, search, collapsible sidebar, phone More sheet.
+(function () {
+  const SAFETYHQ_VERSION = "SafetyHQ v4.1.0";
+  const SAFETYHQ_UPDATE_NOTE = "Slim header, two-column layout, Completed popup.";
+  const clean = s => String(s || "").replace(/\s+/g, " ").trim();
+  const lower = s => clean(s).toLowerCase();
+  const input = document.getElementById("hubSearch"), results = document.getElementById("hubSearchResults");
+  const form = document.getElementById("hubSearchForm"), overlay = document.getElementById("searchOverlay");
+  const searchOpen = document.getElementById("searchOpen"), panel = document.getElementById("notifPanel");
+  const userBtn = document.getElementById("userBtn"), userMenu = document.getElementById("userMenu");
+  const badge = document.getElementById("notifBadge");
+  if (!input || !results || !overlay || !searchOpen || !userBtn || !userMenu || !panel) return;
+
+  // ----- Employee menu + notifications (placeholder until Microsoft 365 sign-in exists) -----
+  function setUserMenu(open) {
+    if (open) {
+      panel.innerHTML = '<div class="notif-head">Notifications</div>'
+        + '<div class="notif-item">Latest update<small>' + esc(SAFETYHQ_UPDATE_NOTE) + '</small></div>'
+        + '<div class="notif-version">' + esc(SAFETYHQ_VERSION) + '</div>';
+    }
+    userMenu.hidden = !open;
+    userBtn.setAttribute("aria-expanded", String(open));
+  }
+  if (badge) badge.hidden = true;
+  userBtn.addEventListener("click", event => { event.stopPropagation(); setUserMenu(userMenu.hidden); });
+
+  // ----- Search: nav links + employees/items currently shown in the tables -----
+  let current = [];
+  function openSearch() { setUserMenu(false); overlay.hidden = false; input.value = ""; results.hidden = true; input.focus(); }
+  function closeSearch() { overlay.hidden = true; input.value = ""; results.hidden = true; }
+
+  function buildIndex() {
+    const idx = [];
+    document.querySelectorAll(".side-nav a.side-link").forEach(a => {
+      const label = clean(a.querySelector("span")?.firstChild?.textContent || a.textContent);
+      idx.push({ group: "Tools", title: label, sub: "", hay: lower(label), href: a.getAttribute("href"), external: a.target === "_blank" });
+    });
+    document.querySelectorAll("#training-body tr[data-employee]").forEach(tr => {
+      const tds = tr.querySelectorAll("td");
+      idx.push({ group: "Training", title: clean(tds[0]?.textContent) + " — " + clean(tds[1]?.querySelector(".training-title")?.textContent), sub: clean(tds[2]?.textContent), hay: lower(tr.textContent), target: "training" });
+    });
+    document.querySelectorAll("#monthly-open-body tr, #monthly-complete-body tr").forEach(tr => {
+      const tds = tr.querySelectorAll("td");
+      if (tds.length < 3) return;
+      idx.push({ group: "Monthly Checklist", title: clean(tds[0].textContent) + " — EQ " + clean(tds[1].textContent), sub: clean(tds[2].textContent), hay: lower(tr.textContent), target: tr.closest("#monthly-complete-body") ? "completed" : "monthly" });
+    });
+    return idx;
+  }
+
+  function openResult(r) {
+    closeSearch();
+    if (r.target === "completed") {
+      window.openCompletedModal && window.openCompletedModal();
+    } else if (r.target) {
+      const el = document.getElementById(r.target);
+      if (el) { el.open = true; el.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    } else if (r.href) {
+      if (r.external) window.open(r.href, "_blank", "noopener"); else window.location.href = r.href;
+    }
+  }
+
+  function runSearch() {
+    const q = lower(input.value);
+    if (!q) { results.hidden = true; return; }
+    const terms = q.split(" ");
+    current = buildIndex().filter(r => terms.every(t => r.hay.includes(t))).slice(0, 12);
+    let html = "", lastGroup = "";
+    current.forEach((r, i) => {
+      if (r.group !== lastGroup) { html += '<div class="result-group">' + esc(r.group) + '</div>'; lastGroup = r.group; }
+      html += '<button type="button" role="option" class="result-item' + (i === 0 ? " is-first" : "") + '" data-i="' + i + '">' + esc(r.title) + (r.sub ? '<small>' + esc(r.sub) + '</small>' : "") + '</button>';
+    });
+    results.innerHTML = current.length ? html : '<div class="result-empty">No matches on SafetyHQ.</div>';
+    results.hidden = false;
+  }
+
+  input.addEventListener("input", runSearch);
+  input.addEventListener("focus", runSearch);
+  form.addEventListener("submit", event => { event.preventDefault(); if (current[0]) openResult(current[0]); });
+  results.addEventListener("click", event => {
+    const btn = event.target.closest("[data-i]");
+    if (btn) openResult(current[Number(btn.dataset.i)]);
+  });
+  searchOpen.addEventListener("click", openSearch);
+  overlay.addEventListener("click", event => { if (event.target === overlay) closeSearch(); });
+  document.addEventListener("click", event => {
+    if (!userMenu.hidden && !userMenu.contains(event.target) && !userBtn.contains(event.target)) setUserMenu(false);
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") { closeSearch(); setUserMenu(false); return; }
+    const typing = /^(input|textarea|select)$/i.test(event.target.tagName || "");
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") { event.preventDefault(); openSearch(); }
+    else if (event.key === "/" && !typing) { event.preventDefault(); openSearch(); }
+  });
+
+  // ----- Collapsible sidebar (icon-only rail), same storage key as PowerHub -----
+  const sideToggle = document.getElementById("sideToggle");
+  document.querySelectorAll(".side-nav .side-link").forEach(link => {
+    const label = clean(link.querySelector("span")?.firstChild?.textContent);
+    if (!label) return;
+    link.title = link.classList.contains("is-disabled") ? label + " (coming soon)" : label;
+    link.setAttribute("aria-label", label);
+  });
+  const applySidebar = collapsed => {
+    document.documentElement.classList.toggle("sb-collapsed", collapsed);
+    if (!sideToggle) return;
+    const label = collapsed ? "Expand sidebar" : "Collapse sidebar";
+    sideToggle.setAttribute("aria-expanded", String(!collapsed));
+    sideToggle.setAttribute("aria-label", label);
+    sideToggle.title = label;
+  };
+  applySidebar(document.documentElement.classList.contains("sb-collapsed"));
+  sideToggle?.addEventListener("click", () => {
+    const next = !document.documentElement.classList.contains("sb-collapsed");
+    applySidebar(next);
+    try { localStorage.setItem("powerhubSidebarCollapsed", next ? "1" : "0"); } catch (error) { console.warn("Sidebar state could not be saved", error); }
+  });
+
+  // ----- Phone bottom bar: More opens the full grouped menu -----
+  const moreBtn = document.getElementById("bnMore"), sheet = document.getElementById("moreSheet");
+  const backdrop = document.getElementById("moreBackdrop"), moreBody = document.getElementById("moreBody");
+  if (moreBtn && sheet && backdrop && moreBody) {
+    const setMore = open => {
+      if (open && !moreBody.children.length) {
+        document.querySelectorAll(".side-nav > *").forEach(node => {
+          if (node.classList.contains("side-toggle")) return;
+          const copy = node.cloneNode(true);
+          copy.removeAttribute("id");
+          copy.classList.remove("is-active");
+          moreBody.appendChild(copy);
+        });
+      }
+      sheet.classList.toggle("is-open", open);
+      backdrop.classList.toggle("is-open", open);
+      moreBtn.setAttribute("aria-expanded", String(open));
+    };
+    moreBtn.addEventListener("click", () => setMore(!sheet.classList.contains("is-open")));
+    backdrop.addEventListener("click", () => setMore(false));
+    moreBody.addEventListener("click", event => {
+      const link = event.target.closest(".side-link");
+      if (link && !link.classList.contains("is-disabled")) setMore(false);
+    });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") setMore(false); });
+  }
+})();
+</script>
+<script>
+// Completed popup (desktop) / bottom sheet (phone, via CSS). Close: X, tap outside, Esc.
+(function () {
+  const modal = document.getElementById("completedModal"), openBtn = document.getElementById("completedOpen"), closeBtn = document.getElementById("completedClose");
+  if (!modal || !openBtn || !closeBtn) return;
+  const open = () => { modal.classList.add("is-open"); document.body.style.overflow = "hidden"; closeBtn.focus(); };
+  const close = () => { if (!modal.classList.contains("is-open")) return; modal.classList.remove("is-open"); document.body.style.overflow = ""; openBtn.focus(); };
+  window.openCompletedModal = open;
+  openBtn.addEventListener("click", open);
+  closeBtn.addEventListener("click", close);
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+  // Phone header shows a short copy of the Last Update text under the title.
+  const src = document.getElementById("last-update"), dst = document.getElementById("last-update-m");
+  if (src && dst) {
+    const sync = () => { dst.textContent = src.textContent.replace(/^Last Update:s*/i, "Updated "); };
+    new MutationObserver(sync).observe(src, { childList: true, characterData: true, subtree: true });
+    sync();
+  }
+})();
 </script>
 </body>
 </html>
