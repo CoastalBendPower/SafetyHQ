@@ -1201,6 +1201,13 @@ function loadSafetyHQLive(){
       text("last-update", "Last Update: Loading latest upload...");
     }
   }, 2500);
+
+  // A non-JS response (e.g. a Google sign-in page) never fires onerror or the callback, so give up visibly.
+  setTimeout(() => {
+    if(window.__safetyHQPendingRequest === requestId){
+      text("last-update", "Last Update: Unable to load live data - please refresh");
+    }
+  }, 20000);
 }
 
 
