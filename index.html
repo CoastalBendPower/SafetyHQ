@@ -412,16 +412,16 @@ tr.row-neutral td{background:#fff}
                 <div class="q-label">✅ Q1 Complete</div>
                 <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q1" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q1" data-field="manHours">15,878</span></div>
               </div>
-              <div class="kpi brand">
-                <div class="q-label">🔵 Q2 Active</div>
+              <div class="kpi good">
+                <div class="q-label">✅ Q2 Complete</div>
                 <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q2" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q2" data-field="manHours">13,662</span></div>
               </div>
-              <div class="kpi neutral">
-                <div class="q-label">⏳ Q3 Pending</div>
-                <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q3" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q3" data-field="manHours">777</span></div>
+              <div class="kpi good">
+                <div class="q-label">✅ Q3 Complete</div>
+                <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q3" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q3" data-field="manHours">14,362</span></div>
               </div>
-              <div class="kpi neutral">
-                <div class="q-label">⏳ Q4 Pending</div>
+              <div class="kpi brand">
+                <div class="q-label">🔵 Q4 Active</div>
                 <div class="q-meta"><strong>Recordables:</strong> <span data-quarter="Q4" data-field="recordables">0</span><br><strong>Man Hours:</strong> <span data-quarter="Q4" data-field="manHours">0</span></div>
               </div>
             </div>
@@ -1235,8 +1235,8 @@ loadSafetyHQLive();
 <script>
 // Shell behavior (copied/adapted from PowerHub): utility pill, search, collapsible sidebar, phone More sheet.
 (function () {
-  const SAFETYHQ_VERSION = "SafetyHQ v4.1.0";
-  const SAFETYHQ_UPDATE_NOTE = "Slim header, two-column layout, Completed popup.";
+  const SAFETYHQ_VERSION = "SafetyHQ v4.1.1";
+  const SAFETYHQ_UPDATE_NOTE = "Fixed Q2-Q4 OSHA quarterly stats; Q2/Q3 Complete, Q4 Active.";
   const clean = s => String(s || "").replace(/\s+/g, " ").trim();
   const lower = s => clean(s).toLowerCase();
   const input = document.getElementById("hubSearch"), results = document.getElementById("hubSearchResults");
