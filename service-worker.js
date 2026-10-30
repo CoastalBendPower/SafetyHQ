@@ -1,4 +1,4 @@
-const SAFETYHQ_CACHE = "safetyhq-v1";
+const SAFETYHQ_CACHE = "safetyhq-v2";
 const SAFETYHQ_ASSETS = [
   "/SafetyHQ/",
   "/SafetyHQ/index.html",
